@@ -159,6 +159,15 @@ std::pair<bool, int> compute(
         throw std::runtime_error("requested number of singular values must be less than the smaller matrix dimension for IRLBA iterations");
     }
 
+    // Optimization if no SVs are requested. Also protect the exact SVD code
+    // from a zero-extent matrix, as this causes Eigen to shit itself.
+    if (requested_number == 0) {
+        outD.resize(requested_number);
+        outU.resize(matrix.rows(), requested_number);
+        outV.resize(matrix.cols(), requested_number);
+        return std::make_pair(true, 0);
+    }
+
     // Falling back to an exact SVD for small matrices or if the requested number is too large 
     // (not enough of a workspace). Hey, I don't make the rules.
     if (
@@ -169,10 +178,9 @@ std::pair<bool, int> compute(
         return std::make_pair(true, 0);
     }
 
-    Eigen::Index work = choose_requested_plus_extra_work_or_smaller(requested_number, options.extra_work, smaller);
-    if (work == 0) {
-        throw std::runtime_error("number of requested dimensions must be positive");
-    }
+    // We know work must be positive at this point, as we would have returned early if requested_number = 0.
+    // Similar, if smaller = 0, we would have either thrown earlier or set requested_number = 0.
+    const Eigen::Index work = choose_requested_plus_extra_work_or_smaller(requested_number, options.extra_work, smaller);
 
     // Don't worry about sanitizing dimensions for Eigen constructors,
     // as the former are stored as Eigen::Index and the latter accepts Eigen::Index inputs.

@@ -22,7 +22,7 @@ TEST(Compute, CompareToExact) {
     irlba::Options opt;
     opt.exact_for_large_number = false;
     irlba::SimpleMatrix<Eigen::VectorXd, Eigen::MatrixXd, decltype(&A)> wrapped(&A);
-    auto res = irlba::compute(wrapped, 5, opt);
+    auto res = irlba::compute(wrapped, rank, opt);
 
     Eigen::JacobiSVD<decltype(A), Eigen::ComputeThinU | Eigen::ComputeThinV> svd(A);
     expect_equal_vectors(res.D, svd.singularValues().head(rank), 1e-8);
@@ -47,6 +47,35 @@ TEST(Compute, ChooseRequestedPlusExtraWorkOrSmaller) {
     EXPECT_EQ(irlba::choose_requested_plus_extra_work_or_smaller(10, 20, 25), 25);
     EXPECT_EQ(irlba::choose_requested_plus_extra_work_or_smaller(10, 20, 30), 30);
     EXPECT_EQ(irlba::choose_requested_plus_extra_work_or_smaller(10, 20, 35), 30);
+}
+
+TEST(Compute, ZeroExtent) {
+    irlba::Options opt;
+    opt.cap_number = true;
+
+    {
+        auto A = create_random_matrix(0, 10);
+        irlba::SimpleMatrix<Eigen::VectorXd, Eigen::MatrixXd, decltype(&A)> wrapped(&A);
+        auto res = irlba::compute(wrapped, 5, opt);
+
+        EXPECT_EQ(res.D.size(), 0);
+        EXPECT_EQ(res.U.rows(), 0);
+        EXPECT_EQ(res.U.cols(), 0);
+        EXPECT_EQ(res.V.rows(), 10);
+        EXPECT_EQ(res.V.cols(), 0);
+    }
+
+    {
+        auto A = create_random_matrix(10, 0);
+        irlba::SimpleMatrix<Eigen::VectorXd, Eigen::MatrixXd, decltype(&A)> wrapped(&A);
+        auto res = irlba::compute(wrapped, 5, opt);
+
+        EXPECT_EQ(res.D.size(), 0);
+        EXPECT_EQ(res.U.rows(), 10);
+        EXPECT_EQ(res.U.cols(), 0);
+        EXPECT_EQ(res.V.rows(), 0);
+        EXPECT_EQ(res.V.cols(), 0);
+    }
 }
 
 TEST(Compute, UpdateK) {
@@ -213,17 +242,6 @@ TEST(Compute, Fails) {
         message = e.what();
     }
     EXPECT_TRUE(message.find("must be less than") != std::string::npos);
-
-    // Requested number of SVs + extra work is zero.
-    message.clear();
-    try {
-        irlba::Options opt;
-        opt.extra_work = 0;
-        irlba::compute(wrapped, 0, opt);
-    } catch (const std::exception& e) {
-        message = e.what();
-    }
-    EXPECT_TRUE(message.find("must be positive") != std::string::npos);
 
     // Initialization vector is not of the right length.
     message.clear();
