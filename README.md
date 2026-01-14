@@ -1,9 +1,9 @@
 # C++ library for IRLBA
 
-![Unit tests](https://github.com/LTLA/CppIrlba/actions/workflows/run-tests.yaml/badge.svg)
-![Documentation](https://github.com/LTLA/CppIrlba/actions/workflows/doxygenate.yaml/badge.svg)
-![Irlba comparison](https://github.com/LTLA/CppIrlba/actions/workflows/compare-irlba.yaml/badge.svg)
-[![Codecov](https://codecov.io/gh/LTLA/CppIrlba/branch/master/graph/badge.svg?token=E2AFGW2XDB)](https://codecov.io/gh/LTLA/CppIrlba)
+![Unit tests](https://github.com/libscran/irlba/actions/workflows/run-tests.yaml/badge.svg)
+![Documentation](https://github.com/libscran/irlba/actions/workflows/doxygenate.yaml/badge.svg)
+![Irlba comparison](https://github.com/libscran/irlba/actions/workflows/compare-irlba.yaml/badge.svg)
+[![Codecov](https://codecov.io/gh/libscran/irlba/branch/master/graph/badge.svg?token=vr16M4FetD)](https://codecov.io/gh/libscran/irlba)
 
 ## Overview
 
@@ -43,7 +43,7 @@ pcres.rotation;
 pcres.variances;
 ```
 
-See the [reference documentation](https://ltla.github.io/CppIrlba) for more details.
+See the [reference documentation](https://libscran.github.io/irlba) for more details.
 
 ## Customizing matrices
 
@@ -88,7 +88,7 @@ include(FetchContent)
 
 FetchContent_Declare(
   irlba 
-  GIT_REPOSITORY https://github.com/LTLA/CppIrlba
+  GIT_REPOSITORY https://github.com/libscran/irlba
   GIT_TAG master # or any version of interest
 )
 
@@ -134,4 +134,3 @@ Note that this requires the dependencies listed in [`extern/CMakeLists.txt`](ext
 Baglama, James and Reichel, Lothar (2005).
 Augmented implicitly restarted Lanczos bidiagonalization methods.
 _SIAM J. Sci. Comput._, 27(1), 19-42.
-
