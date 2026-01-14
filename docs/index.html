@@ -90,7 +90,7 @@ $(function(){ initResizable(false); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md__2github_2workspace_2README"></a></p>
-<p><img src="https://github.com/LTLA/CppIrlba/actions/workflows/run-tests.yaml/badge.svg" alt="Unit tests" style="pointer-events: none;" class="inline"/> <img src="https://github.com/LTLA/CppIrlba/actions/workflows/doxygenate.yaml/badge.svg" alt="Documentation" style="pointer-events: none;" class="inline"/> <img src="https://github.com/LTLA/CppIrlba/actions/workflows/compare-irlba.yaml/badge.svg" alt="Irlba comparison" style="pointer-events: none;" class="inline"/> <a href="https://codecov.io/gh/LTLA/CppIrlba"><img src="https://codecov.io/gh/LTLA/CppIrlba/branch/master/graph/badge.svg?token=E2AFGW2XDB" alt="Codecov" style="pointer-events: none;" class="inline"/></a></p>
+<p><img src="https://github.com/libscran/irlba/actions/workflows/run-tests.yaml/badge.svg" alt="Unit tests" style="pointer-events: none;" class="inline"/> <img src="https://github.com/libscran/irlba/actions/workflows/doxygenate.yaml/badge.svg" alt="Documentation" style="pointer-events: none;" class="inline"/> <img src="https://github.com/libscran/irlba/actions/workflows/compare-irlba.yaml/badge.svg" alt="Irlba comparison" style="pointer-events: none;" class="inline"/> <a href="https://codecov.io/gh/libscran/irlba"><img src="https://codecov.io/gh/libscran/irlba/branch/master/graph/badge.svg?token=vr16M4FetD" alt="Codecov" style="pointer-events: none;" class="inline"/></a></p>
 <h1>Overview</h1>
 <p>This repository contains a header-only C++ library implementing the Augmented Implicitly Restarted Lanczos Bidiagonalization Algorithm (IRLBA) from Baglama and Reichel (2005). IRLBA is a fast and memory-efficient method for truncated singular value decomposition, and is particularly useful for approximate principal components analysis of large matrices. The code here is derived from the C code in the <a href="https://github.com/bwlewis/irlba"><b>irlba</b> R package</a>, refactored to use the <a href="http://eigen.tuxfamily.org/">Eigen</a> library for matrix algebra.</p>
 <h1>Quick start</h1>
@@ -122,7 +122,7 @@ $(function(){ initResizable(false); });
 <div class="line">pcres.rotation;</div>
 <div class="line">pcres.variances;</div>
 <div class="ttc" id="anamespaceirlba_html_a641f100ff5163f650781c9db49958a4b"><div class="ttname"><a href="namespaceirlba.html#a641f100ff5163f650781c9db49958a4b">irlba::pca</a></div><div class="ttdeci">std::pair&lt; bool, int &gt; pca(const InputEigenMatrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, OutputEigenMatrix_ &amp;scores, OutputEigenMatrix_ &amp;rotation, EigenVector_ &amp;variances, const Options&lt; EigenVector_ &gt; &amp;options)</div><div class="ttdef"><b>Definition</b> pca.hpp:56</div></div>
-</div><!-- fragment --><p>See the <a href="https://ltla.github.io/CppIrlba">reference documentation</a> for more details.</p>
+</div><!-- fragment --><p>See the <a href="https://libscran.github.io/irlba">reference documentation</a> for more details.</p>
 <h1>Customizing matrices</h1>
 <p>The <code><a class="el" href="classirlba_1_1Matrix.html" title="Interface for a matrix to use in compute().">irlba::Matrix</a></code> interface allows us to use different matrix representations for <code><a class="el" href="namespaceirlba.html#abff001679bf73625640310429e8d1aa6">irlba::compute()</a></code>. For example, we can defer column-centering to efficiently perform PCA on a sparse matrix:</p>
 <div class="fragment"><div class="line"><span class="comment">// Some sparse matrix.</span></div>
@@ -157,7 +157,7 @@ $(function(){ initResizable(false); });
 <div class="line"> </div>
 <div class="line">FetchContent_Declare(</div>
 <div class="line">  irlba </div>
-<div class="line">  GIT_REPOSITORY https://github.com/LTLA/CppIrlba</div>
+<div class="line">  GIT_REPOSITORY https://github.com/libscran/irlba</div>
 <div class="line">  GIT_TAG master # or any version of interest</div>
 <div class="line">)</div>
 <div class="line"> </div>
