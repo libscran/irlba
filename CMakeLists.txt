@@ -18,7 +18,7 @@ target_include_directories(irlba INTERFACE
 target_compile_features(irlba INTERFACE cxx_std_17)
 
 # Dependencies
-option(IRLBA_FETCH_EXTERN "Automatically fetch CppIrlba's dependencies." ON)
+option(IRLBA_FETCH_EXTERN "Automatically fetch irlba's dependencies." ON)
 if(IRLBA_FETCH_EXTERN)
     add_subdirectory(extern)
 else()
@@ -32,9 +32,9 @@ target_link_libraries(irlba INTERFACE Eigen3::Eigen ltla::aarand ltla::subpar lt
 
 # Tests
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-    option(IRLBA_TESTS "Build CppIrlba's test suite." ON)
+    option(IRLBA_TESTS "Build irlba's test suite." ON)
 else()
-    option(IRLBA_TESTS "Build CppIrlba's test suite." OFF)
+    option(IRLBA_TESTS "Build irlba's test suite." OFF)
 endif()
 if(IRLBA_TESTS)
     include(CTest)
