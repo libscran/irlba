@@ -92,7 +92,6 @@ $(function(){ initResizable(false); });
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">compute.hpp File Reference</div></div>
 </div><!--header-->
@@ -154,7 +153,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="center"><img src="compute_8hpp__dep__incl.png" border="0" usemap="#airlba_2compute_8hppdep" alt=""/></div>
 <map name="airlba_2compute_8hppdep" id="airlba_2compute_8hppdep">
 <area shape="rect" title="Compute an approximate SVD with IRLBA." alt="" coords="5,5,129,31"/>
-<area shape="rect" href="irlba_8hpp.html" title="Implements IRLBA." alt="" coords="18,153,116,178"/>
+<area shape="rect" href="irlba_8hpp_source.html" title=" " alt="" coords="18,153,116,178"/>
 <area shape="poly" title=" " alt="" coords="60,46,54,74,54,104,65,151,60,153,48,105,49,74,55,45"/>
 <area shape="rect" href="pca_8hpp.html" title="Perform PCA with IRLBA." alt="" coords="62,79,157,105"/>
 <area shape="poly" title=" " alt="" coords="84,43,105,77,100,80,80,46"/>
@@ -167,33 +166,249 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1Results.html">irlba::Results&lt; EigenMatrix_, EigenVector_ &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structirlba_1_1Results.html" title="Results of the IRLBA-based SVD by compute().">Results</a> of the IRLBA-based SVD by <code><a class="el" href="namespaceirlba.html#abff001679bf73625640310429e8d1aa6">compute()</a></code>.  <a href="structirlba_1_1Results.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceirlba.html">irlba</a></td></tr>
-<tr class="memdesc:namespaceirlba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements IRLBA for approximate SVD. <br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structirlba_1_1Results.html" title="Results of the IRLBA-based SVD by compute().">Results</a> of the IRLBA-based SVD by <code><a class="el" href="#abff001679bf73625640310429e8d1aa6">compute()</a></code>.  <a href="structirlba_1_1Results.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:abff001679bf73625640310429e8d1aa6" id="r_abff001679bf73625640310429e8d1aa6"><td class="memTemplParams" colspan="2">template&lt;class Matrix_ , class EigenMatrix_ , class EigenVector_ &gt; </td></tr>
-<tr class="memitem:abff001679bf73625640310429e8d1aa6"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; bool, int &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceirlba.html#abff001679bf73625640310429e8d1aa6">irlba::compute</a> (const Matrix_ &amp;matrix, const Eigen::Index number, EigenMatrix_ &amp;outU, EigenMatrix_ &amp;outV, EigenVector_ &amp;outD, const <a class="el" href="structirlba_1_1Options.html">Options</a>&lt; EigenVector_ &gt; &amp;options)</td></tr>
+<tr class="memitem:abff001679bf73625640310429e8d1aa6"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; bool, int &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#abff001679bf73625640310429e8d1aa6">irlba::compute</a> (const Matrix_ &amp;matrix, const Eigen::Index number, EigenMatrix_ &amp;outU, EigenMatrix_ &amp;outV, EigenVector_ &amp;outD, const <a class="el" href="structirlba_1_1Options.html">Options</a>&lt; EigenVector_ &gt; &amp;options)</td></tr>
 <tr class="separator:abff001679bf73625640310429e8d1aa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac57532aaea92612012d712610b3d1a08" id="r_ac57532aaea92612012d712610b3d1a08"><td class="memTemplParams" colspan="2">template&lt;class InputEigenMatrix_ , class OutputEigenMatrix_ , class EigenVector_ &gt; </td></tr>
-<tr class="memitem:ac57532aaea92612012d712610b3d1a08"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; bool, int &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceirlba.html#ac57532aaea92612012d712610b3d1a08">irlba::compute_simple</a> (const InputEigenMatrix_ &amp;matrix, Eigen::Index number, OutputEigenMatrix_ &amp;outU, OutputEigenMatrix_ &amp;outV, EigenVector_ &amp;outD, const <a class="el" href="structirlba_1_1Options.html">Options</a>&lt; EigenVector_ &gt; &amp;options)</td></tr>
+<tr class="memitem:ac57532aaea92612012d712610b3d1a08"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; bool, int &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ac57532aaea92612012d712610b3d1a08">irlba::compute_simple</a> (const InputEigenMatrix_ &amp;matrix, Eigen::Index number, OutputEigenMatrix_ &amp;outU, OutputEigenMatrix_ &amp;outV, EigenVector_ &amp;outD, const <a class="el" href="structirlba_1_1Options.html">Options</a>&lt; EigenVector_ &gt; &amp;options)</td></tr>
 <tr class="separator:ac57532aaea92612012d712610b3d1a08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee162d595de9fdfdcf5d379de54365d3" id="r_aee162d595de9fdfdcf5d379de54365d3"><td class="memTemplParams" colspan="2">template&lt;class EigenMatrix_  = Eigen::MatrixXd, class EigenVector_  = Eigen::VectorXd, class Matrix_ &gt; </td></tr>
-<tr class="memitem:aee162d595de9fdfdcf5d379de54365d3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structirlba_1_1Results.html">Results</a>&lt; EigenMatrix_, EigenVector_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceirlba.html#aee162d595de9fdfdcf5d379de54365d3">irlba::compute</a> (const Matrix_ &amp;matrix, Eigen::Index number, const <a class="el" href="structirlba_1_1Options.html">Options</a>&lt; EigenVector_ &gt; &amp;options)</td></tr>
+<tr class="memitem:aee162d595de9fdfdcf5d379de54365d3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structirlba_1_1Results.html">Results</a>&lt; EigenMatrix_, EigenVector_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aee162d595de9fdfdcf5d379de54365d3">irlba::compute</a> (const Matrix_ &amp;matrix, Eigen::Index number, const <a class="el" href="structirlba_1_1Options.html">Options</a>&lt; EigenVector_ &gt; &amp;options)</td></tr>
 <tr class="separator:aee162d595de9fdfdcf5d379de54365d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22b51a9ba8a634d25fc16008d4bdfba8" id="r_a22b51a9ba8a634d25fc16008d4bdfba8"><td class="memTemplParams" colspan="2">template&lt;class OutputEigenMatrix_  = Eigen::MatrixXd, class EigenVector_  = Eigen::VectorXd, class InputEigenMatrix_ &gt; </td></tr>
-<tr class="memitem:a22b51a9ba8a634d25fc16008d4bdfba8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structirlba_1_1Results.html">Results</a>&lt; OutputEigenMatrix_, EigenVector_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceirlba.html#a22b51a9ba8a634d25fc16008d4bdfba8">irlba::compute_simple</a> (const InputEigenMatrix_ &amp;matrix, Eigen::Index number, const <a class="el" href="structirlba_1_1Options.html">Options</a>&lt; EigenVector_ &gt; &amp;options)</td></tr>
+<tr class="memitem:a22b51a9ba8a634d25fc16008d4bdfba8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structirlba_1_1Results.html">Results</a>&lt; OutputEigenMatrix_, EigenVector_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a22b51a9ba8a634d25fc16008d4bdfba8">irlba::compute_simple</a> (const InputEigenMatrix_ &amp;matrix, Eigen::Index number, const <a class="el" href="structirlba_1_1Options.html">Options</a>&lt; EigenVector_ &gt; &amp;options)</td></tr>
 <tr class="separator:a22b51a9ba8a634d25fc16008d4bdfba8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Compute an approximate SVD with IRLBA. </p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="abff001679bf73625640310429e8d1aa6" name="abff001679bf73625640310429e8d1aa6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abff001679bf73625640310429e8d1aa6">&#9670;&#160;</a></span>compute() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Matrix_ , class EigenMatrix_ , class EigenVector_ &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::pair&lt; bool, int &gt; irlba::compute </td>
+          <td>(</td>
+          <td class="paramtype">const Matrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Eigen::Index</td>          <td class="paramname"><span class="paramname"><em>number</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">EigenMatrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>outU</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">EigenMatrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>outV</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">EigenVector_ &amp;</td>          <td class="paramname"><span class="paramname"><em>outD</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structirlba_1_1Options.html">Options</a>&lt; EigenVector_ &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>options</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Implements the Implicitly Restarted Lanczos Bidiagonalization Algorithm (IRLBA) for fast truncated singular value decomposition. This is heavily derived from the C code in the <a href="https://github.com/bwlewis/irlba"><b>irlba</b> package</a>, with refactoring into C++ to use Eigen instead of LAPACK for much of the matrix algebra.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Matrix_</td><td>Class satisfying the <code>Matrix&lt;EigenVector_, EigenMatrix_&gt;</code> interface. </td></tr>
+    <tr><td class="paramname">EigenMatrix_</td><td>A dense floating-point <code>Eigen::Matrix</code> class to store the output. </td></tr>
+    <tr><td class="paramname">EigenVector_</td><td>A floating-point <code>Eigen::Vector</code> class to store the output, typically of the same scalar type as <code>EigenMatrix_</code>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">matrix</td><td>Input matrix. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">number</td><td>Number of singular triplets to obtain. The returned number of triplets may be lower, see <code>Options::cap_number</code> for details. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">outU</td><td>Output matrix containing the left singular vectors corresponding to the largest singular values. Each column corresponds to a left singular vector, of which there are <code>number</code> (or less, depending on <code>Options::cap_number</code>). The number of rows is equal to the number of rows in <code>mat</code>. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">outV</td><td>Output matrix containing the right singular vectors corresponding to the largest singular values. Each column corresponds to a right singular vector, of which there are <code>number</code> (or less, depending on <code>Options::cap_number</code>). The number of rows is equal to the number of columns in <code>mat</code>. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">outD</td><td>Output vector containing the largest singular values, ordered by decreasing size. This has length equal to <code>number</code> (or lower, depending on <code>Options::cap_number</code>). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">options</td><td>Further options.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A pair where the first entry indicates whether the algorithm converged, and the second entry indicates the number of restart iterations performed. </dd></dl>
+
+</div>
+</div>
+<a id="aee162d595de9fdfdcf5d379de54365d3" name="aee162d595de9fdfdcf5d379de54365d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee162d595de9fdfdcf5d379de54365d3">&#9670;&#160;</a></span>compute() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class EigenMatrix_  = Eigen::MatrixXd, class EigenVector_  = Eigen::VectorXd, class Matrix_ &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Results&lt; EigenMatrix_, EigenVector_ &gt; irlba::compute </td>
+          <td>(</td>
+          <td class="paramtype">const Matrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Eigen::Index</td>          <td class="paramname"><span class="paramname"><em>number</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structirlba_1_1Options.html">Options</a>&lt; EigenVector_ &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>options</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Convenient overload of <code>compute()</code> that allocates memory for the output matrices of the SVD.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">EigenMatrix_</td><td>A dense floating-point <code>Eigen::Matrix</code> class to store the output. </td></tr>
+    <tr><td class="paramname">EigenVector_</td><td>A floating-point <code>Eigen::Vector</code> class for the output, typically of the same scalar type as <code>EigenMatrix_</code>. </td></tr>
+    <tr><td class="paramname">Matrix_</td><td>Class satisfying the <code>Matrix&lt;EigenVector_, EigenMatrix_&gt;</code> interface.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">matrix</td><td>Input matrix. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">number</td><td>Number of singular triplets to obtain. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">options</td><td>Further options.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A <code>Results</code> object containing the singular vectors and values, as well as some statistics on convergence. </dd></dl>
+
+</div>
+</div>
+<a id="a22b51a9ba8a634d25fc16008d4bdfba8" name="a22b51a9ba8a634d25fc16008d4bdfba8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22b51a9ba8a634d25fc16008d4bdfba8">&#9670;&#160;</a></span>compute_simple() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class OutputEigenMatrix_  = Eigen::MatrixXd, class EigenVector_  = Eigen::VectorXd, class InputEigenMatrix_ &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Results&lt; OutputEigenMatrix_, EigenVector_ &gt; irlba::compute_simple </td>
+          <td>(</td>
+          <td class="paramtype">const InputEigenMatrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Eigen::Index</td>          <td class="paramname"><span class="paramname"><em>number</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structirlba_1_1Options.html">Options</a>&lt; EigenVector_ &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>options</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Convenient overload of <code>compute()</code> that accepts an <b>Eigen</b> matrix directly.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">InputEigenMatrix_</td><td>An <b>Eigen</b> matrix class containing the input data. </td></tr>
+    <tr><td class="paramname">OutputEigenMatrix_</td><td>A dense floating-point <code>Eigen::Matrix</code> class for the output. </td></tr>
+    <tr><td class="paramname">EigenVector_</td><td>A floating-point <code>Eigen::Vector</code> class for the output, typically of the same scalar type as <code>OutputEigenMatrix_</code>. </td></tr>
+    <tr><td class="paramname">Matrix_</td><td>Class satisfying the <code>Matrix&lt;EigenVector_, EigenMatrix_&gt;</code> interface.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">matrix</td><td>Input matrix. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">number</td><td>Number of singular triplets to obtain. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">options</td><td>Further options.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A <code>Results</code> object containing the singular vectors and values, as well as some statistics on convergence. </dd></dl>
+
+</div>
+</div>
+<a id="ac57532aaea92612012d712610b3d1a08" name="ac57532aaea92612012d712610b3d1a08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac57532aaea92612012d712610b3d1a08">&#9670;&#160;</a></span>compute_simple() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class InputEigenMatrix_ , class OutputEigenMatrix_ , class EigenVector_ &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::pair&lt; bool, int &gt; irlba::compute_simple </td>
+          <td>(</td>
+          <td class="paramtype">const InputEigenMatrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Eigen::Index</td>          <td class="paramname"><span class="paramname"><em>number</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">OutputEigenMatrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>outU</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">OutputEigenMatrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>outV</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">EigenVector_ &amp;</td>          <td class="paramname"><span class="paramname"><em>outD</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structirlba_1_1Options.html">Options</a>&lt; EigenVector_ &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>options</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Convenient overload of <code>compute()</code> that accepts an <b>Eigen</b> matrix directly.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">InputEigenMatrix_</td><td>An <b>Eigen</b> matrix class containing the input data. </td></tr>
+    <tr><td class="paramname">OutputEigenMatrix_</td><td>A dense floating-point <code>Eigen::Matrix</code> class to store the output. </td></tr>
+    <tr><td class="paramname">EigenVector_</td><td>A floating-point <code>Eigen::Vector</code> class to store the output, typically of the same scalar type as <code>EigenMatrix_</code>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">matrix</td><td>Input matrix. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">number</td><td>Number of singular triplets to obtain. The returned number of triplets may be lower, see <code>Options::cap_number</code> for details. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">outU</td><td>Output matrix containing the left singular vectors corresponding to the largest singular values. Each column corresponds to a left singular vector, of which there are <code>number</code> (or less, depending on <code>Options::cap_number</code>). The number of rows is equal to the number of rows in <code>mat</code>. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">outV</td><td>Output matrix containing the right singular vectors corresponding to the largest singular values. Each column corresponds to a right singular vector, of which there are <code>number</code> (or less, depending on <code>Options::cap_number</code>). The number of rows is equal to the number of columns in <code>mat</code>. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">outD</td><td>Output vector containing the largest singular values, ordered by decreasing size. This has length equal to <code>number</code> (or lower, depending on <code>Options::cap_number</code>). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">options</td><td>Further options.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A pair where the first entry indicates whether the algorithm converged, and the second entry indicates the number of restart iterations performed. </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.12.0

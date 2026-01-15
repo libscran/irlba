@@ -92,7 +92,6 @@ $(function(){ initResizable(false); });
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">pca.hpp File Reference</div></div>
 </div><!--header-->
@@ -172,7 +171,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="center"><img src="pca_8hpp__dep__incl.png" border="0" usemap="#airlba_2pca_8hppdep" alt=""/></div>
 <map name="airlba_2pca_8hppdep" id="airlba_2pca_8hppdep">
 <area shape="rect" title="Perform PCA with IRLBA." alt="" coords="7,5,101,31"/>
-<area shape="rect" href="irlba_8hpp.html" title="Implements IRLBA." alt="" coords="5,79,103,105"/>
+<area shape="rect" href="irlba_8hpp_source.html" title=" " alt="" coords="5,79,103,105"/>
 <area shape="poly" title=" " alt="" coords="57,46,57,79,51,79,51,46"/>
 </map>
 </div>
@@ -182,27 +181,157 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structirlba_1_1PcaResults.html">irlba::PcaResults&lt; EigenMatrix_, EigenVector_ &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structirlba_1_1Results.html" title="Results of the IRLBA-based SVD by compute().">Results</a> of the IRLBA-based PCA by <code><a class="el" href="namespaceirlba.html#a641f100ff5163f650781c9db49958a4b">pca()</a></code>.  <a href="structirlba_1_1PcaResults.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceirlba.html">irlba</a></td></tr>
-<tr class="memdesc:namespaceirlba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements IRLBA for approximate SVD. <br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structirlba_1_1Results.html" title="Results of the IRLBA-based SVD by compute().">Results</a> of the IRLBA-based PCA by <code><a class="el" href="#a641f100ff5163f650781c9db49958a4b">pca()</a></code>.  <a href="structirlba_1_1PcaResults.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a641f100ff5163f650781c9db49958a4b" id="r_a641f100ff5163f650781c9db49958a4b"><td class="memTemplParams" colspan="2">template&lt;class InputEigenMatrix_ , class OutputEigenMatrix_ , class EigenVector_ &gt; </td></tr>
-<tr class="memitem:a641f100ff5163f650781c9db49958a4b"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; bool, int &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceirlba.html#a641f100ff5163f650781c9db49958a4b">irlba::pca</a> (const InputEigenMatrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, OutputEigenMatrix_ &amp;scores, OutputEigenMatrix_ &amp;rotation, EigenVector_ &amp;variances, const <a class="el" href="structirlba_1_1Options.html">Options</a>&lt; EigenVector_ &gt; &amp;options)</td></tr>
+<tr class="memitem:a641f100ff5163f650781c9db49958a4b"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; bool, int &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a641f100ff5163f650781c9db49958a4b">irlba::pca</a> (const InputEigenMatrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, OutputEigenMatrix_ &amp;scores, OutputEigenMatrix_ &amp;rotation, EigenVector_ &amp;variances, const <a class="el" href="structirlba_1_1Options.html">Options</a>&lt; EigenVector_ &gt; &amp;options)</td></tr>
 <tr class="separator:a641f100ff5163f650781c9db49958a4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36261b9ee1f9f74d841685e568f7c1ce" id="r_a36261b9ee1f9f74d841685e568f7c1ce"><td class="memTemplParams" colspan="2">template&lt;class OutputEigenMatrix_  = Eigen::MatrixXd, class EigenVector_  = Eigen::VectorXd, class InputEigenMatrix_ &gt; </td></tr>
-<tr class="memitem:a36261b9ee1f9f74d841685e568f7c1ce"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structirlba_1_1PcaResults.html">PcaResults</a>&lt; OutputEigenMatrix_, EigenVector_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceirlba.html#a36261b9ee1f9f74d841685e568f7c1ce">irlba::pca</a> (const InputEigenMatrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, const <a class="el" href="structirlba_1_1Options.html">Options</a>&lt; EigenVector_ &gt; &amp;options)</td></tr>
+<tr class="memitem:a36261b9ee1f9f74d841685e568f7c1ce"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structirlba_1_1PcaResults.html">PcaResults</a>&lt; OutputEigenMatrix_, EigenVector_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a36261b9ee1f9f74d841685e568f7c1ce">irlba::pca</a> (const InputEigenMatrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, const <a class="el" href="structirlba_1_1Options.html">Options</a>&lt; EigenVector_ &gt; &amp;options)</td></tr>
 <tr class="separator:a36261b9ee1f9f74d841685e568f7c1ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Perform PCA with IRLBA. </p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="a36261b9ee1f9f74d841685e568f7c1ce" name="a36261b9ee1f9f74d841685e568f7c1ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36261b9ee1f9f74d841685e568f7c1ce">&#9670;&#160;</a></span>pca() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class OutputEigenMatrix_  = Eigen::MatrixXd, class EigenVector_  = Eigen::VectorXd, class InputEigenMatrix_ &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">PcaResults&lt; OutputEigenMatrix_, EigenVector_ &gt; irlba::pca </td>
+          <td>(</td>
+          <td class="paramtype">const InputEigenMatrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>center</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>scale</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Eigen::Index</td>          <td class="paramname"><span class="paramname"><em>number</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structirlba_1_1Options.html">Options</a>&lt; EigenVector_ &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>options</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Convenient overload of <code>pca()</code> that allocates memory for the output matrices of the PCA.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">InputEigenMatrix_</td><td>An <b>Eigen</b> matrix class containing the input data. </td></tr>
+    <tr><td class="paramname">OutputEigenMatrix_</td><td>A dense floating-point <code>Eigen::Matrix</code> class for the output. </td></tr>
+    <tr><td class="paramname">EigenVector_</td><td>A floating-point <code>Eigen::Vector</code> class for the output, typically of the same scalar type as <code>EigenMatrix_</code>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">matrix</td><td>Input matrix where rows are observations and columns are features. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">center</td><td>Should the matrix be centered by column? This should be set to <code>true</code> if the matrix is not already centered. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">scale</td><td>Should the matrix be scaled to unit variance for each column? </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">number</td><td>Number of singular triplets to obtain. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">options</td><td>Further options.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A <code>Results</code> object containing the singular vectors and values, as well as some statistics on convergence. </dd></dl>
+
+</div>
+</div>
+<a id="a641f100ff5163f650781c9db49958a4b" name="a641f100ff5163f650781c9db49958a4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a641f100ff5163f650781c9db49958a4b">&#9670;&#160;</a></span>pca() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class InputEigenMatrix_ , class OutputEigenMatrix_ , class EigenVector_ &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::pair&lt; bool, int &gt; irlba::pca </td>
+          <td>(</td>
+          <td class="paramtype">const InputEigenMatrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>center</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>scale</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Eigen::Index</td>          <td class="paramname"><span class="paramname"><em>number</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">OutputEigenMatrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>scores</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">OutputEigenMatrix_ &amp;</td>          <td class="paramname"><span class="paramname"><em>rotation</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">EigenVector_ &amp;</td>          <td class="paramname"><span class="paramname"><em>variances</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structirlba_1_1Options.html">Options</a>&lt; EigenVector_ &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>options</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Perform a principal components analysis (PCA) using IRLBA for the underlying SVD. This applies deferred centering and scaling via the <code>CenteredMatrix</code> and <code>ScaledMatrix</code> classes, respectively.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">InputEigenMatrix_</td><td>An <b>Eigen</b> matrix class containing the input data. </td></tr>
+    <tr><td class="paramname">OutputEigenMatrix_</td><td>A dense floating-point <code>Eigen::Matrix</code> class for the output. </td></tr>
+    <tr><td class="paramname">EigenVector_</td><td>A floating-point <code>Eigen::Vector</code> class for the output, typically of the same scalar type as <code>OutputEigenMatrix_</code>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">matrix</td><td>Input matrix where rows are observations and columns are features. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">center</td><td>Should the matrix be centered by column? This should be set to <code>true</code> if the matrix is not already centered. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">scale</td><td>Should the matrix be scaled to unit variance for each column? </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">number</td><td>Number of principal components to obtain. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">scores</td><td>Output matrix for the principal component scores. Each row corresponds to an observation while each column corresponds to a principal component. On output, the number of rows is equal to the number of columns in <code>matrix</code>, while the number of columns is equal to <code>number</code> (or less, if <code>Options::cap_number</code> is applied). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">rotation</td><td>Output matrix in which to store the rotation matrix. Each row corresponds to an feature while each column corresponds to a principal component. On output, the number of rows is equal to the number of rows in <code>matrix</code>, while the number of columns is equal to <code>number</code> (or less, if <code>Options::cap_number</code> is applied). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">variances</td><td>Vector to store the variance explained by each principal component. On output, the length of this vector is equal to <code>number</code> (or less, if <code>Options::cap_number</code> is applied). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">options</td><td>Further options.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A pair where the first entry indicates whether the algorithm converged, and the second entry indicates the number of restart iterations performed.</dd></dl>
+<p>Centering is performed by subtracting each element of <code>center</code> from the corresponding column of <code>mat</code>. Scaling is performed by dividing each column of <code>mat</code> by the corresponding element of <code>scale</code> (after any centering has been applied). Note that <code>scale=true</code> requires <code>center=true</code> to guarantee unit variance along each column. No scaling is performed when the variance of a column is zero, so as to avoid divide-by-zero errors. </p>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.12.0
