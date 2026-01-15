@@ -16,29 +16,17 @@
 namespace irlba {
 
 /**
- * @brief Workspace class for multiplying a `ScaledMatrix`.
- *
- * @tparam EigenVector_ A floating-point `Eigen::Vector` to be used as input/output of the multiplication.
- * @tparam Matrix_ Class of the matrix to be scaled, as referenced by the `ScaledMatrix`. 
- * @tparam Scale_ An **Eigen** vector class, to hold the scaling factors.
- *
- * Typically constructed by `ScaledMatrix::new_workspace()`.
+ * @cond
  */
 template<class EigenVector_, class Matrix_, class Scale_>
 class ScaledWorkspace final : public Workspace<EigenVector_> {
 public:
-    /**
-     * @cond
-     */
     ScaledWorkspace(const Matrix_& matrix, const Scale_& scale, const bool column, const bool divide) : 
         my_work(matrix.new_known_workspace()),
         my_scale(scale),
         my_column(column),
         my_divide(divide)
     {}
-    /**
-     * @endcond
-     */
 
 private:
     I<decltype(std::declval<Matrix_>().new_known_workspace())> my_work;
@@ -69,30 +57,15 @@ public:
     }
 };
 
-/** 
- * @brief Workspace class for multiplying a transposed `ScaledMatrix`.
- *
- * @tparam EigenVector_ A floating-point `Eigen::Vector` to be used as input/output of the multiplication.
- * @tparam Matrix_ Class of the matrix to be scaled, as referenced by the `ScaledMatrix`. 
- * @tparam Scale_ An **Eigen** vector class, to hold the scaling factors.
- *
- * Typically constructed by `ScaledMatrix::new_adjoint_workspace()`.
- */
 template<class EigenVector_, class Matrix_, class Scale_>
 class ScaledAdjointWorkspace final : public AdjointWorkspace<EigenVector_> {
 public:
-    /**
-     * @cond
-     */
     ScaledAdjointWorkspace(const Matrix_& matrix, const Scale_& scale, const bool column, const bool divide) :
         my_work(matrix.new_known_adjoint_workspace()),
         my_scale(scale),
         my_column(column),
         my_divide(divide)
     {}
-    /**
-     * @endcond
-     */
 
 private:
     I<decltype(std::declval<Matrix_>().new_known_adjoint_workspace())> my_work;
@@ -123,30 +96,15 @@ public:
     }
 };
 
-/** 
- * @brief Workspace class for realizing a `ScaledMatrix`.
- *
- * @tparam EigenMatrix_ A dense floating-point `Eigen::Matrix` in which to store the realized matrix.
- * @tparam Matrix_ Class of the matrix to be centered, as referenced by the `ScaledMatrix`. 
- * @tparam Scale_ An **Eigen** vector class, to hold the scaling factors.
- *
- * Typically constructed by `ScaledMatrix::new_realize_workspace()`.
- */
 template<class EigenMatrix_, class Matrix_, class Scale_>
 class ScaledRealizeWorkspace final : public RealizeWorkspace<EigenMatrix_> {
 public:
-    /**
-     * @cond
-     */
     ScaledRealizeWorkspace(const Matrix_& matrix, const Scale_& scale, const bool column, const bool divide) :
         my_work(matrix.new_known_realize_workspace()),
         my_scale(scale),
         my_column(column),
         my_divide(divide)
     {}
-    /**
-     * @endcond
-     */
 
 private:
     I<decltype(std::declval<Matrix_>().new_known_realize_workspace())> my_work;
@@ -176,6 +134,9 @@ public:
         return buffer;
     }
 };
+/**
+ * @cond
+ */
 
 /**
  * @brief Deferred scaling of a matrix.
@@ -246,23 +207,23 @@ public:
 
 public:
     /**
-     * Overrides `Matrix::new_known_workspace()` to enable devirtualization.
+     * Overrides `Matrix::new_workspace()` to enable devirtualization.
      */
-    std::unique_ptr<ScaledWorkspace<EigenVector_, I<decltype(*my_matrix)>, I<decltype(*my_scale)> > > new_known_workspace() const {
+    auto new_known_workspace() const {
         return std::make_unique<ScaledWorkspace<EigenVector_, I<decltype(*my_matrix)>, I<decltype(*my_scale)> > >(*my_matrix, *my_scale, my_column, my_divide);
     }
 
     /**
-     * Overrides `Matrix::new_known_adjoint_workspace()` to enable devirtualization.
+     * Overrides `Matrix::new_adjoint_workspace()` to enable devirtualization.
      */
-    std::unique_ptr<ScaledAdjointWorkspace<EigenVector_, I<decltype(*my_matrix)>, I<decltype(*my_scale)> > > new_known_adjoint_workspace() const {
+    auto new_known_adjoint_workspace() const {
         return std::make_unique<ScaledAdjointWorkspace<EigenVector_, I<decltype(*my_matrix)>, I<decltype(*my_scale)> > >(*my_matrix, *my_scale, my_column, my_divide);
     }
 
     /**
-     * Overrides `Matrix::new_known_realize_workspace()` to enable devirtualization.
+     * Overrides `Matrix::new_realize_workspace()` to enable devirtualization.
      */
-    std::unique_ptr<ScaledRealizeWorkspace<EigenMatrix_, I<decltype(*my_matrix)>, I<decltype(*my_scale)> > > new_known_realize_workspace() const {
+    auto new_known_realize_workspace() const {
         return std::make_unique<ScaledRealizeWorkspace<EigenMatrix_, I<decltype(*my_matrix)>, I<decltype(*my_scale)> > >(*my_matrix, *my_scale, my_column, my_divide);
     }
 };

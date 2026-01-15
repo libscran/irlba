@@ -16,27 +16,15 @@
 namespace irlba {
 
 /**
- * @brief Workspace class for multiplying a `CenteredMatrix`.
- *
- * @tparam EigenVector_ A floating-point `Eigen::Vector` to be used as input/output of the multiplication. 
- * @tparam Matrix_ Class of the matrix to be centered, as referenced by the `CenteredMatrix`. 
- * @tparam Center_ An **Eigen** vector class, to hold the column centers.
- *
- * Typically constructed by `CenteredMatrix::new_workspace()`.
+ * @cond
  */
 template<class EigenVector_, class Matrix_, class Center_>
 class CenteredWorkspace final : public Workspace<EigenVector_> {
 public:
-    /**
-     * @cond
-     */
     CenteredWorkspace(const Matrix_& matrix, const Center_& center) : 
         my_work(matrix.new_known_workspace()),
         my_center(center)
     {}
-    /**
-     * @endcond
-     */
 
 private:
     I<decltype(std::declval<Matrix_>().new_known_workspace())> my_work;
@@ -52,28 +40,13 @@ public:
     }
 };
 
-/** 
- * @brief Workspace class for multiplying a transposed `CenteredMatrix`.
- *
- * @tparam EigenVector_ A floating-point `Eigen::Vector` to be used as input/output of the multiplication.
- * @tparam Matrix_ Class of the matrix to be centered, as referenced by the `CenteredMatrix`. 
- * @tparam Center_ An **Eigen** vector class, to hold the column centers.
- *
- * Typically constructed by `CenteredMatrix::new_adjoint_workspace()`.
- */
 template<class EigenVector_, class Matrix_, class Center_>
 class CenteredAdjointWorkspace final : public AdjointWorkspace<EigenVector_> {
 public:
-    /**
-     * @cond
-     */
     CenteredAdjointWorkspace(const Matrix_& matrix, const Center_& center) :
         my_work(matrix.new_known_adjoint_workspace()),
         my_center(center)
     {}
-    /**
-     * @endcond
-     */
 
 private:
     I<decltype(std::declval<Matrix_>().new_known_adjoint_workspace())> my_work;
@@ -87,28 +60,13 @@ public:
     }
 };
 
-/** 
- * @brief Workspace class for realizing a `CenteredMatrix`.
- *
- * @tparam EigenMatrix_ A dense floating-point `Eigen::Matrix` in which to store the realized matrix.
- * @tparam Matrix_ Class of the matrix to be centered, as referenced by the `CenteredMatrix`. 
- * @tparam Center_ An **Eigen** vector class, to hold the column centers.
- *
- * Typically constructed by `CenteredMatrix::new_realize_workspace()`.
- */
 template<class EigenMatrix_, class Matrix_, class Center_>
 class CenteredRealizeWorkspace final : public RealizeWorkspace<EigenMatrix_> {
 public:
-    /**
-     * @cond
-     */
     CenteredRealizeWorkspace(const Matrix_& matrix, const Center_& center) :
         my_work(matrix.new_known_realize_workspace()),
         my_center(center)
     {}
-    /**
-     * @endcond
-     */
 
 private:
     I<decltype(std::declval<Matrix_>().new_known_realize_workspace())> my_work;
@@ -121,6 +79,9 @@ public:
         return buffer;
     }
 };
+/**
+ * @endcond
+ */
 
 /**
  * @brief Deferred centering of a matrix.
@@ -182,23 +143,23 @@ public:
 
 public:
     /**
-     * Overrides `Matrix::new_known_workspace()` to enable devirtualization.
+     * Overrides `Matrix::new_workspace()` to enable devirtualization.
      */
-    std::unique_ptr<CenteredWorkspace<EigenVector_, I<decltype(*my_matrix)>, I<decltype(*my_center)> > > new_known_workspace() const {
+    auto new_known_workspace() const {
         return std::make_unique<CenteredWorkspace<EigenVector_, I<decltype(*my_matrix)>, I<decltype(*my_center)> > >(*my_matrix, *my_center);
     }
 
     /**
-     * Overrides `Matrix::new_known_adjoint_workspace()` to enable devirtualization.
+     * Overrides `Matrix::new_adjoint_workspace()` to enable devirtualization.
      */
-    std::unique_ptr<CenteredAdjointWorkspace<EigenVector_, I<decltype(*my_matrix)>, I<decltype(*my_center)> > > new_known_adjoint_workspace() const {
+    auto new_known_adjoint_workspace() const {
         return std::make_unique<CenteredAdjointWorkspace<EigenVector_, I<decltype(*my_matrix)>, I<decltype(*my_center)> > >(*my_matrix, *my_center);
     }
 
     /**
-     * Overrides `Matrix::new_known_realize_workspace()` to enable devirtualization.
+     * Overrides `Matrix::new_realize_workspace()` to enable devirtualization.
      */
-    std::unique_ptr<CenteredRealizeWorkspace<EigenMatrix_, I<decltype(*my_matrix)>, I<decltype(*my_center)> > > new_known_realize_workspace() const {
+    auto new_known_realize_workspace() const {
         return std::make_unique<CenteredRealizeWorkspace<EigenMatrix_, I<decltype(*my_matrix)>, I<decltype(*my_center)> > >(*my_matrix, *my_center);
     }
 };

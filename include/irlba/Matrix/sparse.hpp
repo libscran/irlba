@@ -566,23 +566,23 @@ public:
 
 public:
     /**
-     * Overrides `Matrix::new_known_workspace()` to enable devirtualization.
+     * Overrides `Matrix::new_workspace()` to enable devirtualization.
      */
-    std::unique_ptr<ParallelSparseWorkspace<EigenVector_, ValueArray_, IndexArray_, PointerArray_> > new_known_workspace() const {
+    auto new_known_workspace() const {
         return std::make_unique<ParallelSparseWorkspace<EigenVector_, ValueArray_, IndexArray_, PointerArray_> >(my_core);
     }
 
     /**
-     * Overrides `Matrix::new_known_adjoint_workspace()` to enable devirtualization.
+     * Overrides `Matrix::new_adjoint_workspace()` to enable devirtualization.
      */
-    std::unique_ptr<ParallelSparseAdjointWorkspace<EigenVector_, ValueArray_, IndexArray_, PointerArray_> > new_known_adjoint_workspace() const {
+    auto new_known_adjoint_workspace() const {
         return std::make_unique<ParallelSparseAdjointWorkspace<EigenVector_, ValueArray_, IndexArray_, PointerArray_> >(my_core);
     }
 
     /**
-     * Overrides `Matrix::new_known_realize_workspace()` to enable devirtualization. 
+     * Overrides `Matrix::new_realize_workspace()` to enable devirtualization. 
      */
-    std::unique_ptr<ParallelSparseRealizeWorkspace<EigenMatrix_, ValueArray_, IndexArray_, PointerArray_> > new_known_realize_workspace() const {
+    auto new_known_realize_workspace() const {
         return std::make_unique<ParallelSparseRealizeWorkspace<EigenMatrix_, ValueArray_, IndexArray_, PointerArray_> >(my_core);
     }
 
