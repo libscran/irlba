@@ -10,7 +10,7 @@ jobs:
   build:
     name: Compare to irlba reference
     runs-on: ubuntu-latest
-    container: bioconductor/bioconductor_docker:devel
+    container: rocker/rstudio:latest
     steps:
     - uses: actions/checkout@v4
 
@@ -20,19 +20,26 @@ jobs:
     - name: Configure the build 
       run: cmake -S . -B build -DBUILD_TESTING=OFF
 
+    - name: Set directories
+      run: |
+        echo "R_PKG_DIR=${R_HOME}/site-library" >> $GITHUB_ENV
+
+    - name: Restore the package directory
+      uses: actions/cache@v4
+      with:
+        path: ${{ env.R_PKG_DIR }}
+        key: preinstalled-packages
+
     - name: Install packages
       shell: Rscript {0}
       run: |
-        BiocManager::install(c("irlba", "Rcpp", "testthat"))
+        install.packages(c("irlba", "Rcpp", "testthat"))
 
-    - name: Build the test dependencies
-      run: |
-        cd tests/R
-        bash build.sh
+    - name: Install the test package
+      run: R CMD INSTALL tests/R
 
     - name: Run the comparisons
       shell: Rscript {0}
       run: |
-        setwd("tests/R")
-        output <- testthat::test_file("run.R")
-        q(status=any(as.data.frame(output)$failed), save="no")
+        setwd("tests/R/tests")
+        testthat::test_file("testthat.R", stop_on_failure=TRUE)

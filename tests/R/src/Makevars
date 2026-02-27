@@ -1,0 +1,2 @@
+STUFF=`cat INCLUDES | sed "s/^/-I..\/..\/..\/build\/_deps\//" | tr "\n" " "`
+PKG_CPPFLAGS += ${STUFF} -I../../../include/ 

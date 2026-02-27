@@ -1,0 +1,16 @@
+Package: irlba.tests
+Title: R-based Tests for the irlba C++ code
+Version: 0.1.0
+Date: 2026-02-28
+Description: Some extra tests for the irlba C++ code, comparing it to the original R implementation.
+Authors@R: person("Aaron", "Lun", role=c("aut", "cre"), email="infinite.monkeys.with.keyboards@gmail.com")
+Imports:
+    Rcpp,
+    irlba
+LinkingTo:
+    Rcpp
+Suggests:
+    testthat
+SystemRequirements: C++17
+RoxygenNote: 7.3.3
+Encoding: UTF-8

@@ -3,8 +3,7 @@
 #include <algorithm>
 #include "Eigen/Dense"
 
-// [[Rcpp::plugins(cpp17)]]
-
+//' @export
 // [[Rcpp::export(rng=false)]]
 Rcpp::List run_irlba(Rcpp::NumericMatrix x, Rcpp::NumericVector init, int number, int work) {
     irlba::Options opt;
@@ -12,12 +11,12 @@ Rcpp::List run_irlba(Rcpp::NumericMatrix x, Rcpp::NumericVector init, int number
 
     Eigen::VectorXd v(init.size());
     std::copy(init.begin(), init.end(), v.data());
-    opt.initial = &v;
+    opt.initial = std::move(v);
 
     // Can't be bothered making a Map, just copying everything for testing purposes.
     Eigen::MatrixXd A(x.nrow(), x.ncol());
     std::copy(x.begin(), x.end(), A.data());
-    auto res = irlba::compute(A, number, opt);
+    auto res = irlba::compute(irlba::SimpleMatrix<Eigen::VectorXd, Eigen::MatrixXd, Eigen::MatrixXd*>(&A), number, opt);
 
     Rcpp::NumericMatrix outU(res.U.rows(), res.U.cols());
     std::copy(res.U.data(), res.U.data() + res.U.size(), outU.begin());
