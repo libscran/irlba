@@ -22,12 +22,12 @@ namespace irlba {
  * @tparam Run_ Function to execute each task.
  *
  * @param num_tasks Number of tasks.
- * This is equal to the number of threads in the context of `ParallelSparseMatrix`.
- * @param run_task Function to execute each task within its own worker.
+ * @param run_task Function to execute each task for each worker.
  *
  * By default, this is an alias to `subpar::parallelize_simple()`.
- * However, if the `IRLBA_CUSTOM_PARALLEL` function-like macro is defined, it is called instead. 
- * Any user-defined macro should accept the same arguments as `subpar::parallelize_simple()`.
+ * Its purpose is to enable **irlba**-specific customization to the parallelization scheme without affecting other libraries that use **subpar**.
+ * If the `IRLBA_CUSTOM_PARALLEL` macro is defined, it will be used instead of `subpar::parallelize_simple()` whenever `parallelize()` is called.
+ * Any user-defined macro should follow the same requirements as the `SUBPAR_CUSTOM_PARALLELIZE_SIMPLE` override for `subpar::parallelize_simple()`.
  */
 template<typename Task_, class Run_>
 void parallelize(Task_ num_tasks, Run_ run_task) {
@@ -46,13 +46,14 @@ void parallelize(Task_ num_tasks, Run_ run_task) {
  * Creating an instance of this class will call `Eigen::setNbThreads()` to control the number of available OpenMP threads in Eigen operations.
  * Destruction will then reset the number of available threads to its prior value.
  *
- * If the parallelization scheme is not OpenMP, `num_threads` is ignored and the number of Eigen threads is always set to 1 when an instance of this class is created.
+ * If OpenMP is available but is not the current parallelization scheme,
+ * `num_threads` is ignored and the number of Eigen threads is always set to 1 when an instance of this class is created.
  * This is done to avoid unintended parallelization via OpenMP when another scheme has already been specified.
- * We assume that OpenMP is not the parallelization scheme if:
+ * We assume that OpenMP is not the current parallelization scheme if:
  * - `IRLBA_CUSTOM_PARALLEL` is defined (see `parallelize()`) and the `IRLBA_CUSTOM_PARALLEL_USES_OPENMP` macro is not defined.
  * - `IRLBA_CUSTOM_PARALLEL` is not defined and OpenMP was not chosen by `subpar::parallelize_simple()`.
  *
- * If OpenMP is not available, the creation/destruction of a class instance has no effect.
+ * If OpenMP is not available, the creation/destruction of an instance of this class has no effect.
  */ 
 class EigenThreadScope {
 #ifndef _OPENMP
