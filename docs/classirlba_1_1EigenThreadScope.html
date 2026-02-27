@@ -110,11 +110,11 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Restrict the number of available threads for Eigen. </p>
 <p>Creating an instance of this class will call <code>Eigen::setNbThreads()</code> to control the number of available OpenMP threads in Eigen operations. Destruction will then reset the number of available threads to its prior value.</p>
-<p>If the parallelization scheme is not OpenMP, <code>num_threads</code> is ignored and the number of Eigen threads is always set to 1 when an instance of this class is created. This is done to avoid unintended parallelization via OpenMP when another scheme has already been specified. We assume that OpenMP is not the parallelization scheme if:</p><ul>
+<p>If OpenMP is available but is not the current parallelization scheme, <code>num_threads</code> is ignored and the number of Eigen threads is always set to 1 when an instance of this class is created. This is done to avoid unintended parallelization via OpenMP when another scheme has already been specified. We assume that OpenMP is not the current parallelization scheme if:</p><ul>
 <li><code>IRLBA_CUSTOM_PARALLEL</code> is defined (see <code><a class="el" href="parallel_8hpp.html#a7ddcae16077f8210cfab2f59ee3effed">parallelize()</a></code>) and the <code>IRLBA_CUSTOM_PARALLEL_USES_OPENMP</code> macro is not defined.</li>
 <li><code>IRLBA_CUSTOM_PARALLEL</code> is not defined and OpenMP was not chosen by <code>subpar::parallelize_simple()</code>.</li>
 </ul>
-<p>If OpenMP is not available, the creation/destruction of a class instance has no effect. </p>
+<p>If OpenMP is not available, the creation/destruction of an instance of this class has no effect. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5bed6285b3da4aba87eeaf3cddbef1c1" name="a5bed6285b3da4aba87eeaf3cddbef1c1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5bed6285b3da4aba87eeaf3cddbef1c1">&#9670;&#160;</a></span>EigenThreadScope()</h2>

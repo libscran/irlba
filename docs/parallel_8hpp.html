@@ -176,12 +176,12 @@ template&lt;typename Task_ , class Run_ &gt; </div>
 </dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">num_tasks</td><td>Number of tasks. This is equal to the number of threads in the context of <code>ParallelSparseMatrix</code>. </td></tr>
-    <tr><td class="paramname">run_task</td><td>Function to execute each task within its own worker.</td></tr>
+    <tr><td class="paramname">num_tasks</td><td>Number of tasks. </td></tr>
+    <tr><td class="paramname">run_task</td><td>Function to execute each task for each worker.</td></tr>
   </table>
   </dd>
 </dl>
-<p>By default, this is an alias to <code>subpar::parallelize_simple()</code>. However, if the <code>IRLBA_CUSTOM_PARALLEL</code> function-like macro is defined, it is called instead. Any user-defined macro should accept the same arguments as <code>subpar::parallelize_simple()</code>. </p>
+<p>By default, this is an alias to <code>subpar::parallelize_simple()</code>. Its purpose is to enable <b>irlba</b>-specific customization to the parallelization scheme without affecting other libraries that use <b>subpar</b>. If the <code>IRLBA_CUSTOM_PARALLEL</code> macro is defined, it will be used instead of <code>subpar::parallelize_simple()</code> whenever <code>parallelize()</code> is called. Any user-defined macro should follow the same requirements as the <code>SUBPAR_CUSTOM_PARALLELIZE_SIMPLE</code> override for <code>subpar::parallelize_simple()</code>. </p>
 
 </div>
 </div>
