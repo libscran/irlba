@@ -114,6 +114,26 @@ inline Eigen::Index update_k(Eigen::Index k, const Eigen::Index requested_number
  */
 
 /**
+ * @brief Metrics for IRLBA progress from `compute()`.
+ */
+struct Metrics {
+    /**
+     * The number of restart iterations performed.
+     */
+    int iterations = 0;
+
+    /**
+     * The number of matrix multiplications performed.
+     */
+    int multiplications = 0;
+
+    /**
+     * Whether the algorithm converged.
+     */
+    bool converged = false;
+};
+
+/**
  * Implements the Implicitly Restarted Lanczos Bidiagonalization Algorithm (IRLBA) for fast truncated singular value decomposition.
  * This is heavily derived from the C code in the [**irlba** package](https://github.com/bwlewis/irlba),
  * with refactoring into C++ to use Eigen instead of LAPACK for much of the matrix algebra.
@@ -135,11 +155,11 @@ inline Eigen::Index update_k(Eigen::Index k, const Eigen::Index requested_number
  * This has length equal to `number` (or lower, depending on `Options::cap_number`).
  * @param options Further options.
  *
- * @return A pair where the first entry indicates whether the algorithm converged,
- * and the second entry indicates the number of restart iterations performed.
+ * @return Metrics for the progress of the algorithm.
+ * This includes the convergence status, the number of restart iterations, and the number of matrix multiplications.
  */
 template<class Matrix_, class EigenMatrix_, class EigenVector_>
-std::pair<bool, int> compute(
+Metrics compute(
     const Matrix_& matrix,
     const Eigen::Index number,
     EigenMatrix_& outU,
@@ -165,7 +185,9 @@ std::pair<bool, int> compute(
         outD.resize(requested_number);
         outU.resize(matrix.rows(), requested_number);
         outV.resize(matrix.cols(), requested_number);
-        return std::make_pair(true, 0);
+        Metrics met;
+        met.converged = true;
+        return met;
     }
 
     // Falling back to an exact SVD for small matrices or if the requested number is too large 
@@ -175,7 +197,9 @@ std::pair<bool, int> compute(
         (options.exact_for_large_number && requested_greater_than_or_equal_to_half_smaller(requested_number, smaller))
     ) {
         exact(matrix, requested_number, outU, outV, outD);
-        return std::make_pair(true, 0);
+        Metrics met;
+        met.converged = true;
+        return met;
     }
 
     // We know work must be positive at this point, as we would have returned early if requested_number = 0.
@@ -198,7 +222,7 @@ std::pair<bool, int> compute(
     V.col(0) /= V.col(0).norm();
 
     bool converged = false;
-    int iter = 0;
+    int iter = 0, mult = 0;
     Eigen::Index k = 0;
     JacobiSVD<EigenMatrix_> svd(work, work);
 
@@ -222,7 +246,7 @@ std::pair<bool, int> compute(
         // Technically, this is only a 'true' Lanczos bidiagonalization
         // when k = 0. All other times, we're just recycling the machinery,
         // see the text below Equation 3.11 in Baglama and Reichel.
-        run_lanczos_bidiagonalization(lpwork, W, V, B, eng, k, options);
+        mult += run_lanczos_bidiagonalization(lpwork, W, V, B, eng, k, options);
 
 //            if (iter < 2) {
 //                std::cout << "B is currently:\n" << B << std::endl;
@@ -312,7 +336,11 @@ std::pair<bool, int> compute(
     outV.resize(matrix.cols(), requested_number);
     outV.noalias() = V * svd.matrixV().leftCols(requested_number);
 
-    return std::make_pair(converged, (converged ? iter + 1 : iter));
+    Metrics met;
+    met.converged = converged;
+    met.multiplications = mult;
+    met.iterations = (converged ? iter + 1 : iter);
+    return met;
 }
 
 /**
@@ -339,7 +367,7 @@ std::pair<bool, int> compute(
  * and the second entry indicates the number of restart iterations performed.
  */
 template<class InputEigenMatrix_, class OutputEigenMatrix_, class EigenVector_>
-std::pair<bool, int> compute_simple(
+Metrics compute_simple(
     const InputEigenMatrix_& matrix,
     Eigen::Index number,
     OutputEigenMatrix_& outU,
@@ -385,14 +413,9 @@ struct Results {
     EigenVector_ D;
 
     /**
-     * The number of restart iterations performed.
+     * Metrics for the progress of the algorithm.
      */
-    int iterations;
-
-    /**
-     * Whether the algorithm converged.
-     */
-    bool converged;
+    Metrics metrics;
 };
 
 /** 
@@ -411,9 +434,7 @@ struct Results {
 template<class EigenMatrix_ = Eigen::MatrixXd, class EigenVector_ = Eigen::VectorXd, class Matrix_>
 Results<EigenMatrix_, EigenVector_> compute(const Matrix_& matrix, Eigen::Index number, const Options<EigenVector_>& options) {
     Results<EigenMatrix_, EigenVector_> output;
-    const auto stats = compute(matrix, number, output.U, output.V, output.D, options);
-    output.converged = stats.first;
-    output.iterations = stats.second;
+    output.metrics = compute(matrix, number, output.U, output.V, output.D, options);
     return output;
 }
 
@@ -434,9 +455,7 @@ Results<EigenMatrix_, EigenVector_> compute(const Matrix_& matrix, Eigen::Index 
 template<class OutputEigenMatrix_ = Eigen::MatrixXd, class EigenVector_ = Eigen::VectorXd, class InputEigenMatrix_>
 Results<OutputEigenMatrix_, EigenVector_> compute_simple(const InputEigenMatrix_& matrix, Eigen::Index number, const Options<EigenVector_>& options) {
     Results<OutputEigenMatrix_, EigenVector_> output;
-    const auto stats = compute_simple(matrix, number, output.U, output.V, output.D, options);
-    output.converged = stats.first;
-    output.iterations = stats.second;
+    output.metrics = compute_simple(matrix, number, output.U, output.V, output.D, options);
     return output;
 }
 

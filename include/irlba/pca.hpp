@@ -44,8 +44,8 @@ namespace irlba {
  * On output, the length of this vector is equal to `number` (or less, if `Options::cap_number` is applied).
  * @param options Further options.
  *
- * @return A pair where the first entry indicates whether the algorithm converged,
- * and the second entry indicates the number of restart iterations performed.
+ * @return Metrics for the progress of the algorithm.
+ * This includes whether the convergence status, the number of restart iterations and number of matrix multiplications.
  *
  * Centering is performed by subtracting each element of `center` from the corresponding column of `mat`.
  * Scaling is performed by dividing each column of `mat` by the corresponding element of `scale` (after any centering has been applied).
@@ -53,7 +53,7 @@ namespace irlba {
  * No scaling is performed when the variance of a column is zero, so as to avoid divide-by-zero errors. 
  */
 template<class InputEigenMatrix_, class OutputEigenMatrix_, class EigenVector_>
-std::pair<bool, int> pca(
+Metrics pca(
     const InputEigenMatrix_& matrix,
     bool center,
     bool scale,
@@ -168,14 +168,9 @@ struct PcaResults {
     EigenVector_ variances;
 
     /**
-     * The number of restart iterations performed.
+     * Metrics for the progress of the algorithm.
      */
-    int iterations;
-
-    /**
-     * Whether the algorithm converged.
-     */
-    bool converged;
+    Metrics metrics;
 };
 
 /** 
@@ -197,9 +192,7 @@ struct PcaResults {
 template<class OutputEigenMatrix_ = Eigen::MatrixXd, class EigenVector_ = Eigen::VectorXd, class InputEigenMatrix_>
 PcaResults<OutputEigenMatrix_, EigenVector_> pca(const InputEigenMatrix_& matrix, bool center, bool scale, Eigen::Index number, const Options<EigenVector_>& options) {
     PcaResults<OutputEigenMatrix_, EigenVector_> output;
-    const auto stats = pca(matrix, center, scale, number, output.scores, output.rotation, output.variances, options);
-    output.converged = stats.first;
-    output.iterations = stats.second;
+    output.metrics = pca(matrix, center, scale, number, output.scores, output.rotation, output.variances, options);
     return output;
 }
 

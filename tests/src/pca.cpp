@@ -269,7 +269,7 @@ TEST(Pca, Fails) {
         Eigen::MatrixXd small(10, 2);
         small.setZero();
         auto out = irlba::pca(small, 1, true, true, irlba::Options());
-        EXPECT_TRUE(out.converged);
+        EXPECT_TRUE(out.metrics.converged);
         EXPECT_TRUE(std::isfinite(out.scores(0, 0)));
         EXPECT_TRUE(std::isfinite(out.rotation(0, 0)));
     }

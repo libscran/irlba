@@ -52,7 +52,7 @@ struct LanczosWorkspace {
  * On output, B is filled with upper diagonal entries, starting from the `start`-th row/column.
  */
 template<class Matrix_, class EigenMatrix_, class EigenVector_, class Engine_>
-void run_lanczos_bidiagonalization(
+int run_lanczos_bidiagonalization(
     LanczosWorkspace<EigenVector_, Matrix_>& inter, 
     EigenMatrix_& W, 
     EigenMatrix_& V, 
@@ -72,6 +72,7 @@ void run_lanczos_bidiagonalization(
 
     F = V.col(start);
     inter.work->multiply(F, W_next); // i.e., W_next = mat * F;
+    int mult = 1;
 
     // If start = 0, there's nothing to orthogonalize against.
     if (start) {
@@ -91,6 +92,7 @@ void run_lanczos_bidiagonalization(
         // Remember that W_next is assigned into W.col(start) at the start, or W.col(j+1) from the previous iteration;
         // so W_next is equal to W.col(j) in the current iteration.
         inter.awork->multiply(W_next, F); 
+        ++mult;
 
         F -= S * V.col(j); // equivalent to daxpy.
         orthogonalize_vector(V, F, j + 1, otmp);
@@ -113,6 +115,7 @@ void run_lanczos_bidiagonalization(
             B(j, j + 1) = R_F;
 
             inter.work->multiply(F, W_next); // i.e., W_next = mat * F;
+            ++mult;
             W_next -= R_F * W.col(j); // equivalent to daxpy.
 
             // Full re-orthogonalization, using the left-most 'j + 1' columns of W.
@@ -140,6 +143,8 @@ void run_lanczos_bidiagonalization(
             B(j, j) = S;
         }
     }
+
+    return mult;
 }
 
 }
