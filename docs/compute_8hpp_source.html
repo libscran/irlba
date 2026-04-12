@@ -196,251 +196,267 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>        <span class="keywordflow">return</span> std::max(output, <span class="keyword">static_cast&lt;</span>Eigen::Index<span class="keyword">&gt;</span>(1));</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    }</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>}</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> Matrix_, <span class="keyword">class</span> EigenMatrix_, <span class="keyword">class</span> EigenVector_&gt;</div>
-<div class="foldopen" id="foldopen00142" data-start="{" data-end="}">
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno"><a class="line" href="compute_8hpp.html#abff001679bf73625640310429e8d1aa6">  142</a></span>std::pair&lt;bool, int&gt; <a class="code hl_function" href="compute_8hpp.html#abff001679bf73625640310429e8d1aa6">compute</a>(</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    <span class="keyword">const</span> Matrix_&amp; matrix,</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    <span class="keyword">const</span> Eigen::Index number,</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    EigenMatrix_&amp; outU,</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    EigenMatrix_&amp; outV,</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    EigenVector_&amp; outD,</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    <span class="keyword">const</span> <a class="code hl_struct" href="structirlba_1_1Options.html">Options&lt;EigenVector_&gt;</a>&amp; options</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>) {</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    <span class="keyword">const</span> Eigen::Index smaller = std::min(matrix.rows(), matrix.cols());</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    Eigen::Index requested_number = sanisizer::cast&lt;Eigen::Index&gt;(number);</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <span class="keywordflow">if</span> (requested_number &gt; smaller) {</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        <span class="keywordflow">if</span> (options.<a class="code hl_variable" href="structirlba_1_1Options.html#a95fbe9c985391959881f1107a87320bc">cap_number</a>) {</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>            requested_number = smaller;</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>            <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;requested number of singular values cannot be greater than the smaller matrix dimension&quot;</span>);</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        }</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (requested_number == smaller &amp;&amp; !options.<a class="code hl_variable" href="structirlba_1_1Options.html#a1924053077a1dac0332c139776faf6d3">exact_for_large_number</a>) {</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;requested number of singular values must be less than the smaller matrix dimension for IRLBA iterations&quot;</span>);</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    }</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    <span class="comment">// Optimization if no SVs are requested. Also protect the exact SVD code</span></div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    <span class="comment">// from a zero-extent matrix, as this causes Eigen to shit itself.</span></div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    <span class="keywordflow">if</span> (requested_number == 0) {</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>        outD.resize(requested_number);</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>        outU.resize(matrix.rows(), requested_number);</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>        outV.resize(matrix.cols(), requested_number);</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>        <span class="keywordflow">return</span> std::make_pair(<span class="keyword">true</span>, 0);</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    }</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    <span class="comment">// Falling back to an exact SVD for small matrices or if the requested number is too large </span></div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    <span class="comment">// (not enough of a workspace). Hey, I don&#39;t make the rules.</span></div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    <span class="keywordflow">if</span> (</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>        (options.<a class="code hl_variable" href="structirlba_1_1Options.html#a85195d98803d717976c17b267708af4f">exact_for_small_matrix</a> &amp;&amp; smaller &lt; 6) ||</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        (options.<a class="code hl_variable" href="structirlba_1_1Options.html#a1924053077a1dac0332c139776faf6d3">exact_for_large_number</a> &amp;&amp; requested_greater_than_or_equal_to_half_smaller(requested_number, smaller))</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    ) {</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        exact(matrix, requested_number, outU, outV, outD);</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        <span class="keywordflow">return</span> std::make_pair(<span class="keyword">true</span>, 0);</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    }</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span> </div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    <span class="comment">// We know work must be positive at this point, as we would have returned early if requested_number = 0.</span></div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    <span class="comment">// Similar, if smaller = 0, we would have either thrown earlier or set requested_number = 0.</span></div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    <span class="keyword">const</span> Eigen::Index work = choose_requested_plus_extra_work_or_smaller(requested_number, options.<a class="code hl_variable" href="structirlba_1_1Options.html#a179a747996c1a3d4fbf89215d97334d1">extra_work</a>, smaller);</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="comment">// Don&#39;t worry about sanitizing dimensions for Eigen constructors,</span></div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    <span class="comment">// as the former are stored as Eigen::Index and the latter accepts Eigen::Index inputs.</span></div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    EigenMatrix_ V(matrix.cols(), work);</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    std::mt19937_64 eng(options.<a class="code hl_variable" href="structirlba_1_1Options.html#afb7a12a2d949da2399a30b2aca10fa62">seed</a>);</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    <span class="keywordflow">if</span> (options.<a class="code hl_variable" href="structirlba_1_1Options.html#a83537f6e35482091fd60fc61b7b53714">initial</a>.has_value()) {</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        <span class="keyword">const</span> <span class="keyword">auto</span>&amp; init = *(options.<a class="code hl_variable" href="structirlba_1_1Options.html#a83537f6e35482091fd60fc61b7b53714">initial</a>);</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>        <span class="keywordflow">if</span> (init.size() != V.rows()) {</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>            <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;initialization vector does not have expected number of rows&quot;</span>);</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>        }</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>        V.col(0) = init;</div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>        fill_with_random_normals(V, 0, eng);</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    }</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    V.col(0) /= V.col(0).norm();</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    <span class="keywordtype">bool</span> converged = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    <span class="keywordtype">int</span> iter = 0;</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    Eigen::Index k = 0;</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    JacobiSVD&lt;EigenMatrix_&gt; svd(work, work);</div>
+<div class="foldopen" id="foldopen00119" data-start="{" data-end="};">
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="structirlba_1_1Metrics.html">  119</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structirlba_1_1Metrics.html">Metrics</a> {</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="structirlba_1_1Metrics.html#a1b87b64b881cfb8b8fd705754516d9c9">  123</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="structirlba_1_1Metrics.html#a1b87b64b881cfb8b8fd705754516d9c9">iterations</a> = 0;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="structirlba_1_1Metrics.html#a37cc9064acd947aeed7aff0e25f56e78">  128</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="structirlba_1_1Metrics.html#a37cc9064acd947aeed7aff0e25f56e78">multiplications</a> = 0;</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="structirlba_1_1Metrics.html#a51b77b2e94056da2570ec50eca3b57bd">  133</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="structirlba_1_1Metrics.html#a51b77b2e94056da2570ec50eca3b57bd">converged</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>};</div>
+</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> Matrix_, <span class="keyword">class</span> EigenMatrix_, <span class="keyword">class</span> EigenVector_&gt;</div>
+<div class="foldopen" id="foldopen00162" data-start="{" data-end="}">
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno"><a class="line" href="compute_8hpp.html#a3ef50b4731ec01ea6a1a035e4863390b">  162</a></span><a class="code hl_struct" href="structirlba_1_1Metrics.html">Metrics</a> <a class="code hl_function" href="compute_8hpp.html#a3ef50b4731ec01ea6a1a035e4863390b">compute</a>(</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    <span class="keyword">const</span> Matrix_&amp; matrix,</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    <span class="keyword">const</span> Eigen::Index number,</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    EigenMatrix_&amp; outU,</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    EigenMatrix_&amp; outV,</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    EigenVector_&amp; outD,</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <span class="keyword">const</span> <a class="code hl_struct" href="structirlba_1_1Options.html">Options&lt;EigenVector_&gt;</a>&amp; options</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>) {</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    <span class="keyword">const</span> Eigen::Index smaller = std::min(matrix.rows(), matrix.cols());</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    Eigen::Index requested_number = sanisizer::cast&lt;Eigen::Index&gt;(number);</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    <span class="keywordflow">if</span> (requested_number &gt; smaller) {</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>        <span class="keywordflow">if</span> (options.<a class="code hl_variable" href="structirlba_1_1Options.html#a95fbe9c985391959881f1107a87320bc">cap_number</a>) {</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>            requested_number = smaller;</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>            <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;requested number of singular values cannot be greater than the smaller matrix dimension&quot;</span>);</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        }</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (requested_number == smaller &amp;&amp; !options.<a class="code hl_variable" href="structirlba_1_1Options.html#a1924053077a1dac0332c139776faf6d3">exact_for_large_number</a>) {</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;requested number of singular values must be less than the smaller matrix dimension for IRLBA iterations&quot;</span>);</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    }</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    <span class="comment">// Optimization if no SVs are requested. Also protect the exact SVD code</span></div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    <span class="comment">// from a zero-extent matrix, as this causes Eigen to shit itself.</span></div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    <span class="keywordflow">if</span> (requested_number == 0) {</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>        outD.resize(requested_number);</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        outU.resize(matrix.rows(), requested_number);</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>        outV.resize(matrix.cols(), requested_number);</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>        <a class="code hl_struct" href="structirlba_1_1Metrics.html">Metrics</a> met;</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>        met.<a class="code hl_variable" href="structirlba_1_1Metrics.html#a51b77b2e94056da2570ec50eca3b57bd">converged</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        <span class="keywordflow">return</span> met;</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    }</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span> </div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    <span class="comment">// Falling back to an exact SVD for small matrices or if the requested number is too large </span></div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    <span class="comment">// (not enough of a workspace). Hey, I don&#39;t make the rules.</span></div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    <span class="keywordflow">if</span> (</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>        (options.<a class="code hl_variable" href="structirlba_1_1Options.html#a85195d98803d717976c17b267708af4f">exact_for_small_matrix</a> &amp;&amp; smaller &lt; 6) ||</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>        (options.<a class="code hl_variable" href="structirlba_1_1Options.html#a1924053077a1dac0332c139776faf6d3">exact_for_large_number</a> &amp;&amp; requested_greater_than_or_equal_to_half_smaller(requested_number, smaller))</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    ) {</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>        exact(matrix, requested_number, outU, outV, outD);</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>        <a class="code hl_struct" href="structirlba_1_1Metrics.html">Metrics</a> met;</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>        met.<a class="code hl_variable" href="structirlba_1_1Metrics.html#a51b77b2e94056da2570ec50eca3b57bd">converged</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>        <span class="keywordflow">return</span> met;</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    }</div>
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    LanczosWorkspace&lt;EigenVector_, Matrix_&gt; lpwork(matrix);</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    EigenMatrix_ W(matrix.rows(), work);</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    EigenMatrix_ Wtmp(matrix.rows(), work);</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>    EigenMatrix_ Vtmp(matrix.cols(), work);</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    EigenMatrix_ B(work, work);</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    B.setZero(work, work);</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>    EigenVector_ res(work);</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>    EigenVector_ F(matrix.cols());</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> </div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>    EigenVector_ prevS(work);</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    <span class="keyword">typename</span> EigenMatrix_::Scalar svtol = options.<a class="code hl_variable" href="structirlba_1_1Options.html#a9b8e78abc2333d8b7a9ee9a0635e3f02">singular_value_ratio_tolerance</a>;</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>    <span class="keyword">typename</span> EigenMatrix_::Scalar tol = options.<a class="code hl_variable" href="structirlba_1_1Options.html#a019f546a47e990071416a11687c14d71">convergence_tolerance</a>;</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    <span class="keyword">typename</span> EigenMatrix_::Scalar svtol_actual = (svtol &gt;= 0 ? svtol : tol);</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span> </div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>    <span class="keywordflow">for</span> (; iter &lt; options.<a class="code hl_variable" href="structirlba_1_1Options.html#a5f53aad8e0d9b6d1a1a9647413f638fa">max_iterations</a>; ++iter) {</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>        <span class="comment">// Technically, this is only a &#39;true&#39; Lanczos bidiagonalization</span></div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>        <span class="comment">// when k = 0. All other times, we&#39;re just recycling the machinery,</span></div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>        <span class="comment">// see the text below Equation 3.11 in Baglama and Reichel.</span></div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>        run_lanczos_bidiagonalization(lpwork, W, V, B, eng, k, options);</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span><span class="comment">//            if (iter &lt; 2) {</span></div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span><span class="comment">//                std::cout &lt;&lt; &quot;B is currently:\n&quot; &lt;&lt; B &lt;&lt; std::endl;</span></div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span><span class="comment">//                std::cout &lt;&lt; &quot;W is currently:\n&quot; &lt;&lt; W &lt;&lt; std::endl;</span></div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span><span class="comment">//                std::cout &lt;&lt; &quot;V is currently:\n&quot; &lt;&lt; V &lt;&lt; std::endl;</span></div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span><span class="comment">//            }</span></div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span> </div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>        svd.compute(B);</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>        <span class="keyword">const</span> <span class="keyword">auto</span>&amp; BS = svd.singularValues();</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>        <span class="keyword">const</span> <span class="keyword">auto</span>&amp; BU = svd.matrixU();</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>        <span class="keyword">const</span> <span class="keyword">auto</span>&amp; BV = svd.matrixV();</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span> </div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>        <span class="comment">// Checking for convergence.</span></div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>        <span class="keywordflow">if</span> (B(work - 1, work - 1) == 0) { <span class="comment">// a.k.a. the final value of &#39;S&#39; from the Lanczos iterations.</span></div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>            converged = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>        }</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> </div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>        <span class="keyword">const</span> <span class="keyword">auto</span>&amp; F = lpwork.F; <span class="comment">// i.e., the residuals, see Algorithm 2.1 of Baglama and Reichel.</span></div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        <span class="keyword">auto</span> R_F = F.norm();</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span> </div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>        <span class="comment">// Computes the convergence criterion defined in on the LHS of</span></div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>        <span class="comment">// Equation 2.13 of Baglama and Riechel. (e_m is literally the unit</span></div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>        <span class="comment">// vector along the m-th dimension, so it ends up just being the</span></div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>        <span class="comment">// m-th row of the U matrix.) We expose it here as we will be</span></div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>        <span class="comment">// re-using the same values to update B, see below.</span></div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>        res = R_F * BU.row(work - 1);</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>        Eigen::Index n_converged = 0;</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>        <span class="keywordflow">if</span> (iter &gt; 0) {</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>            <span class="keyword">const</span> <span class="keyword">auto</span> Smax = *std::max_element(BS.begin(), BS.end());</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>            <span class="keyword">const</span> <span class="keyword">auto</span> threshold = Smax * tol;</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span> </div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>            <span class="keywordflow">for</span> (Eigen::Index j = 0; j &lt; work; ++j) {</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>                <span class="keywordflow">if</span> (std::abs(res[j]) &lt;= threshold) {</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>                    <span class="keyword">const</span> <span class="keyword">auto</span> ratio = std::abs(BS[j] - prevS[j]) / BS[j];</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>                    <span class="keywordflow">if</span> (ratio &lt;= svtol_actual) {</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>                        ++n_converged;</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>                    }</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>                }</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>            }</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="comment">// We know work must be positive at this point, as we would have returned early if requested_number = 0.</span></div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    <span class="comment">// Similar, if smaller = 0, we would have either thrown earlier or set requested_number = 0.</span></div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    <span class="keyword">const</span> Eigen::Index work = choose_requested_plus_extra_work_or_smaller(requested_number, options.<a class="code hl_variable" href="structirlba_1_1Options.html#a179a747996c1a3d4fbf89215d97334d1">extra_work</a>, smaller);</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span> </div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>    <span class="comment">// Don&#39;t worry about sanitizing dimensions for Eigen constructors,</span></div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    <span class="comment">// as the former are stored as Eigen::Index and the latter accepts Eigen::Index inputs.</span></div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    EigenMatrix_ V(matrix.cols(), work);</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    std::mt19937_64 eng(options.<a class="code hl_variable" href="structirlba_1_1Options.html#afb7a12a2d949da2399a30b2aca10fa62">seed</a>);</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>    <span class="keywordflow">if</span> (options.<a class="code hl_variable" href="structirlba_1_1Options.html#a83537f6e35482091fd60fc61b7b53714">initial</a>.has_value()) {</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>        <span class="keyword">const</span> <span class="keyword">auto</span>&amp; init = *(options.<a class="code hl_variable" href="structirlba_1_1Options.html#a83537f6e35482091fd60fc61b7b53714">initial</a>);</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>        <span class="keywordflow">if</span> (init.size() != V.rows()) {</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>            <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;initialization vector does not have expected number of rows&quot;</span>);</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>        }</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>        V.col(0) = init;</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>        fill_with_random_normals(V, 0, eng);</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>    }</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    V.col(0) /= V.col(0).norm();</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> </div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    <span class="keywordtype">bool</span> converged = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    <span class="keywordtype">int</span> iter = 0, mult = 0;</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>    Eigen::Index k = 0;</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    JacobiSVD&lt;EigenMatrix_&gt; svd(work, work);</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span> </div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>    LanczosWorkspace&lt;EigenVector_, Matrix_&gt; lpwork(matrix);</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    EigenMatrix_ W(matrix.rows(), work);</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    EigenMatrix_ Wtmp(matrix.rows(), work);</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    EigenMatrix_ Vtmp(matrix.cols(), work);</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span> </div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    EigenMatrix_ B(work, work);</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>    B.setZero(work, work);</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>    EigenVector_ res(work);</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>    EigenVector_ F(matrix.cols());</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span> </div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>    EigenVector_ prevS(work);</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    <span class="keyword">typename</span> EigenMatrix_::Scalar svtol = options.<a class="code hl_variable" href="structirlba_1_1Options.html#a9b8e78abc2333d8b7a9ee9a0635e3f02">singular_value_ratio_tolerance</a>;</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    <span class="keyword">typename</span> EigenMatrix_::Scalar tol = options.<a class="code hl_variable" href="structirlba_1_1Options.html#a019f546a47e990071416a11687c14d71">convergence_tolerance</a>;</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    <span class="keyword">typename</span> EigenMatrix_::Scalar svtol_actual = (svtol &gt;= 0 ? svtol : tol);</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span> </div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>    <span class="keywordflow">for</span> (; iter &lt; options.<a class="code hl_variable" href="structirlba_1_1Options.html#a5f53aad8e0d9b6d1a1a9647413f638fa">max_iterations</a>; ++iter) {</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>        <span class="comment">// Technically, this is only a &#39;true&#39; Lanczos bidiagonalization</span></div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>        <span class="comment">// when k = 0. All other times, we&#39;re just recycling the machinery,</span></div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>        <span class="comment">// see the text below Equation 3.11 in Baglama and Reichel.</span></div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>        mult += run_lanczos_bidiagonalization(lpwork, W, V, B, eng, k, options);</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span> </div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span><span class="comment">//            if (iter &lt; 2) {</span></div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span><span class="comment">//                std::cout &lt;&lt; &quot;B is currently:\n&quot; &lt;&lt; B &lt;&lt; std::endl;</span></div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span><span class="comment">//                std::cout &lt;&lt; &quot;W is currently:\n&quot; &lt;&lt; W &lt;&lt; std::endl;</span></div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span><span class="comment">//                std::cout &lt;&lt; &quot;V is currently:\n&quot; &lt;&lt; V &lt;&lt; std::endl;</span></div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span><span class="comment">//            }</span></div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span> </div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>        svd.compute(B);</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>        <span class="keyword">const</span> <span class="keyword">auto</span>&amp; BS = svd.singularValues();</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>        <span class="keyword">const</span> <span class="keyword">auto</span>&amp; BU = svd.matrixU();</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>        <span class="keyword">const</span> <span class="keyword">auto</span>&amp; BV = svd.matrixV();</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span> </div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>        <span class="comment">// Checking for convergence.</span></div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>        <span class="keywordflow">if</span> (B(work - 1, work - 1) == 0) { <span class="comment">// a.k.a. the final value of &#39;S&#39; from the Lanczos iterations.</span></div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>            converged = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>        }</div>
 <div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span> </div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>            <span class="keywordflow">if</span> (n_converged &gt;= requested_number) {</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>                converged = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>            }</div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>        }</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>        prevS = BS;</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span> </div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>        k = update_k(k, requested_number, n_converged, work);</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>        Vtmp.leftCols(k).noalias() = V * BV.leftCols(k);</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>        V.leftCols(k) = Vtmp.leftCols(k);</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span> </div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>        <span class="comment">// See Equation 3.2 of Baglama and Reichel, where our &#39;V&#39; is their</span></div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>        <span class="comment">// &#39;P&#39;, and our &#39;F / R_F&#39; is their &#39;p_{m+1}&#39; (Equation 2.2).  &#39;F&#39;</span></div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>        <span class="comment">// was orthogonal to the old &#39;V&#39; and so it should still be</span></div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>        <span class="comment">// orthogonal to the new left-most columns of &#39;V&#39;; the input</span></div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>        <span class="comment">// expectations of the Lanczos bidiagonalization are still met, so</span></div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>        <span class="comment">// V is ok to use in the next run_lanczos_bidiagonalization().</span></div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>        V.col(k) = F / R_F; </div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span> </div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>        Wtmp.leftCols(k).noalias() = W * BU.leftCols(k);</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>        W.leftCols(k) = Wtmp.leftCols(k);</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span> </div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>        B.setZero(work, work);</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>        <span class="keywordflow">for</span> (I&lt;<span class="keyword">decltype</span>(k)&gt; l = 0; l &lt; k; ++l) {</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>            B(l, l) = BS[l];</div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span> </div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>            <span class="comment">// This assignment looks weird but is deliberate, see Equation</span></div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>            <span class="comment">// 3.6 of Baglama and Reichel. Happily, this is the same value</span></div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>            <span class="comment">// used to determine convergence in 2.13, so we just re-use it.</span></div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>            <span class="comment">// (See the equation just above Equation 3.5; I think they </span></div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>            <span class="comment">// misplaced a tilde on the final &#39;u&#39;, given no other &#39;u&#39; has</span></div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>            <span class="comment">// a B_m superscript as well as a tilde.)</span></div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>            B(l, k) = res[l]; </div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>        }</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>    }</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span> </div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>    <span class="comment">// See Equation 2.11 of Baglama and Reichel for how to get from B&#39;s</span></div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>    <span class="comment">// singular triplets to mat&#39;s singular triplets.</span></div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>    outD.resize(requested_number);</div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>    outD = svd.singularValues().head(requested_number);</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span> </div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>    outU.resize(matrix.rows(), requested_number);</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>    outU.noalias() = W * svd.matrixU().leftCols(requested_number);</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span> </div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>    outV.resize(matrix.cols(), requested_number);</div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>    outV.noalias() = V * svd.matrixV().leftCols(requested_number);</div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span> </div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>    <span class="keywordflow">return</span> std::make_pair(converged, (converged ? iter + 1 : iter));</div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>}</div>
-</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>        <span class="keyword">const</span> <span class="keyword">auto</span>&amp; F = lpwork.F; <span class="comment">// i.e., the residuals, see Algorithm 2.1 of Baglama and Reichel.</span></div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>        <span class="keyword">auto</span> R_F = F.norm();</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span> </div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>        <span class="comment">// Computes the convergence criterion defined in on the LHS of</span></div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>        <span class="comment">// Equation 2.13 of Baglama and Riechel. (e_m is literally the unit</span></div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>        <span class="comment">// vector along the m-th dimension, so it ends up just being the</span></div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>        <span class="comment">// m-th row of the U matrix.) We expose it here as we will be</span></div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>        <span class="comment">// re-using the same values to update B, see below.</span></div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>        res = R_F * BU.row(work - 1);</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span> </div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>        Eigen::Index n_converged = 0;</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>        <span class="keywordflow">if</span> (iter &gt; 0) {</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>            <span class="keyword">const</span> <span class="keyword">auto</span> Smax = *std::max_element(BS.begin(), BS.end());</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>            <span class="keyword">const</span> <span class="keyword">auto</span> threshold = Smax * tol;</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span> </div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>            <span class="keywordflow">for</span> (Eigen::Index j = 0; j &lt; work; ++j) {</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>                <span class="keywordflow">if</span> (std::abs(res[j]) &lt;= threshold) {</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>                    <span class="keyword">const</span> <span class="keyword">auto</span> ratio = std::abs(BS[j] - prevS[j]) / BS[j];</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>                    <span class="keywordflow">if</span> (ratio &lt;= svtol_actual) {</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>                        ++n_converged;</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>                    }</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>                }</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>            }</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span> </div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>            <span class="keywordflow">if</span> (n_converged &gt;= requested_number) {</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>                converged = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>            }</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>        }</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>        prevS = BS;</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span> </div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>        k = update_k(k, requested_number, n_converged, work);</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>        Vtmp.leftCols(k).noalias() = V * BV.leftCols(k);</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>        V.leftCols(k) = Vtmp.leftCols(k);</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span> </div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>        <span class="comment">// See Equation 3.2 of Baglama and Reichel, where our &#39;V&#39; is their</span></div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>        <span class="comment">// &#39;P&#39;, and our &#39;F / R_F&#39; is their &#39;p_{m+1}&#39; (Equation 2.2).  &#39;F&#39;</span></div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>        <span class="comment">// was orthogonal to the old &#39;V&#39; and so it should still be</span></div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>        <span class="comment">// orthogonal to the new left-most columns of &#39;V&#39;; the input</span></div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>        <span class="comment">// expectations of the Lanczos bidiagonalization are still met, so</span></div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>        <span class="comment">// V is ok to use in the next run_lanczos_bidiagonalization().</span></div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>        V.col(k) = F / R_F; </div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span> </div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>        Wtmp.leftCols(k).noalias() = W * BU.leftCols(k);</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>        W.leftCols(k) = Wtmp.leftCols(k);</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span> </div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>        B.setZero(work, work);</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>        <span class="keywordflow">for</span> (I&lt;<span class="keyword">decltype</span>(k)&gt; l = 0; l &lt; k; ++l) {</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>            B(l, l) = BS[l];</div>
 <div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span> </div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> InputEigenMatrix_, <span class="keyword">class</span> OutputEigenMatrix_, <span class="keyword">class</span> EigenVector_&gt;</div>
-<div class="foldopen" id="foldopen00342" data-start="{" data-end="}">
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno"><a class="line" href="compute_8hpp.html#ac57532aaea92612012d712610b3d1a08">  342</a></span>std::pair&lt;bool, int&gt; <a class="code hl_function" href="compute_8hpp.html#ac57532aaea92612012d712610b3d1a08">compute_simple</a>(</div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>    <span class="keyword">const</span> InputEigenMatrix_&amp; matrix,</div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>    Eigen::Index number,</div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>    OutputEigenMatrix_&amp; outU,</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    OutputEigenMatrix_&amp; outV,</div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>    EigenVector_&amp; outD,</div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>    <span class="keyword">const</span> <a class="code hl_struct" href="structirlba_1_1Options.html">Options&lt;EigenVector_&gt;</a>&amp; options</div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>) {</div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>    <a class="code hl_class" href="classirlba_1_1SimpleMatrix.html">SimpleMatrix&lt;EigenVector_, OutputEigenMatrix_, const InputEigenMatrix_*&gt;</a> wrapped(&amp;matrix);</div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span> </div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>    <span class="comment">// Force the compiler to use virtual dispatch to avoid realizing multiple</span></div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>    <span class="comment">// instances of this function for each InputEigenMatrix_ type. If you</span></div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>    <span class="comment">// don&#39;t like this, call compute() directly.</span></div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>    <span class="keyword">typedef</span> <a class="code hl_class" href="classirlba_1_1Matrix.html">Matrix&lt;EigenVector_, OutputEigenMatrix_&gt;</a> Interface; </div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span> </div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>    <span class="keywordflow">return</span> compute&lt;Interface&gt;(wrapped, number, outU, outV, outD, options);</div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>}</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>            <span class="comment">// This assignment looks weird but is deliberate, see Equation</span></div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>            <span class="comment">// 3.6 of Baglama and Reichel. Happily, this is the same value</span></div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>            <span class="comment">// used to determine convergence in 2.13, so we just re-use it.</span></div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>            <span class="comment">// (See the equation just above Equation 3.5; I think they </span></div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>            <span class="comment">// misplaced a tilde on the final &#39;u&#39;, given no other &#39;u&#39; has</span></div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>            <span class="comment">// a B_m superscript as well as a tilde.)</span></div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>            B(l, k) = res[l]; </div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>        }</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>    }</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span> </div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>    <span class="comment">// See Equation 2.11 of Baglama and Reichel for how to get from B&#39;s</span></div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>    <span class="comment">// singular triplets to mat&#39;s singular triplets.</span></div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>    outD.resize(requested_number);</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    outD = svd.singularValues().head(requested_number);</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span> </div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>    outU.resize(matrix.rows(), requested_number);</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>    outU.noalias() = W * svd.matrixU().leftCols(requested_number);</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span> </div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>    outV.resize(matrix.cols(), requested_number);</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>    outV.noalias() = V * svd.matrixV().leftCols(requested_number);</div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span> </div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>    <a class="code hl_struct" href="structirlba_1_1Metrics.html">Metrics</a> met;</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>    met.<a class="code hl_variable" href="structirlba_1_1Metrics.html#a51b77b2e94056da2570ec50eca3b57bd">converged</a> = converged;</div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>    met.<a class="code hl_variable" href="structirlba_1_1Metrics.html#a37cc9064acd947aeed7aff0e25f56e78">multiplications</a> = mult;</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>    met.<a class="code hl_variable" href="structirlba_1_1Metrics.html#a1b87b64b881cfb8b8fd705754516d9c9">iterations</a> = (converged ? iter + 1 : iter);</div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>    <span class="keywordflow">return</span> met;</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>}</div>
 </div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span> </div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> EigenMatrix_, <span class="keyword">class</span> EigenVector_&gt;</div>
-<div class="foldopen" id="foldopen00366" data-start="{" data-end="};">
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno"><a class="line" href="structirlba_1_1Results.html">  366</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structirlba_1_1Results.html">Results</a> {</div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno"><a class="line" href="structirlba_1_1Results.html#a59ab34dac65eb90e6886b8a7df6ec245">  372</a></span>    EigenMatrix_ <a class="code hl_variable" href="structirlba_1_1Results.html#a59ab34dac65eb90e6886b8a7df6ec245">U</a>;</div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span> </div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno"><a class="line" href="structirlba_1_1Results.html#a6559892535ea2ba3b80bfd101e979f3b">  379</a></span>    EigenMatrix_ <a class="code hl_variable" href="structirlba_1_1Results.html#a6559892535ea2ba3b80bfd101e979f3b">V</a>;</div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span> </div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno"><a class="line" href="structirlba_1_1Results.html#a21b7e432392523d3e6693701751a4cfc">  385</a></span>    EigenVector_ <a class="code hl_variable" href="structirlba_1_1Results.html#a21b7e432392523d3e6693701751a4cfc">D</a>;</div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span> </div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno"><a class="line" href="structirlba_1_1Results.html#a5788fc587a38a96d46bd75bc6c180559">  390</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="structirlba_1_1Results.html#a5788fc587a38a96d46bd75bc6c180559">iterations</a>;</div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span> </div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno"><a class="line" href="structirlba_1_1Results.html#a867a16b6a3c46b48deea9a17dd4e20b9">  395</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="structirlba_1_1Results.html#a867a16b6a3c46b48deea9a17dd4e20b9">converged</a>;</div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>};</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span> </div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> InputEigenMatrix_, <span class="keyword">class</span> OutputEigenMatrix_, <span class="keyword">class</span> EigenVector_&gt;</div>
+<div class="foldopen" id="foldopen00370" data-start="{" data-end="}">
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno"><a class="line" href="compute_8hpp.html#ae891070dfa5e782a66d905be3143d28d">  370</a></span><a class="code hl_struct" href="structirlba_1_1Metrics.html">Metrics</a> <a class="code hl_function" href="compute_8hpp.html#ae891070dfa5e782a66d905be3143d28d">compute_simple</a>(</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>    <span class="keyword">const</span> InputEigenMatrix_&amp; matrix,</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>    Eigen::Index number,</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>    OutputEigenMatrix_&amp; outU,</div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>    OutputEigenMatrix_&amp; outV,</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>    EigenVector_&amp; outD,</div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>    <span class="keyword">const</span> <a class="code hl_struct" href="structirlba_1_1Options.html">Options&lt;EigenVector_&gt;</a>&amp; options</div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>) {</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>    <a class="code hl_class" href="classirlba_1_1SimpleMatrix.html">SimpleMatrix&lt;EigenVector_, OutputEigenMatrix_, const InputEigenMatrix_*&gt;</a> wrapped(&amp;matrix);</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span> </div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>    <span class="comment">// Force the compiler to use virtual dispatch to avoid realizing multiple</span></div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>    <span class="comment">// instances of this function for each InputEigenMatrix_ type. If you</span></div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>    <span class="comment">// don&#39;t like this, call compute() directly.</span></div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>    <span class="keyword">typedef</span> <a class="code hl_class" href="classirlba_1_1Matrix.html">Matrix&lt;EigenVector_, OutputEigenMatrix_&gt;</a> Interface; </div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span> </div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>    <span class="keywordflow">return</span> compute&lt;Interface&gt;(wrapped, number, outU, outV, outD, options);</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>}</div>
 </div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span> </div>
-<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> EigenMatrix_ = Eigen::MatrixXd, <span class="keyword">class</span> EigenVector_ = Eigen::VectorXd, <span class="keyword">class</span> Matrix_&gt;</div>
-<div class="foldopen" id="foldopen00412" data-start="{" data-end="}">
-<div class="line"><a id="l00412" name="l00412"></a><span class="lineno"><a class="line" href="compute_8hpp.html#aee162d595de9fdfdcf5d379de54365d3">  412</a></span><a class="code hl_struct" href="structirlba_1_1Results.html">Results&lt;EigenMatrix_, EigenVector_&gt;</a> <a class="code hl_function" href="compute_8hpp.html#abff001679bf73625640310429e8d1aa6">compute</a>(<span class="keyword">const</span> Matrix_&amp; matrix, Eigen::Index number, <span class="keyword">const</span> <a class="code hl_struct" href="structirlba_1_1Options.html">Options&lt;EigenVector_&gt;</a>&amp; options) {</div>
-<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>    <a class="code hl_struct" href="structirlba_1_1Results.html">Results&lt;EigenMatrix_, EigenVector_&gt;</a> output;</div>
-<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>    <span class="keyword">const</span> <span class="keyword">auto</span> stats = <a class="code hl_function" href="compute_8hpp.html#abff001679bf73625640310429e8d1aa6">compute</a>(matrix, number, output.<a class="code hl_variable" href="structirlba_1_1Results.html#a59ab34dac65eb90e6886b8a7df6ec245">U</a>, output.<a class="code hl_variable" href="structirlba_1_1Results.html#a6559892535ea2ba3b80bfd101e979f3b">V</a>, output.<a class="code hl_variable" href="structirlba_1_1Results.html#a21b7e432392523d3e6693701751a4cfc">D</a>, options);</div>
-<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>    output.<a class="code hl_variable" href="structirlba_1_1Results.html#a867a16b6a3c46b48deea9a17dd4e20b9">converged</a> = stats.first;</div>
-<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>    output.<a class="code hl_variable" href="structirlba_1_1Results.html#a5788fc587a38a96d46bd75bc6c180559">iterations</a> = stats.second;</div>
-<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>    <span class="keywordflow">return</span> output;</div>
-<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>}</div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span> </div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> EigenMatrix_, <span class="keyword">class</span> EigenVector_&gt;</div>
+<div class="foldopen" id="foldopen00394" data-start="{" data-end="};">
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno"><a class="line" href="structirlba_1_1Results.html">  394</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structirlba_1_1Results.html">Results</a> {</div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno"><a class="line" href="structirlba_1_1Results.html#a59ab34dac65eb90e6886b8a7df6ec245">  400</a></span>    EigenMatrix_ <a class="code hl_variable" href="structirlba_1_1Results.html#a59ab34dac65eb90e6886b8a7df6ec245">U</a>;</div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span> </div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno"><a class="line" href="structirlba_1_1Results.html#a6559892535ea2ba3b80bfd101e979f3b">  407</a></span>    EigenMatrix_ <a class="code hl_variable" href="structirlba_1_1Results.html#a6559892535ea2ba3b80bfd101e979f3b">V</a>;</div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span> </div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno"><a class="line" href="structirlba_1_1Results.html#a21b7e432392523d3e6693701751a4cfc">  413</a></span>    EigenVector_ <a class="code hl_variable" href="structirlba_1_1Results.html#a21b7e432392523d3e6693701751a4cfc">D</a>;</div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span> </div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno"><a class="line" href="structirlba_1_1Results.html#a37b2958965776469cdc2acb3e58791d3">  418</a></span>    <a class="code hl_struct" href="structirlba_1_1Metrics.html">Metrics</a> <a class="code hl_variable" href="structirlba_1_1Results.html#a37b2958965776469cdc2acb3e58791d3">metrics</a>;</div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>};</div>
 </div>
-<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span> </div>
-<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> OutputEigenMatrix_ = Eigen::MatrixXd, <span class="keyword">class</span> EigenVector_ = Eigen::VectorXd, <span class="keyword">class</span> InputEigenMatrix_&gt;</div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span> </div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> EigenMatrix_ = Eigen::MatrixXd, <span class="keyword">class</span> EigenVector_ = Eigen::VectorXd, <span class="keyword">class</span> Matrix_&gt;</div>
 <div class="foldopen" id="foldopen00435" data-start="{" data-end="}">
-<div class="line"><a id="l00435" name="l00435"></a><span class="lineno"><a class="line" href="compute_8hpp.html#a22b51a9ba8a634d25fc16008d4bdfba8">  435</a></span><a class="code hl_struct" href="structirlba_1_1Results.html">Results&lt;OutputEigenMatrix_, EigenVector_&gt;</a> <a class="code hl_function" href="compute_8hpp.html#ac57532aaea92612012d712610b3d1a08">compute_simple</a>(<span class="keyword">const</span> InputEigenMatrix_&amp; matrix, Eigen::Index number, <span class="keyword">const</span> <a class="code hl_struct" href="structirlba_1_1Options.html">Options&lt;EigenVector_&gt;</a>&amp; options) {</div>
-<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>    <a class="code hl_struct" href="structirlba_1_1Results.html">Results&lt;OutputEigenMatrix_, EigenVector_&gt;</a> output;</div>
-<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>    <span class="keyword">const</span> <span class="keyword">auto</span> stats = <a class="code hl_function" href="compute_8hpp.html#ac57532aaea92612012d712610b3d1a08">compute_simple</a>(matrix, number, output.<a class="code hl_variable" href="structirlba_1_1Results.html#a59ab34dac65eb90e6886b8a7df6ec245">U</a>, output.<a class="code hl_variable" href="structirlba_1_1Results.html#a6559892535ea2ba3b80bfd101e979f3b">V</a>, output.<a class="code hl_variable" href="structirlba_1_1Results.html#a21b7e432392523d3e6693701751a4cfc">D</a>, options);</div>
-<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span>    output.<a class="code hl_variable" href="structirlba_1_1Results.html#a867a16b6a3c46b48deea9a17dd4e20b9">converged</a> = stats.first;</div>
-<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span>    output.<a class="code hl_variable" href="structirlba_1_1Results.html#a5788fc587a38a96d46bd75bc6c180559">iterations</a> = stats.second;</div>
-<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span>    <span class="keywordflow">return</span> output;</div>
-<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span>}</div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno"><a class="line" href="compute_8hpp.html#aee162d595de9fdfdcf5d379de54365d3">  435</a></span><a class="code hl_struct" href="structirlba_1_1Results.html">Results&lt;EigenMatrix_, EigenVector_&gt;</a> <a class="code hl_function" href="compute_8hpp.html#a3ef50b4731ec01ea6a1a035e4863390b">compute</a>(<span class="keyword">const</span> Matrix_&amp; matrix, Eigen::Index number, <span class="keyword">const</span> <a class="code hl_struct" href="structirlba_1_1Options.html">Options&lt;EigenVector_&gt;</a>&amp; options) {</div>
+<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>    <a class="code hl_struct" href="structirlba_1_1Results.html">Results&lt;EigenMatrix_, EigenVector_&gt;</a> output;</div>
+<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>    output.<a class="code hl_variable" href="structirlba_1_1Results.html#a37b2958965776469cdc2acb3e58791d3">metrics</a> = <a class="code hl_function" href="compute_8hpp.html#a3ef50b4731ec01ea6a1a035e4863390b">compute</a>(matrix, number, output.<a class="code hl_variable" href="structirlba_1_1Results.html#a59ab34dac65eb90e6886b8a7df6ec245">U</a>, output.<a class="code hl_variable" href="structirlba_1_1Results.html#a6559892535ea2ba3b80bfd101e979f3b">V</a>, output.<a class="code hl_variable" href="structirlba_1_1Results.html#a21b7e432392523d3e6693701751a4cfc">D</a>, options);</div>
+<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span>    <span class="keywordflow">return</span> output;</div>
+<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span>}</div>
 </div>
-<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span> </div>
-<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span>}</div>
-<div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span> </div>
-<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span> </div>
+<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> OutputEigenMatrix_ = Eigen::MatrixXd, <span class="keyword">class</span> EigenVector_ = Eigen::VectorXd, <span class="keyword">class</span> InputEigenMatrix_&gt;</div>
+<div class="foldopen" id="foldopen00456" data-start="{" data-end="}">
+<div class="line"><a id="l00456" name="l00456"></a><span class="lineno"><a class="line" href="compute_8hpp.html#a22b51a9ba8a634d25fc16008d4bdfba8">  456</a></span><a class="code hl_struct" href="structirlba_1_1Results.html">Results&lt;OutputEigenMatrix_, EigenVector_&gt;</a> <a class="code hl_function" href="compute_8hpp.html#ae891070dfa5e782a66d905be3143d28d">compute_simple</a>(<span class="keyword">const</span> InputEigenMatrix_&amp; matrix, Eigen::Index number, <span class="keyword">const</span> <a class="code hl_struct" href="structirlba_1_1Options.html">Options&lt;EigenVector_&gt;</a>&amp; options) {</div>
+<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span>    <a class="code hl_struct" href="structirlba_1_1Results.html">Results&lt;OutputEigenMatrix_, EigenVector_&gt;</a> output;</div>
+<div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span>    output.<a class="code hl_variable" href="structirlba_1_1Results.html#a37b2958965776469cdc2acb3e58791d3">metrics</a> = <a class="code hl_function" href="compute_8hpp.html#ae891070dfa5e782a66d905be3143d28d">compute_simple</a>(matrix, number, output.<a class="code hl_variable" href="structirlba_1_1Results.html#a59ab34dac65eb90e6886b8a7df6ec245">U</a>, output.<a class="code hl_variable" href="structirlba_1_1Results.html#a6559892535ea2ba3b80bfd101e979f3b">V</a>, output.<a class="code hl_variable" href="structirlba_1_1Results.html#a21b7e432392523d3e6693701751a4cfc">D</a>, options);</div>
+<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span>    <span class="keywordflow">return</span> output;</div>
+<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span>}</div>
+</div>
+<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span> </div>
+<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span>}</div>
+<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span> </div>
+<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassirlba_1_1Matrix_html"><div class="ttname"><a href="classirlba_1_1Matrix.html">irlba::Matrix</a></div><div class="ttdoc">Interface for a matrix to use in compute().</div><div class="ttdef"><b>Definition</b> interface.hpp:142</div></div>
 <div class="ttc" id="aclassirlba_1_1SimpleMatrix_html"><div class="ttname"><a href="classirlba_1_1SimpleMatrix.html">irlba::SimpleMatrix</a></div><div class="ttdoc">A Matrix-compatible wrapper around a &quot;simple&quot; matrix.</div><div class="ttdef"><b>Definition</b> simple.hpp:89</div></div>
-<div class="ttc" id="acompute_8hpp_html_abff001679bf73625640310429e8d1aa6"><div class="ttname"><a href="compute_8hpp.html#abff001679bf73625640310429e8d1aa6">irlba::compute</a></div><div class="ttdeci">std::pair&lt; bool, int &gt; compute(const Matrix_ &amp;matrix, const Eigen::Index number, EigenMatrix_ &amp;outU, EigenMatrix_ &amp;outV, EigenVector_ &amp;outD, const Options&lt; EigenVector_ &gt; &amp;options)</div><div class="ttdef"><b>Definition</b> compute.hpp:142</div></div>
-<div class="ttc" id="acompute_8hpp_html_ac57532aaea92612012d712610b3d1a08"><div class="ttname"><a href="compute_8hpp.html#ac57532aaea92612012d712610b3d1a08">irlba::compute_simple</a></div><div class="ttdeci">std::pair&lt; bool, int &gt; compute_simple(const InputEigenMatrix_ &amp;matrix, Eigen::Index number, OutputEigenMatrix_ &amp;outU, OutputEigenMatrix_ &amp;outV, EigenVector_ &amp;outD, const Options&lt; EigenVector_ &gt; &amp;options)</div><div class="ttdef"><b>Definition</b> compute.hpp:342</div></div>
+<div class="ttc" id="acompute_8hpp_html_a3ef50b4731ec01ea6a1a035e4863390b"><div class="ttname"><a href="compute_8hpp.html#a3ef50b4731ec01ea6a1a035e4863390b">irlba::compute</a></div><div class="ttdeci">Metrics compute(const Matrix_ &amp;matrix, const Eigen::Index number, EigenMatrix_ &amp;outU, EigenMatrix_ &amp;outV, EigenVector_ &amp;outD, const Options&lt; EigenVector_ &gt; &amp;options)</div><div class="ttdef"><b>Definition</b> compute.hpp:162</div></div>
+<div class="ttc" id="acompute_8hpp_html_ae891070dfa5e782a66d905be3143d28d"><div class="ttname"><a href="compute_8hpp.html#ae891070dfa5e782a66d905be3143d28d">irlba::compute_simple</a></div><div class="ttdeci">Metrics compute_simple(const InputEigenMatrix_ &amp;matrix, Eigen::Index number, OutputEigenMatrix_ &amp;outU, OutputEigenMatrix_ &amp;outV, EigenVector_ &amp;outD, const Options&lt; EigenVector_ &gt; &amp;options)</div><div class="ttdef"><b>Definition</b> compute.hpp:370</div></div>
 <div class="ttc" id="asimple_8hpp_html"><div class="ttname"><a href="simple_8hpp.html">simple.hpp</a></div><div class="ttdoc">Simple wrapper around an Eigen matrix.</div></div>
+<div class="ttc" id="astructirlba_1_1Metrics_html"><div class="ttname"><a href="structirlba_1_1Metrics.html">irlba::Metrics</a></div><div class="ttdoc">Metrics for IRLBA progress from compute().</div><div class="ttdef"><b>Definition</b> compute.hpp:119</div></div>
+<div class="ttc" id="astructirlba_1_1Metrics_html_a1b87b64b881cfb8b8fd705754516d9c9"><div class="ttname"><a href="structirlba_1_1Metrics.html#a1b87b64b881cfb8b8fd705754516d9c9">irlba::Metrics::iterations</a></div><div class="ttdeci">int iterations</div><div class="ttdef"><b>Definition</b> compute.hpp:123</div></div>
+<div class="ttc" id="astructirlba_1_1Metrics_html_a37cc9064acd947aeed7aff0e25f56e78"><div class="ttname"><a href="structirlba_1_1Metrics.html#a37cc9064acd947aeed7aff0e25f56e78">irlba::Metrics::multiplications</a></div><div class="ttdeci">int multiplications</div><div class="ttdef"><b>Definition</b> compute.hpp:128</div></div>
+<div class="ttc" id="astructirlba_1_1Metrics_html_a51b77b2e94056da2570ec50eca3b57bd"><div class="ttname"><a href="structirlba_1_1Metrics.html#a51b77b2e94056da2570ec50eca3b57bd">irlba::Metrics::converged</a></div><div class="ttdeci">bool converged</div><div class="ttdef"><b>Definition</b> compute.hpp:133</div></div>
 <div class="ttc" id="astructirlba_1_1Options_html"><div class="ttname"><a href="structirlba_1_1Options.html">irlba::Options</a></div><div class="ttdoc">Options for running IRLBA in compute() and pca().</div><div class="ttdef"><b>Definition</b> Options.hpp:20</div></div>
 <div class="ttc" id="astructirlba_1_1Options_html_a019f546a47e990071416a11687c14d71"><div class="ttname"><a href="structirlba_1_1Options.html#a019f546a47e990071416a11687c14d71">irlba::Options::convergence_tolerance</a></div><div class="ttdeci">double convergence_tolerance</div><div class="ttdef"><b>Definition</b> Options.hpp:34</div></div>
 <div class="ttc" id="astructirlba_1_1Options_html_a179a747996c1a3d4fbf89215d97334d1"><div class="ttname"><a href="structirlba_1_1Options.html#a179a747996c1a3d4fbf89215d97334d1">irlba::Options::extra_work</a></div><div class="ttdeci">int extra_work</div><div class="ttdef"><b>Definition</b> Options.hpp:47</div></div>
@@ -451,12 +467,11 @@ $(function(){ initResizable(false); });
 <div class="ttc" id="astructirlba_1_1Options_html_a95fbe9c985391959881f1107a87320bc"><div class="ttname"><a href="structirlba_1_1Options.html#a95fbe9c985391959881f1107a87320bc">irlba::Options::cap_number</a></div><div class="ttdeci">bool cap_number</div><div class="ttdef"><b>Definition</b> Options.hpp:71</div></div>
 <div class="ttc" id="astructirlba_1_1Options_html_a9b8e78abc2333d8b7a9ee9a0635e3f02"><div class="ttname"><a href="structirlba_1_1Options.html#a9b8e78abc2333d8b7a9ee9a0635e3f02">irlba::Options::singular_value_ratio_tolerance</a></div><div class="ttdeci">double singular_value_ratio_tolerance</div><div class="ttdef"><b>Definition</b> Options.hpp:41</div></div>
 <div class="ttc" id="astructirlba_1_1Options_html_afb7a12a2d949da2399a30b2aca10fa62"><div class="ttname"><a href="structirlba_1_1Options.html#afb7a12a2d949da2399a30b2aca10fa62">irlba::Options::seed</a></div><div class="ttdeci">std::mt19937_64::result_type seed</div><div class="ttdef"><b>Definition</b> Options.hpp:76</div></div>
-<div class="ttc" id="astructirlba_1_1Results_html"><div class="ttname"><a href="structirlba_1_1Results.html">irlba::Results</a></div><div class="ttdoc">Results of the IRLBA-based SVD by compute().</div><div class="ttdef"><b>Definition</b> compute.hpp:366</div></div>
-<div class="ttc" id="astructirlba_1_1Results_html_a21b7e432392523d3e6693701751a4cfc"><div class="ttname"><a href="structirlba_1_1Results.html#a21b7e432392523d3e6693701751a4cfc">irlba::Results::D</a></div><div class="ttdeci">EigenVector_ D</div><div class="ttdef"><b>Definition</b> compute.hpp:385</div></div>
-<div class="ttc" id="astructirlba_1_1Results_html_a5788fc587a38a96d46bd75bc6c180559"><div class="ttname"><a href="structirlba_1_1Results.html#a5788fc587a38a96d46bd75bc6c180559">irlba::Results::iterations</a></div><div class="ttdeci">int iterations</div><div class="ttdef"><b>Definition</b> compute.hpp:390</div></div>
-<div class="ttc" id="astructirlba_1_1Results_html_a59ab34dac65eb90e6886b8a7df6ec245"><div class="ttname"><a href="structirlba_1_1Results.html#a59ab34dac65eb90e6886b8a7df6ec245">irlba::Results::U</a></div><div class="ttdeci">EigenMatrix_ U</div><div class="ttdef"><b>Definition</b> compute.hpp:372</div></div>
-<div class="ttc" id="astructirlba_1_1Results_html_a6559892535ea2ba3b80bfd101e979f3b"><div class="ttname"><a href="structirlba_1_1Results.html#a6559892535ea2ba3b80bfd101e979f3b">irlba::Results::V</a></div><div class="ttdeci">EigenMatrix_ V</div><div class="ttdef"><b>Definition</b> compute.hpp:379</div></div>
-<div class="ttc" id="astructirlba_1_1Results_html_a867a16b6a3c46b48deea9a17dd4e20b9"><div class="ttname"><a href="structirlba_1_1Results.html#a867a16b6a3c46b48deea9a17dd4e20b9">irlba::Results::converged</a></div><div class="ttdeci">bool converged</div><div class="ttdef"><b>Definition</b> compute.hpp:395</div></div>
+<div class="ttc" id="astructirlba_1_1Results_html"><div class="ttname"><a href="structirlba_1_1Results.html">irlba::Results</a></div><div class="ttdoc">Results of the IRLBA-based SVD by compute().</div><div class="ttdef"><b>Definition</b> compute.hpp:394</div></div>
+<div class="ttc" id="astructirlba_1_1Results_html_a21b7e432392523d3e6693701751a4cfc"><div class="ttname"><a href="structirlba_1_1Results.html#a21b7e432392523d3e6693701751a4cfc">irlba::Results::D</a></div><div class="ttdeci">EigenVector_ D</div><div class="ttdef"><b>Definition</b> compute.hpp:413</div></div>
+<div class="ttc" id="astructirlba_1_1Results_html_a37b2958965776469cdc2acb3e58791d3"><div class="ttname"><a href="structirlba_1_1Results.html#a37b2958965776469cdc2acb3e58791d3">irlba::Results::metrics</a></div><div class="ttdeci">Metrics metrics</div><div class="ttdef"><b>Definition</b> compute.hpp:418</div></div>
+<div class="ttc" id="astructirlba_1_1Results_html_a59ab34dac65eb90e6886b8a7df6ec245"><div class="ttname"><a href="structirlba_1_1Results.html#a59ab34dac65eb90e6886b8a7df6ec245">irlba::Results::U</a></div><div class="ttdeci">EigenMatrix_ U</div><div class="ttdef"><b>Definition</b> compute.hpp:400</div></div>
+<div class="ttc" id="astructirlba_1_1Results_html_a6559892535ea2ba3b80bfd101e979f3b"><div class="ttname"><a href="structirlba_1_1Results.html#a6559892535ea2ba3b80bfd101e979f3b">irlba::Results::V</a></div><div class="ttdeci">EigenMatrix_ V</div><div class="ttdef"><b>Definition</b> compute.hpp:407</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

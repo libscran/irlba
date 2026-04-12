@@ -5,6 +5,7 @@
     <path>irlba/</path>
     <filename>compute_8hpp.html</filename>
     <includes id="simple_8hpp" name="simple.hpp" local="yes" import="no" module="no" objc="no">Matrix/simple.hpp</includes>
+    <class kind="struct">irlba::Metrics</class>
     <class kind="struct">irlba::Results</class>
   </compound>
   <compound kind="file">
@@ -224,6 +225,31 @@
       <anchorfile>classirlba_1_1Matrix.html</anchorfile>
       <anchor>a9a4da990893ff44f8b2039d2acfa4332</anchor>
       <arglist>() const</arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
+    <name>irlba::Metrics</name>
+    <filename>structirlba_1_1Metrics.html</filename>
+    <member kind="variable">
+      <type>int</type>
+      <name>iterations</name>
+      <anchorfile>structirlba_1_1Metrics.html</anchorfile>
+      <anchor>a1b87b64b881cfb8b8fd705754516d9c9</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>multiplications</name>
+      <anchorfile>structirlba_1_1Metrics.html</anchorfile>
+      <anchor>a37cc9064acd947aeed7aff0e25f56e78</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>bool</type>
+      <name>converged</name>
+      <anchorfile>structirlba_1_1Metrics.html</anchorfile>
+      <anchor>a51b77b2e94056da2570ec50eca3b57bd</anchor>
+      <arglist></arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -505,17 +531,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>int</type>
-      <name>iterations</name>
+      <type>Metrics</type>
+      <name>metrics</name>
       <anchorfile>structirlba_1_1PcaResults.html</anchorfile>
-      <anchor>abdc9a3e29efba76992af948627bbbe89</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>bool</type>
-      <name>converged</name>
-      <anchorfile>structirlba_1_1PcaResults.html</anchorfile>
-      <anchor>abe63e04a2765cce76a32b47d39561a1d</anchor>
+      <anchor>aa6966e46f5386ff8b0b368b4375b0361</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -565,17 +584,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>int</type>
-      <name>iterations</name>
+      <type>Metrics</type>
+      <name>metrics</name>
       <anchorfile>structirlba_1_1Results.html</anchorfile>
-      <anchor>a5788fc587a38a96d46bd75bc6c180559</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>bool</type>
-      <name>converged</name>
-      <anchorfile>structirlba_1_1Results.html</anchorfile>
-      <anchor>a867a16b6a3c46b48deea9a17dd4e20b9</anchor>
+      <anchor>a37b2958965776469cdc2acb3e58791d3</anchor>
       <arglist></arglist>
     </member>
   </compound>

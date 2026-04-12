@@ -97,10 +97,20 @@ $(function(){ initResizable(false); });
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="structirlba_1_1Results.html" title="Results of the IRLBA-based SVD by compute().">Results</a> of the IRLBA-based PCA by <code><a class="el" href="pca_8hpp.html#a641f100ff5163f650781c9db49958a4b">pca()</a></code>.  
+<p><a class="el" href="structirlba_1_1Results.html" title="Results of the IRLBA-based SVD by compute().">Results</a> of the IRLBA-based PCA by <code><a class="el" href="pca_8hpp.html#a3587747a936e2b15dd4fc0db69d21508">pca()</a></code>.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="pca_8hpp_source.html">pca.hpp</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for irlba::PcaResults&lt; EigenMatrix_, EigenVector_ &gt;:</div>
+<div class="dyncontent">
+<div class="center"><img src="structirlba_1_1PcaResults__coll__graph.png" border="0" usemap="#airlba_1_1PcaResults_3_01EigenMatrix___00_01EigenVector___01_4_coll__map" alt="Collaboration graph"/></div>
+<map name="airlba_1_1PcaResults_3_01EigenMatrix___00_01EigenVector___01_4_coll__map" id="airlba_1_1PcaResults_3_01EigenMatrix___00_01EigenVector___01_4_coll__map">
+<area shape="rect" title="Results of the IRLBA&#45;based PCA by pca()." alt="" coords="5,94,199,135"/>
+<area shape="rect" href="structirlba_1_1Metrics.html" title="Metrics for IRLBA progress from compute()." alt="" coords="55,5,149,31"/>
+<area shape="poly" title=" " alt="" coords="105,46,105,93,99,93,99,46"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -110,14 +120,12 @@ Public Attributes</h2></td></tr>
 <tr class="separator:ab97a992b7080c77cee1b4e349edf2521"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab175b5cb7799e7ca44182cd447699071" id="r_ab175b5cb7799e7ca44182cd447699071"><td class="memItemLeft" align="right" valign="top">EigenVector_&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab175b5cb7799e7ca44182cd447699071">variances</a></td></tr>
 <tr class="separator:ab175b5cb7799e7ca44182cd447699071"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abdc9a3e29efba76992af948627bbbe89" id="r_abdc9a3e29efba76992af948627bbbe89"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abdc9a3e29efba76992af948627bbbe89">iterations</a></td></tr>
-<tr class="separator:abdc9a3e29efba76992af948627bbbe89"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe63e04a2765cce76a32b47d39561a1d" id="r_abe63e04a2765cce76a32b47d39561a1d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abe63e04a2765cce76a32b47d39561a1d">converged</a></td></tr>
-<tr class="separator:abe63e04a2765cce76a32b47d39561a1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6966e46f5386ff8b0b368b4375b0361" id="r_aa6966e46f5386ff8b0b368b4375b0361"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structirlba_1_1Metrics.html">Metrics</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa6966e46f5386ff8b0b368b4375b0361">metrics</a></td></tr>
+<tr class="separator:aa6966e46f5386ff8b0b368b4375b0361"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class EigenMatrix_, class EigenVector_&gt;<br />
-struct irlba::PcaResults&lt; EigenMatrix_, EigenVector_ &gt;</div><p><a class="el" href="structirlba_1_1Results.html" title="Results of the IRLBA-based SVD by compute().">Results</a> of the IRLBA-based PCA by <code><a class="el" href="pca_8hpp.html#a641f100ff5163f650781c9db49958a4b">pca()</a></code>. </p>
+struct irlba::PcaResults&lt; EigenMatrix_, EigenVector_ &gt;</div><p><a class="el" href="structirlba_1_1Results.html" title="Results of the IRLBA-based SVD by compute().">Results</a> of the IRLBA-based PCA by <code><a class="el" href="pca_8hpp.html#a3587747a936e2b15dd4fc0db69d21508">pca()</a></code>. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">EigenMatrix_</td><td>A dense floating-point <code>Eigen::Matrix</code> class. </td></tr>
@@ -126,8 +134,8 @@ struct irlba::PcaResults&lt; EigenMatrix_, EigenVector_ &gt;</div><p><a class="e
   </dd>
 </dl>
 </div><h2 class="groupheader">Member Data Documentation</h2>
-<a id="abe63e04a2765cce76a32b47d39561a1d" name="abe63e04a2765cce76a32b47d39561a1d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abe63e04a2765cce76a32b47d39561a1d">&#9670;&#160;</a></span>converged</h2>
+<a id="aa6966e46f5386ff8b0b368b4375b0361" name="aa6966e46f5386ff8b0b368b4375b0361"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6966e46f5386ff8b0b368b4375b0361">&#9670;&#160;</a></span>metrics</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -135,28 +143,11 @@ struct irlba::PcaResults&lt; EigenMatrix_, EigenVector_ &gt;</div><p><a class="e
 template&lt;class EigenMatrix_ , class EigenVector_ &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="structirlba_1_1PcaResults.html">irlba::PcaResults</a>&lt; EigenMatrix_, EigenVector_ &gt;::converged</td>
+          <td class="memname"><a class="el" href="structirlba_1_1Metrics.html">Metrics</a> <a class="el" href="structirlba_1_1PcaResults.html">irlba::PcaResults</a>&lt; EigenMatrix_, EigenVector_ &gt;::metrics</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Whether the algorithm converged. </p>
-
-</div>
-</div>
-<a id="abdc9a3e29efba76992af948627bbbe89" name="abdc9a3e29efba76992af948627bbbe89"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abdc9a3e29efba76992af948627bbbe89">&#9670;&#160;</a></span>iterations</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class EigenMatrix_ , class EigenVector_ &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">int <a class="el" href="structirlba_1_1PcaResults.html">irlba::PcaResults</a>&lt; EigenMatrix_, EigenVector_ &gt;::iterations</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>The number of restart iterations performed. </p>
+<p><a class="el" href="structirlba_1_1Metrics.html" title="Metrics for IRLBA progress from compute().">Metrics</a> for the progress of the algorithm. </p>
 
 </div>
 </div>
