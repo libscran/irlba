@@ -12,10 +12,12 @@ Rcpp::List parallel(
     Rcpp::NumericVector init,
     int number,
     int work,
+    double tol,
     int num_threads
 ) {
     irlba::Options opt;
     opt.extra_work = work;
+    opt.convergence_tolerance = tol;
     irlba::EigenThreadScope ets(num_threads);
 
     Eigen::VectorXd v(init.size());

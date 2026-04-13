@@ -11,22 +11,23 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // dense
-Rcpp::List dense(Rcpp::NumericMatrix x, Rcpp::NumericVector init, int number, int work, int num_threads);
-RcppExport SEXP _irlba_tests_dense(SEXP xSEXP, SEXP initSEXP, SEXP numberSEXP, SEXP workSEXP, SEXP num_threadsSEXP) {
+Rcpp::List dense(Rcpp::NumericMatrix x, Rcpp::NumericVector init, int number, int work, double tol, int num_threads);
+RcppExport SEXP _irlba_tests_dense(SEXP xSEXP, SEXP initSEXP, SEXP numberSEXP, SEXP workSEXP, SEXP tolSEXP, SEXP num_threadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type x(xSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type init(initSEXP);
     Rcpp::traits::input_parameter< int >::type number(numberSEXP);
     Rcpp::traits::input_parameter< int >::type work(workSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< int >::type num_threads(num_threadsSEXP);
-    rcpp_result_gen = Rcpp::wrap(dense(x, init, number, work, num_threads));
+    rcpp_result_gen = Rcpp::wrap(dense(x, init, number, work, tol, num_threads));
     return rcpp_result_gen;
 END_RCPP
 }
 // parallel
-Rcpp::List parallel(int nrow, int ncol, Rcpp::NumericVector x, Rcpp::IntegerVector i, Rcpp::IntegerVector p, Rcpp::NumericVector init, int number, int work, int num_threads);
-RcppExport SEXP _irlba_tests_parallel(SEXP nrowSEXP, SEXP ncolSEXP, SEXP xSEXP, SEXP iSEXP, SEXP pSEXP, SEXP initSEXP, SEXP numberSEXP, SEXP workSEXP, SEXP num_threadsSEXP) {
+Rcpp::List parallel(int nrow, int ncol, Rcpp::NumericVector x, Rcpp::IntegerVector i, Rcpp::IntegerVector p, Rcpp::NumericVector init, int number, int work, double tol, int num_threads);
+RcppExport SEXP _irlba_tests_parallel(SEXP nrowSEXP, SEXP ncolSEXP, SEXP xSEXP, SEXP iSEXP, SEXP pSEXP, SEXP initSEXP, SEXP numberSEXP, SEXP workSEXP, SEXP tolSEXP, SEXP num_threadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< int >::type nrow(nrowSEXP);
@@ -37,14 +38,15 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type init(initSEXP);
     Rcpp::traits::input_parameter< int >::type number(numberSEXP);
     Rcpp::traits::input_parameter< int >::type work(workSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< int >::type num_threads(num_threadsSEXP);
-    rcpp_result_gen = Rcpp::wrap(parallel(nrow, ncol, x, i, p, init, number, work, num_threads));
+    rcpp_result_gen = Rcpp::wrap(parallel(nrow, ncol, x, i, p, init, number, work, tol, num_threads));
     return rcpp_result_gen;
 END_RCPP
 }
 // sparse
-Rcpp::List sparse(int nrow, int ncol, Rcpp::NumericVector x, Rcpp::IntegerVector i, Rcpp::IntegerVector p, Rcpp::NumericVector init, int number, int work, int num_threads);
-RcppExport SEXP _irlba_tests_sparse(SEXP nrowSEXP, SEXP ncolSEXP, SEXP xSEXP, SEXP iSEXP, SEXP pSEXP, SEXP initSEXP, SEXP numberSEXP, SEXP workSEXP, SEXP num_threadsSEXP) {
+Rcpp::List sparse(int nrow, int ncol, Rcpp::NumericVector x, Rcpp::IntegerVector i, Rcpp::IntegerVector p, Rcpp::NumericVector init, int number, int work, double tol, int num_threads);
+RcppExport SEXP _irlba_tests_sparse(SEXP nrowSEXP, SEXP ncolSEXP, SEXP xSEXP, SEXP iSEXP, SEXP pSEXP, SEXP initSEXP, SEXP numberSEXP, SEXP workSEXP, SEXP tolSEXP, SEXP num_threadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< int >::type nrow(nrowSEXP);
@@ -55,16 +57,17 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type init(initSEXP);
     Rcpp::traits::input_parameter< int >::type number(numberSEXP);
     Rcpp::traits::input_parameter< int >::type work(workSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< int >::type num_threads(num_threadsSEXP);
-    rcpp_result_gen = Rcpp::wrap(sparse(nrow, ncol, x, i, p, init, number, work, num_threads));
+    rcpp_result_gen = Rcpp::wrap(sparse(nrow, ncol, x, i, p, init, number, work, tol, num_threads));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_irlba_tests_dense", (DL_FUNC) &_irlba_tests_dense, 5},
-    {"_irlba_tests_parallel", (DL_FUNC) &_irlba_tests_parallel, 9},
-    {"_irlba_tests_sparse", (DL_FUNC) &_irlba_tests_sparse, 9},
+    {"_irlba_tests_dense", (DL_FUNC) &_irlba_tests_dense, 6},
+    {"_irlba_tests_parallel", (DL_FUNC) &_irlba_tests_parallel, 10},
+    {"_irlba_tests_sparse", (DL_FUNC) &_irlba_tests_sparse, 10},
     {NULL, NULL, 0}
 };
 
