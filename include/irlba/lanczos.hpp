@@ -15,9 +15,15 @@
 namespace irlba {
 
 template<class EigenMatrix_, class EigenVector_>
-void orthogonalize_vector(const EigenMatrix_& mat, EigenVector_& vec, size_t ncols, EigenVector_& tmp) {
-    tmp.head(ncols).noalias() = mat.leftCols(ncols).adjoint() * vec;
-    vec.noalias() -= mat.leftCols(ncols) * tmp.head(ncols);
+void orthogonalize_vector(const EigenMatrix_& mat, EigenVector_& vec, Eigen::Index ncols) {
+    // Original package uses classical Gram Schmidt but modified GS is actually faster when we
+    // sum the timing across all orthogonalization steps in the Lanczos process.
+    // Possibly because it allows us to modify 'vec' for each of mat's progressive column vectors, 
+    // rather than requiring a temporary space to store the projections from the original 'vec'.
+    for (Eigen::Index c = 0; c < ncols; ++c) {
+        // No need to divide by the norm of mat.col(c), as this is always 1.
+        vec -= mat.col(c) * vec.dot(mat.col(c)); 
+    }
 }
 
 template<class EigenVector_, class Matrix_>
@@ -25,14 +31,12 @@ struct LanczosWorkspace {
     LanczosWorkspace(const Matrix_& mat) : 
         F(mat.cols()), 
         W_next(mat.rows()), 
-        orthog_tmp(mat.cols()), 
         work(mat.new_known_workspace()),
         awork(mat.new_known_adjoint_workspace())
     {}
 
     EigenVector_ F; 
     EigenVector_ W_next;
-    EigenVector_ orthog_tmp;
 
     I<decltype(std::declval<Matrix_>().new_known_workspace())> work;
     I<decltype(std::declval<Matrix_>().new_known_adjoint_workspace())> awork;
@@ -68,7 +72,6 @@ int run_lanczos_bidiagonalization(
     const Eigen::Index work = W.cols();
     auto& F = inter.F;
     auto& W_next = inter.W_next;
-    auto& otmp = inter.orthog_tmp;
 
     F = V.col(start);
     inter.work->multiply(F, W_next); // i.e., W_next = mat * F;
@@ -76,7 +79,7 @@ int run_lanczos_bidiagonalization(
 
     // If start = 0, there's nothing to orthogonalize against.
     if (start) {
-        orthogonalize_vector(W, W_next, start, otmp);
+        orthogonalize_vector(W, W_next, start);
     }
 
     Float S = W_next.norm();
@@ -95,14 +98,14 @@ int run_lanczos_bidiagonalization(
         ++mult;
 
         F -= S * V.col(j); // equivalent to daxpy.
-        orthogonalize_vector(V, F, j + 1, otmp);
+        orthogonalize_vector(V, F, j + 1);
 
         if (j + 1 < work) {
             Float R_F = F.norm();
 
             if (R_F < eps) {
                 fill_with_random_normals(F, eng);
-                orthogonalize_vector(V, F, j + 1, otmp);
+                orthogonalize_vector(V, F, j + 1);
                 R_F = F.norm();
                 F /= R_F;
                 R_F = 0;
@@ -121,12 +124,12 @@ int run_lanczos_bidiagonalization(
             // Full re-orthogonalization, using the left-most 'j + 1' columns of W.
             // Recall that W_next will be the 'j + 2'-th column, i.e., W.col(j + 1) in
             // 0-indexed terms, so we want to orthogonalize to all previous columns.
-            orthogonalize_vector(W, W_next, j + 1, otmp);
+            orthogonalize_vector(W, W_next, j + 1);
 
             S = W_next.norm();
             if (S < eps) {
                 fill_with_random_normals(W_next, eng);
-                orthogonalize_vector(W, W_next, j + 1, otmp);
+                orthogonalize_vector(W, W_next, j + 1);
                 S = W_next.norm();
                 W_next /= S;
                 S = 0;
