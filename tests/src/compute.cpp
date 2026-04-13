@@ -30,6 +30,14 @@ TEST(Compute, CompareToExact) {
     expect_equal_column_vectors(res.V, svd.matrixV().leftCols(rank), 1e-8);
 }
 
+TEST(Compute, ChooseExtraWork) {
+    EXPECT_EQ(irlba::choose_extra_work(5, {}), 7);
+    EXPECT_EQ(irlba::choose_extra_work(10, {}), 10);
+    EXPECT_EQ(irlba::choose_extra_work(10, 1), 1);
+    EXPECT_EQ(irlba::choose_extra_work(10, 5), 5);
+    EXPECT_EQ(irlba::choose_extra_work(10, 20), 20);
+}
+
 TEST(Compute, RequestedVsHalfSmaller) {
     EXPECT_TRUE(irlba::requested_greater_than_or_equal_to_half_smaller(10, 10));
     EXPECT_FALSE(irlba::requested_greater_than_or_equal_to_half_smaller(10, 30));

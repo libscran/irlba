@@ -45,6 +45,15 @@ void exact(const Matrix_& matrix, const Eigen::Index requested_number, EigenMatr
     outV = svd.matrixV().leftCols(requested_number);
 }
 
+// The R package's default is 7 but larger values can improve performance for large 'requested_number'. 
+inline Eigen::Index choose_extra_work(const Eigen::Index requested, const std::optional<Eigen::Index>& extra_work) {
+    if (extra_work.has_value()) {
+        return *extra_work;
+    } else {
+        return std::max(requested, static_cast<Eigen::Index>(7));
+    }
+}
+
 // Basically (requested * 2 >= smaller), but avoiding overflow from the product.
 inline bool requested_greater_than_or_equal_to_half_smaller(const Eigen::Index requested, const Eigen::Index smaller) {
     const Eigen::Index half_smaller = smaller / 2;
@@ -56,7 +65,7 @@ inline bool requested_greater_than_or_equal_to_half_smaller(const Eigen::Index r
 }
 
 // Basically min(requested_number + extra_work, smaller), but avoiding overflow from the sum.
-inline Eigen::Index choose_requested_plus_extra_work_or_smaller(const Eigen::Index requested_number, const int extra_work, const Eigen::Index smaller) {
+inline Eigen::Index choose_requested_plus_extra_work_or_smaller(const Eigen::Index requested_number, const Eigen::Index extra_work, const Eigen::Index smaller) {
     if (requested_number >= smaller) {
         return smaller;
     } else {
@@ -202,9 +211,11 @@ Metrics compute(
         return met;
     }
 
+    const Eigen::Index extra_work = choose_extra_work(requested_number, options.extra_work);
+
     // We know work must be positive at this point, as we would have returned early if requested_number = 0.
     // Similar, if smaller = 0, we would have either thrown earlier or set requested_number = 0.
-    const Eigen::Index work = choose_requested_plus_extra_work_or_smaller(requested_number, options.extra_work, smaller);
+    const Eigen::Index work = choose_requested_plus_extra_work_or_smaller(requested_number, extra_work, smaller);
 
     // Don't worry about sanitizing dimensions for Eigen constructors,
     // as the former are stored as Eigen::Index and the latter accepts Eigen::Index inputs.

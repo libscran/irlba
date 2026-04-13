@@ -43,8 +43,10 @@ struct Options {
     /**
      * Number of extra dimensions to define the working subspace.
      * Larger values can speed up convergence at the cost of increased memory usage.
+     * If unset, it defaults to the larger of 7 (the original default from the R package)
+     * and the requested number of singular triplets (for `compute()`) or principal components (for `pca()`).
      */
-    int extra_work = 7;
+    std::optional<Eigen::Index> extra_work;
 
     /**
      * Maximum number of restart iterations.
