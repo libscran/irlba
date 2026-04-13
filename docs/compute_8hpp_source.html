@@ -357,8 +357,8 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>        prevS = BS;</div>
 <div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span> </div>
 <div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>        k = update_k(k, requested_number, n_converged, work);</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>        Vtmp.leftCols(k).noalias() = V * BV.leftCols(k);</div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>        V.leftCols(k) = Vtmp.leftCols(k);</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>        Vtmp.leftCols(k).noalias() = V * BV.leftCols(k); <span class="comment">// don&#39;t write directly into V, to avoid aliasing problems.</span></div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>        V.swap(Vtmp);</div>
 <div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span> </div>
 <div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>        <span class="comment">// See Equation 3.2 of Baglama and Reichel, where our &#39;V&#39; is their</span></div>
 <div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>        <span class="comment">// &#39;P&#39;, and our &#39;F / R_F&#39; is their &#39;p_{m+1}&#39; (Equation 2.2).  &#39;F&#39;</span></div>
@@ -368,8 +368,8 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>        <span class="comment">// V is ok to use in the next run_lanczos_bidiagonalization().</span></div>
 <div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>        V.col(k) = F / R_F; </div>
 <div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span> </div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>        Wtmp.leftCols(k).noalias() = W * BU.leftCols(k);</div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>        W.leftCols(k) = Wtmp.leftCols(k);</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>        Wtmp.leftCols(k).noalias() = W * BU.leftCols(k); <span class="comment">// don&#39;t write directly into W, to avoid aliasing problems.</span></div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>        W.swap(Wtmp);</div>
 <div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span> </div>
 <div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>        B.setZero(work, work);</div>
 <div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>        <span class="keywordflow">for</span> (I&lt;<span class="keyword">decltype</span>(k)&gt; l = 0; l &lt; k; ++l) {</div>
