@@ -1,7 +1,9 @@
 <map id="irlba/Options.hpp" name="irlba/Options.hpp">
-<area shape="rect" id="Node000001" title="Options for IRLBA." alt="" coords="20,5,139,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,66,105"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="75,33,53,67,49,64,70,30"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="90,79,157,105"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="89,30,110,64,106,67,84,33"/>
+<area shape="rect" id="Node000001" title="Options for IRLBA." alt="" coords="68,5,186,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,70,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,34,66,71,63,67,110,29"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="94,79,160,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="130,31,130,63,124,63,124,31"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="184,79,278,105"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="146,29,202,68,199,72,143,34"/>
 </map>

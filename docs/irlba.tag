@@ -4,6 +4,7 @@
     <name>compute.hpp</name>
     <path>irlba/</path>
     <filename>compute_8hpp.html</filename>
+    <includes id="Options_8hpp" name="Options.hpp" local="yes" import="no" module="no" objc="no">Options.hpp</includes>
     <includes id="simple_8hpp" name="simple.hpp" local="yes" import="no" module="no" objc="no">Matrix/simple.hpp</includes>
     <class kind="struct">irlba::Metrics</class>
     <class kind="struct">irlba::Results</class>
@@ -257,10 +258,10 @@
     <filename>structirlba_1_1Options.html</filename>
     <templarg>class EigenVector_</templarg>
     <member kind="variable">
-      <type>double</type>
+      <type>std::optional&lt; double &gt;</type>
       <name>invariant_subspace_tolerance</name>
       <anchorfile>structirlba_1_1Options.html</anchorfile>
-      <anchor>ab6e3d538d647a3c72b7ea655c7486a57</anchor>
+      <anchor>a017eaae25536867fdbc75f21eb34316d</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -271,10 +272,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>double</type>
+      <type>std::optional&lt; double &gt;</type>
       <name>singular_value_ratio_tolerance</name>
       <anchorfile>structirlba_1_1Options.html</anchorfile>
-      <anchor>a9b8e78abc2333d8b7a9ee9a0635e3f02</anchor>
+      <anchor>a105682618bb658ab0c951be3f111357f</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">

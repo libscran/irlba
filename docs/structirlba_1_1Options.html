@@ -104,12 +104,12 @@ $(function(){ initResizable(false); });
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ab6e3d538d647a3c72b7ea655c7486a57" id="r_ab6e3d538d647a3c72b7ea655c7486a57"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab6e3d538d647a3c72b7ea655c7486a57">invariant_subspace_tolerance</a> = -1</td></tr>
-<tr class="separator:ab6e3d538d647a3c72b7ea655c7486a57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a017eaae25536867fdbc75f21eb34316d" id="r_a017eaae25536867fdbc75f21eb34316d"><td class="memItemLeft" align="right" valign="top">std::optional&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a017eaae25536867fdbc75f21eb34316d">invariant_subspace_tolerance</a></td></tr>
+<tr class="separator:a017eaae25536867fdbc75f21eb34316d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a019f546a47e990071416a11687c14d71" id="r_a019f546a47e990071416a11687c14d71"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a019f546a47e990071416a11687c14d71">convergence_tolerance</a> = 1e-5</td></tr>
 <tr class="separator:a019f546a47e990071416a11687c14d71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b8e78abc2333d8b7a9ee9a0635e3f02" id="r_a9b8e78abc2333d8b7a9ee9a0635e3f02"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b8e78abc2333d8b7a9ee9a0635e3f02">singular_value_ratio_tolerance</a> = -1</td></tr>
-<tr class="separator:a9b8e78abc2333d8b7a9ee9a0635e3f02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a105682618bb658ab0c951be3f111357f" id="r_a105682618bb658ab0c951be3f111357f"><td class="memItemLeft" align="right" valign="top">std::optional&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a105682618bb658ab0c951be3f111357f">singular_value_ratio_tolerance</a></td></tr>
+<tr class="separator:a105682618bb658ab0c951be3f111357f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb124956e2c0b46c1ccafde8f2c66da3" id="r_aeb124956e2c0b46c1ccafde8f2c66da3"><td class="memItemLeft" align="right" valign="top">std::optional&lt; Eigen::Index &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeb124956e2c0b46c1ccafde8f2c66da3">extra_work</a></td></tr>
 <tr class="separator:aeb124956e2c0b46c1ccafde8f2c66da3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f53aad8e0d9b6d1a1a9647413f638fa" id="r_a5f53aad8e0d9b6d1a1a9647413f638fa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f53aad8e0d9b6d1a1a9647413f638fa">max_iterations</a> = 1000</td></tr>
@@ -165,7 +165,8 @@ template&lt;class EigenVector_  = Eigen::VectorXd&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Tolerance on the residuals of the singular triplets. Lower values improve the accuracy of the decomposition. (See Equation 2.13 of Baglama and Reichel.) </p>
+<p>Tolerance on the approximation error of the singular triplets. Lower values improve the accuracy of the decomposition. (See Equation 2.13 of Baglama and Reichel.)</p>
+<p>Any user-provided value should be non-negative. </p>
 
 </div>
 </div>
@@ -237,8 +238,8 @@ template&lt;class EigenVector_  = Eigen::VectorXd&gt; </div>
 
 </div>
 </div>
-<a id="ab6e3d538d647a3c72b7ea655c7486a57" name="ab6e3d538d647a3c72b7ea655c7486a57"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab6e3d538d647a3c72b7ea655c7486a57">&#9670;&#160;</a></span>invariant_subspace_tolerance</h2>
+<a id="a017eaae25536867fdbc75f21eb34316d" name="a017eaae25536867fdbc75f21eb34316d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a017eaae25536867fdbc75f21eb34316d">&#9670;&#160;</a></span>invariant_subspace_tolerance</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -246,11 +247,12 @@ template&lt;class EigenVector_  = Eigen::VectorXd&gt; </div>
 template&lt;class EigenVector_  = Eigen::VectorXd&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">double <a class="el" href="structirlba_1_1Options.html">irlba::Options</a>&lt; EigenVector_ &gt;::invariant_subspace_tolerance = -1</td>
+          <td class="memname">std::optional&lt;double&gt; <a class="el" href="structirlba_1_1Options.html">irlba::Options</a>&lt; EigenVector_ &gt;::invariant_subspace_tolerance</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Set the tolerance to use to define invariant subspaces. This is used as the lower bound for the L2 norm for the subspace vectors; below this bound, vectors are treated as all-zero and are instead filled with random draws from a normal distribution. If negative, we instead use the machine epsilon to the power of 0.8. </p>
+<p>Tolerance for defining invariant subspaces. This is used as the lower bound for the L2 norm for the subspace vectors; below this bound, vectors are treated as all-zero and are instead filled with random draws from a normal distribution.</p>
+<p>Any user-provided value should be non-negative. If unset, this defaults to the machine epsilon to the power of 0.8. </p>
 
 </div>
 </div>
@@ -288,8 +290,8 @@ template&lt;class EigenVector_  = Eigen::VectorXd&gt; </div>
 
 </div>
 </div>
-<a id="a9b8e78abc2333d8b7a9ee9a0635e3f02" name="a9b8e78abc2333d8b7a9ee9a0635e3f02"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b8e78abc2333d8b7a9ee9a0635e3f02">&#9670;&#160;</a></span>singular_value_ratio_tolerance</h2>
+<a id="a105682618bb658ab0c951be3f111357f" name="a105682618bb658ab0c951be3f111357f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a105682618bb658ab0c951be3f111357f">&#9670;&#160;</a></span>singular_value_ratio_tolerance</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -297,11 +299,12 @@ template&lt;class EigenVector_  = Eigen::VectorXd&gt; </div>
 template&lt;class EigenVector_  = Eigen::VectorXd&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">double <a class="el" href="structirlba_1_1Options.html">irlba::Options</a>&lt; EigenVector_ &gt;::singular_value_ratio_tolerance = -1</td>
+          <td class="memname">std::optional&lt;double&gt; <a class="el" href="structirlba_1_1Options.html">irlba::Options</a>&lt; EigenVector_ &gt;::singular_value_ratio_tolerance</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Tolerance on the relative differences between singular values across iterations. Lower values improve the accuracy of the decomposition. If -1, the value in <code><a class="el" href="#a019f546a47e990071416a11687c14d71">Options::convergence_tolerance</a></code> is used. </p>
+<p>Tolerance on the relative differences between singular values across iterations. Lower values improve the accuracy of the decomposition.</p>
+<p>Any user-provided value should be non-negative. If unset, the value in <code><a class="el" href="#a019f546a47e990071416a11687c14d71">Options::convergence_tolerance</a></code> is used. </p>
 
 </div>
 </div>

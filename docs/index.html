@@ -110,9 +110,9 @@ $(function(){ initResizable(false); });
 <div class="line">result.U; <span class="comment">// left singular vectors</span></div>
 <div class="line">result.V; <span class="comment">// right singular vectors</span></div>
 <div class="line">result.D; <span class="comment">// singular values</span></div>
-<div class="ttc" id="astructirlba_1_1Options_html"><div class="ttname"><a href="structirlba_1_1Options.html">irlba::Options</a></div><div class="ttdoc">Options for running IRLBA in compute() and pca().</div><div class="ttdef"><b>Definition</b> Options.hpp:20</div></div>
-<div class="ttc" id="astructirlba_1_1Options_html_a5f53aad8e0d9b6d1a1a9647413f638fa"><div class="ttname"><a href="structirlba_1_1Options.html#a5f53aad8e0d9b6d1a1a9647413f638fa">irlba::Options::max_iterations</a></div><div class="ttdeci">int max_iterations</div><div class="ttdef"><b>Definition</b> Options.hpp:55</div></div>
-<div class="ttc" id="astructirlba_1_1Options_html_aeb124956e2c0b46c1ccafde8f2c66da3"><div class="ttname"><a href="structirlba_1_1Options.html#aeb124956e2c0b46c1ccafde8f2c66da3">irlba::Options::extra_work</a></div><div class="ttdeci">std::optional&lt; Eigen::Index &gt; extra_work</div><div class="ttdef"><b>Definition</b> Options.hpp:49</div></div>
+<div class="ttc" id="astructirlba_1_1Options_html"><div class="ttname"><a href="structirlba_1_1Options.html">irlba::Options</a></div><div class="ttdoc">Options for running IRLBA in compute() and pca().</div><div class="ttdef"><b>Definition</b> Options.hpp:21</div></div>
+<div class="ttc" id="astructirlba_1_1Options_html_a5f53aad8e0d9b6d1a1a9647413f638fa"><div class="ttname"><a href="structirlba_1_1Options.html#a5f53aad8e0d9b6d1a1a9647413f638fa">irlba::Options::max_iterations</a></div><div class="ttdeci">int max_iterations</div><div class="ttdef"><b>Definition</b> Options.hpp:62</div></div>
+<div class="ttc" id="astructirlba_1_1Options_html_aeb124956e2c0b46c1ccafde8f2c66da3"><div class="ttname"><a href="structirlba_1_1Options.html#aeb124956e2c0b46c1ccafde8f2c66da3">irlba::Options::extra_work</a></div><div class="ttdeci">std::optional&lt; Eigen::Index &gt; extra_work</div><div class="ttdef"><b>Definition</b> Options.hpp:56</div></div>
 </div><!-- fragment --><p>To perform a PCA:</p>
 <div class="fragment"><div class="line"><span class="comment">// Get the first 5 principal components without scaling:</span></div>
 <div class="line"><span class="keyword">auto</span> pcres = irlba::pca(mat, <span class="keyword">true</span>, <span class="keyword">false</span>, 5, opt);</div>
