@@ -308,8 +308,8 @@ Metrics compute(
         prevS = BS;
 
         k = update_k(k, requested_number, n_converged, work);
-        Vtmp.leftCols(k).noalias() = V * BV.leftCols(k);
-        V.leftCols(k) = Vtmp.leftCols(k);
+        Vtmp.leftCols(k).noalias() = V * BV.leftCols(k); // don't write directly into V, to avoid aliasing problems.
+        V.swap(Vtmp);
 
         // See Equation 3.2 of Baglama and Reichel, where our 'V' is their
         // 'P', and our 'F / R_F' is their 'p_{m+1}' (Equation 2.2).  'F'
@@ -319,8 +319,8 @@ Metrics compute(
         // V is ok to use in the next run_lanczos_bidiagonalization().
         V.col(k) = F / R_F; 
 
-        Wtmp.leftCols(k).noalias() = W * BU.leftCols(k);
-        W.leftCols(k) = Wtmp.leftCols(k);
+        Wtmp.leftCols(k).noalias() = W * BU.leftCols(k); // don't write directly into W, to avoid aliasing problems.
+        W.swap(Wtmp);
 
         B.setZero(work, work);
         for (I<decltype(k)> l = 0; l < k; ++l) {
