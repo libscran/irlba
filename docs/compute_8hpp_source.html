@@ -320,7 +320,7 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>        <span class="keyword">const</span> <span class="keyword">auto</span>&amp; BV = svd.matrixV();</div>
 <div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span> </div>
 <div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>        <span class="comment">// Checking for convergence.</span></div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>        <span class="keywordflow">if</span> (B(work - 1, work - 1) == 0) { <span class="comment">// a.k.a. the final value of &#39;S&#39; from the Lanczos iterations.</span></div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>        <span class="keywordflow">if</span> (B.coeff(work - 1, work - 1) == 0) { <span class="comment">// a.k.a. the final value of &#39;S&#39; from the Lanczos iterations.</span></div>
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>            converged = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>            <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>        }</div>
@@ -373,7 +373,7 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span> </div>
 <div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>        B.setZero(work, work);</div>
 <div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>        <span class="keywordflow">for</span> (I&lt;<span class="keyword">decltype</span>(k)&gt; l = 0; l &lt; k; ++l) {</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>            B(l, l) = BS[l];</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>            B.coeffRef(l, l) = BS[l];</div>
 <div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span> </div>
 <div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>            <span class="comment">// This assignment looks weird but is deliberate, see Equation</span></div>
 <div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>            <span class="comment">// 3.6 of Baglama and Reichel. Happily, this is the same value</span></div>
@@ -381,7 +381,7 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>            <span class="comment">// (See the equation just above Equation 3.5; I think they </span></div>
 <div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>            <span class="comment">// misplaced a tilde on the final &#39;u&#39;, given no other &#39;u&#39; has</span></div>
 <div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>            <span class="comment">// a B_m superscript as well as a tilde.)</span></div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>            B(l, k) = res[l]; </div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>            B.coeffRef(l, k) = res[l]; </div>
 <div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>        }</div>
 <div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>    }</div>
 <div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span> </div>
