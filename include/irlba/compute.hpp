@@ -271,7 +271,7 @@ Metrics compute(
         const auto& BV = svd.matrixV();
 
         // Checking for convergence.
-        if (B(work - 1, work - 1) == 0) { // a.k.a. the final value of 'S' from the Lanczos iterations.
+        if (B.coeff(work - 1, work - 1) == 0) { // a.k.a. the final value of 'S' from the Lanczos iterations.
             converged = true;
             break;
         }
@@ -324,7 +324,7 @@ Metrics compute(
 
         B.setZero(work, work);
         for (I<decltype(k)> l = 0; l < k; ++l) {
-            B(l, l) = BS[l];
+            B.coeffRef(l, l) = BS[l];
 
             // This assignment looks weird but is deliberate, see Equation
             // 3.6 of Baglama and Reichel. Happily, this is the same value
@@ -332,7 +332,7 @@ Metrics compute(
             // (See the equation just above Equation 3.5; I think they 
             // misplaced a tilde on the final 'u', given no other 'u' has
             // a B_m superscript as well as a tilde.)
-            B(l, k) = res[l]; 
+            B.coeffRef(l, k) = res[l]; 
         }
     }
 

@@ -88,6 +88,7 @@ int run_lanczos_bidiagonalization(
     }
     W_next /= S;
     W.col(start) = W_next;
+    B.coeffRef(start, start) = S;
 
     // The Lanczos iterations themselves, see algorithm 2.1 of Baglama and Reichel.
     for (Eigen::Index j = start; j < work; ++j) {
@@ -100,51 +101,50 @@ int run_lanczos_bidiagonalization(
         F -= S * V.col(j); // equivalent to daxpy.
         orthogonalize_vector(V, F, j + 1);
 
-        if (j + 1 < work) {
-            Float R_F = F.norm();
-
-            if (R_F < eps) {
-                fill_with_random_normals(F, eng);
-                orthogonalize_vector(V, F, j + 1);
-                R_F = F.norm();
-                F /= R_F;
-                R_F = 0;
-            } else {
-                F /= R_F;
-            }
-
-            V.col(j + 1) = F;
-            B(j, j) = S;
-            B(j, j + 1) = R_F;
-
-            inter.work->multiply(F, W_next); // i.e., W_next = mat * F;
-            ++mult;
-            W_next -= R_F * W.col(j); // equivalent to daxpy.
-
-            // Full re-orthogonalization, using the left-most 'j + 1' columns of W.
-            // Recall that W_next will be the 'j + 2'-th column, i.e., W.col(j + 1) in
-            // 0-indexed terms, so we want to orthogonalize to all previous columns.
-            orthogonalize_vector(W, W_next, j + 1);
-
-            S = W_next.norm();
-            if (S < eps) {
-                fill_with_random_normals(W_next, eng);
-                orthogonalize_vector(W, W_next, j + 1);
-                S = W_next.norm();
-                W_next /= S;
-                S = 0;
-            } else {
-                W_next /= S;
-            }
-
-            W.col(j + 1) = W_next;
-        } else {
-            // The paper's algorithm sets B(j + 1, j + 1) = S in the
-            // j + 1 < work clause. But the irlba R package's C code 
-            // sets it on the last loop, which gives the same result;
-            // so to avoid any headaches, we do the same thing too.
-            B(j, j) = S;
+        if (j + 1 == work) {
+            // No need to do the rest if we're on the last iteration.
+            // Indeed, the rest wouldn't be valid anyway because assignments to V and B would be out of bounds.
+            // We still need to do the preceding multiplication, though, because 'F' now contains the residuals.
+            break;
         }
+
+        Float R_F = F.norm();
+
+        if (R_F < eps) {
+            fill_with_random_normals(F, eng);
+            orthogonalize_vector(V, F, j + 1);
+            R_F = F.norm();
+            F /= R_F;
+            R_F = 0;
+        } else {
+            F /= R_F;
+        }
+
+        V.col(j + 1) = F;
+        B.coeffRef(j, j + 1) = R_F;
+
+        inter.work->multiply(F, W_next); // i.e., W_next = mat * F;
+        ++mult;
+        W_next -= R_F * W.col(j); // equivalent to daxpy.
+
+        // Full re-orthogonalization, using the left-most 'j + 1' columns of W.
+        // Recall that W_next will be the 'j + 2'-th column, i.e., W.col(j + 1) in
+        // 0-indexed terms, so we want to orthogonalize to all previous columns.
+        orthogonalize_vector(W, W_next, j + 1);
+
+        S = W_next.norm();
+        if (S < eps) {
+            fill_with_random_normals(W_next, eng);
+            orthogonalize_vector(W, W_next, j + 1);
+            S = W_next.norm();
+            W_next /= S;
+            S = 0;
+        } else {
+            W_next /= S;
+        }
+
+        B.coeffRef(j + 1, j + 1) = S;
+        W.col(j + 1) = W_next;
     }
 
     return mult;
