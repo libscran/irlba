@@ -7,6 +7,9 @@
 #include <stdexcept>
 #include <type_traits>
 
+#include <chrono>
+#include <iostream>
+
 #include "utils.hpp"
 #include "lanczos.hpp"
 #include "Matrix/simple.hpp"
@@ -24,12 +27,9 @@ namespace irlba {
 /**
  * @cond
  */
-template<typename EigenMatrix_>
-using JacobiSVD = Eigen::JacobiSVD<EigenMatrix_, Eigen::ComputeThinU | Eigen::ComputeThinV>;
-
 template<class Matrix_, class EigenMatrix_, class EigenVector_>
 void exact(const Matrix_& matrix, const Eigen::Index requested_number, EigenMatrix_& outU, EigenMatrix_& outV, EigenVector_& outD) {
-    JacobiSVD<EigenMatrix_> svd(matrix.rows(), matrix.cols());
+    Eigen::JacobiSVD<EigenMatrix_, Eigen::ComputeThinU | Eigen::ComputeThinV> svd(matrix.rows(), matrix.cols());
 
     auto realizer = matrix.new_known_realize_workspace();
     EigenMatrix_ buffer;
@@ -176,6 +176,8 @@ Metrics compute(
     EigenVector_& outD,
     const Options<EigenVector_>& options
 ) {
+    const auto s0 = std::chrono::steady_clock::now();
+
     const Eigen::Index smaller = std::min(matrix.rows(), matrix.cols());
     Eigen::Index requested_number = sanisizer::cast<Eigen::Index>(number);
     if (requested_number > smaller) {
@@ -235,7 +237,7 @@ Metrics compute(
     bool converged = false;
     int iter = 0, mult = 0;
     Eigen::Index k = 0;
-    JacobiSVD<EigenMatrix_> svd(work, work);
+    Eigen::BDCSVD<EigenMatrix_, Eigen::NoQRPreconditioner | Eigen::ComputeFullU | Eigen::ComputeFullV> svd(work, work);
 
     LanczosWorkspace<EigenVector_, Matrix_> lpwork(matrix);
 
@@ -253,6 +255,9 @@ Metrics compute(
     typename EigenMatrix_::Scalar tol = options.convergence_tolerance;
     typename EigenMatrix_::Scalar svtol_actual = (svtol >= 0 ? svtol : tol);
 
+    double svd_time = 0;
+    double mult_time = 0;
+
     for (; iter < options.max_iterations; ++iter) {
         // Technically, this is only a 'true' Lanczos bidiagonalization
         // when k = 0. All other times, we're just recycling the machinery,
@@ -265,7 +270,10 @@ Metrics compute(
 //                std::cout << "V is currently:\n" << V << std::endl;
 //            }
 
+        const auto s = std::chrono::steady_clock::now();
         svd.compute(B);
+        const auto f = std::chrono::steady_clock::now();
+        svd_time += std::chrono::duration<double>(f - s).count();
         const auto& BS = svd.singularValues();
         const auto& BU = svd.matrixU();
         const auto& BV = svd.matrixV();
@@ -307,6 +315,8 @@ Metrics compute(
         }
         prevS = BS;
 
+        const auto s0 = std::chrono::steady_clock::now();
+
         k = update_k(k, requested_number, n_converged, work);
         Vtmp.leftCols(k).noalias() = V * BV.leftCols(k); // don't write directly into V, to avoid aliasing problems.
         V.swap(Vtmp);
@@ -332,8 +342,11 @@ Metrics compute(
             // (See the equation just above Equation 3.5; I think they 
             // misplaced a tilde on the final 'u', given no other 'u' has
             // a B_m superscript as well as a tilde.)
-            B(l, k) = res[l]; 
+            B(l, k) = res[l];
         }
+
+        const auto f0 = std::chrono::steady_clock::now();
+        mult_time += std::chrono::duration<double>(f0 - s0).count();
     }
 
     // See Equation 2.11 of Baglama and Reichel for how to get from B's
@@ -351,6 +364,15 @@ Metrics compute(
     met.converged = converged;
     met.multiplications = mult;
     met.iterations = (converged ? iter + 1 : iter);
+
+    std::cout << "Multiplication time is " << lpwork.multiplication_time << std::endl;;
+    std::cout << "Orthogonalization time is " << lpwork.orthog_time << std::endl;;
+    std::cout << "SVD time is " << svd_time << std::endl;;
+    std::cout << "More multiplication time is " << mult_time << std::endl;;
+
+    const auto f0 = std::chrono::steady_clock::now();
+    std::cout << "Total time is " << std::chrono::duration<double>(f0 - s0).count() << std::endl;
+
     return met;
 }
 

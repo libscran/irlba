@@ -40,6 +40,9 @@ struct LanczosWorkspace {
 
     I<decltype(std::declval<Matrix_>().new_known_workspace())> work;
     I<decltype(std::declval<Matrix_>().new_known_adjoint_workspace())> awork;
+
+    double multiplication_time = 0; 
+    double orthog_time = 0; 
 };
 
 /*
@@ -74,7 +77,12 @@ int run_lanczos_bidiagonalization(
     auto& W_next = inter.W_next;
 
     F = V.col(start);
+    {
+    const auto s = std::chrono::steady_clock::now();
     inter.work->multiply(F, W_next); // i.e., W_next = mat * F;
+    const auto f = std::chrono::steady_clock::now();;
+    inter.multiplication_time += std::chrono::duration<double>(f - s).count();
+    }
     int mult = 1;
 
     // If start = 0, there's nothing to orthogonalize against.
@@ -94,18 +102,29 @@ int run_lanczos_bidiagonalization(
         // This step is equivalent to F = mat.adjoint() * W.col(j).
         // Remember that W_next is assigned into W.col(start) at the start, or W.col(j+1) from the previous iteration;
         // so W_next is equal to W.col(j) in the current iteration.
+        {
+        const auto s = std::chrono::steady_clock::now();
         inter.awork->multiply(W_next, F); 
         ++mult;
+        const auto f = std::chrono::steady_clock::now();;
+        inter.multiplication_time += std::chrono::duration<double>(f - s).count();
+        }
 
         F -= S * V.col(j); // equivalent to daxpy.
+        const auto s = std::chrono::steady_clock::now();
         orthogonalize_vector(V, F, j + 1);
+        const auto f = std::chrono::steady_clock::now();;
+        inter.orthog_time += std::chrono::duration<double>(f - s).count();
 
         if (j + 1 < work) {
             Float R_F = F.norm();
 
             if (R_F < eps) {
                 fill_with_random_normals(F, eng);
+                const auto s = std::chrono::steady_clock::now();
                 orthogonalize_vector(V, F, j + 1);
+                const auto f = std::chrono::steady_clock::now();;
+                inter.orthog_time += std::chrono::duration<double>(f - s).count();
                 R_F = F.norm();
                 F /= R_F;
                 R_F = 0;
@@ -114,22 +133,33 @@ int run_lanczos_bidiagonalization(
             }
 
             V.col(j + 1) = F;
-            B(j, j) = S;
-            B(j, j + 1) = R_F;
+            B.coeffRef(j, j) = S;
+            B.coeffRef(j, j + 1) = R_F;
 
+            const auto s = std::chrono::steady_clock::now();
             inter.work->multiply(F, W_next); // i.e., W_next = mat * F;
             ++mult;
+            const auto f = std::chrono::steady_clock::now();;
+            inter.multiplication_time += std::chrono::duration<double>(f - s).count();
             W_next -= R_F * W.col(j); // equivalent to daxpy.
 
             // Full re-orthogonalization, using the left-most 'j + 1' columns of W.
             // Recall that W_next will be the 'j + 2'-th column, i.e., W.col(j + 1) in
             // 0-indexed terms, so we want to orthogonalize to all previous columns.
+            {
+            const auto s = std::chrono::steady_clock::now();
             orthogonalize_vector(W, W_next, j + 1);
+            const auto f = std::chrono::steady_clock::now();;
+            inter.orthog_time += std::chrono::duration<double>(f - s).count();
+            }
 
             S = W_next.norm();
             if (S < eps) {
                 fill_with_random_normals(W_next, eng);
+                const auto s = std::chrono::steady_clock::now();
                 orthogonalize_vector(W, W_next, j + 1);
+                const auto f = std::chrono::steady_clock::now();;
+                inter.orthog_time += std::chrono::duration<double>(f - s).count();
                 S = W_next.norm();
                 W_next /= S;
                 S = 0;
@@ -143,7 +173,7 @@ int run_lanczos_bidiagonalization(
             // j + 1 < work clause. But the irlba R package's C code 
             // sets it on the last loop, which gives the same result;
             // so to avoid any headaches, we do the same thing too.
-            B(j, j) = S;
+            B.coeffRef(j, j) = S;
         }
     }
 
