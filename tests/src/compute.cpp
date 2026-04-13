@@ -208,7 +208,7 @@ TEST(Compute, LargeExact) {
     irlba::Options opt;
     auto res = irlba::compute(wrapped, 15, opt);
 
-    Eigen::JacobiSVD<decltype(mat), Eigen::ComputeThinU | Eigen::ComputeThinV> svd(mat);
+    Eigen::BDCSVD<decltype(mat), Eigen::ComputeThinU | Eigen::ComputeThinV> svd(mat);
     EXPECT_EQ(svd.singularValues().head(15), res.D);
     EXPECT_EQ(svd.matrixU().leftCols(15), res.U);
     EXPECT_EQ(svd.matrixV().leftCols(15), res.V);

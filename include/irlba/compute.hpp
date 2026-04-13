@@ -24,12 +24,9 @@ namespace irlba {
 /**
  * @cond
  */
-template<typename EigenMatrix_>
-using JacobiSVD = Eigen::JacobiSVD<EigenMatrix_, Eigen::ComputeThinU | Eigen::ComputeThinV>;
-
 template<class Matrix_, class EigenMatrix_, class EigenVector_>
 void exact(const Matrix_& matrix, const Eigen::Index requested_number, EigenMatrix_& outU, EigenMatrix_& outV, EigenVector_& outD) {
-    JacobiSVD<EigenMatrix_> svd(matrix.rows(), matrix.cols());
+    Eigen::BDCSVD<EigenMatrix_, Eigen::ComputeThinU | Eigen::ComputeThinV> svd(matrix.rows(), matrix.cols());
 
     auto realizer = matrix.new_known_realize_workspace();
     EigenMatrix_ buffer;
@@ -235,7 +232,9 @@ Metrics compute(
     bool converged = false;
     int iter = 0, mult = 0;
     Eigen::Index k = 0;
-    JacobiSVD<EigenMatrix_> svd(work, work);
+
+    // No need for QR preconditioning when we're dealing with a square matrix.
+    Eigen::BDCSVD<EigenMatrix_, Eigen::NoQRPreconditioner | Eigen::ComputeFullU | Eigen::ComputeFullV> svd(work, work);
 
     LanczosWorkspace<EigenVector_, Matrix_> lpwork(matrix);
 
