@@ -1,8 +1,9 @@
 #ifndef IRLBA_OPTIONS_HPP
 #define IRLBA_OPTIONS_HPP
 
-#include <cstdint>
+#include <random>
 #include <optional>
+#include "Eigen/Dense"
 
 /**
  * @file Options.hpp
@@ -19,26 +20,32 @@ namespace irlba {
 template<class EigenVector_ = Eigen::VectorXd>
 struct Options {
     /**
-     * Set the tolerance to use to define invariant subspaces.
+     * Tolerance for defining invariant subspaces.
      * This is used as the lower bound for the L2 norm for the subspace vectors;
      * below this bound, vectors are treated as all-zero and are instead filled with random draws from a normal distribution.
-     * If negative, we instead use the machine epsilon to the power of 0.8.
+     * 
+     * Any user-provided value should be non-negative.
+     * If unset, this defaults to the machine epsilon to the power of 0.8.
      */
-    double invariant_subspace_tolerance = -1;
+    std::optional<double> invariant_subspace_tolerance;
 
     /**
-     * Tolerance on the residuals of the singular triplets.
+     * Tolerance on the approximation error of the singular triplets.
      * Lower values improve the accuracy of the decomposition.
      * (See Equation 2.13 of Baglama and Reichel.)
+     *
+     * Any user-provided value should be non-negative.
      */
     double convergence_tolerance = 1e-5; 
 
     /**
      * Tolerance on the relative differences between singular values across iterations.
      * Lower values improve the accuracy of the decomposition.
-     * If -1, the value in `Options::convergence_tolerance` is used.
+     *
+     * Any user-provided value should be non-negative.
+     * If unset, the value in `Options::convergence_tolerance` is used.
      */
-    double singular_value_ratio_tolerance = -1; 
+    std::optional<double> singular_value_ratio_tolerance; 
 
     /**
      * Number of extra dimensions to define the working subspace.
@@ -83,6 +90,32 @@ struct Options {
      */
     std::optional<EigenVector_> initial;
 };
+
+/**
+ * @cond
+ */
+template<typename Float_, class EigenVector_>
+Float_ choose_invariant_tolerance(const Options<EigenVector_>& options) {
+    const auto& tol = options.invariant_subspace_tolerance;
+    if (tol.has_value() && *tol >= 0) { // check it's non-negative for back-compatibility.
+        return *tol;
+    } else {
+        return std::pow(std::numeric_limits<Float_>::epsilon(), 0.8);
+    }
+}
+
+template<class EigenVector_>
+double choose_singular_value_tolerance(const Options<EigenVector_>& options) {
+    const auto& svtol = options.singular_value_ratio_tolerance;
+    if (svtol.has_value() && *svtol >= 0) {
+        return *svtol;
+    } else {
+        return options.convergence_tolerance;
+    }
+}
+/**
+ * @endcond
+ */
 
 }
 

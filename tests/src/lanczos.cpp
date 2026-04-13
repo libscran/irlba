@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "irlba/lanczos.hpp"
+#include "irlba/Options.hpp"
 #include "irlba/utils.hpp"
 #include "irlba/Matrix/simple.hpp"
 
@@ -29,7 +30,8 @@ TEST(Lanczos, Orthogonalize) {
     for (auto x : copy) { l2 += x*x; }
     EXPECT_GT(l2, 0.1);
 
-    // Checking that we do have orthogonality.
+    // Checking that we do have orthogonality. (This requires a bit of tolerance,
+    // as our input data isn't exactly orthogonal due to the limited precision).
     for (size_t i = 0; i < 4; ++i) {
         auto col = m.col(i);
         double sum = std::inner_product(col.begin(), col.end(), copy.begin(), 0.0);
@@ -77,10 +79,11 @@ TEST_P(LanczosTester, Basic) {
     assemble(GetParam());
     irlba::SimpleMatrix<Eigen::VectorXd, Eigen::MatrixXd, decltype(&A)> wrapper(&A);
 
-    irlba::Options opt;
     std::mt19937_64 eng(50);
     irlba::LanczosWorkspace<Eigen::VectorXd, decltype(wrapper)> init(wrapper);
-    irlba::run_lanczos_bidiagonalization(init, W, V, B, eng, 0, opt);
+
+    const auto inv_eps = irlba::choose_invariant_tolerance<double>(irlba::Options());
+    irlba::run_lanczos_bidiagonalization(init, W, V, B, eng, 0, inv_eps);
 
     // Check that vectors in W are self-orthogonal.
     Eigen::MatrixXd Wcheck = W.adjoint() * W;
@@ -89,7 +92,7 @@ TEST_P(LanczosTester, Basic) {
             if (i==j) {
                 EXPECT_FLOAT_EQ(Wcheck(i, j), 1);
             } else {
-                EXPECT_TRUE(std::abs(Wcheck(i, j)) < 0.00000000001);
+                EXPECT_LT(std::abs(Wcheck(i, j)), 0.00000000001);
             }
         }
     }
@@ -101,7 +104,7 @@ TEST_P(LanczosTester, Basic) {
             if (i==j) {
                 EXPECT_FLOAT_EQ(Vcheck(i, j), 1);
             } else {
-                EXPECT_TRUE(std::abs(Vcheck(i, j)) < 0.00000000001);
+                EXPECT_LT(std::abs(Vcheck(i, j)), 0.00000000001);
             }
         }
     }
@@ -111,8 +114,8 @@ TEST_P(LanczosTester, Restart) {
     assemble(GetParam());
     irlba::SimpleMatrix<Eigen::VectorXd, Eigen::MatrixXd, decltype(&A)> wrapper(&A);
 
-    irlba::Options opt;
     std::mt19937_64 eng(50);
+    const auto inv_eps = irlba::choose_invariant_tolerance<double>(irlba::Options());
     irlba::LanczosWorkspace<Eigen::VectorXd, decltype(wrapper)> init(wrapper);
 
     // Computing the bidiagonlization for the first half of the working dimensions.
@@ -120,7 +123,7 @@ TEST_P(LanczosTester, Restart) {
     Eigen::MatrixXd subW = W.leftCols(mid); 
     Eigen::MatrixXd subV = V.leftCols(mid); 
     Eigen::MatrixXd subB = B.topLeftCorner(mid,mid); 
-    irlba::run_lanczos_bidiagonalization(init, subW, subV, subB, eng, 0, opt);
+    irlba::run_lanczos_bidiagonalization(init, subW, subV, subB, eng, 0, inv_eps);
 
     // Restarting the bidiagonlization for the second half.
     Eigen::MatrixXd copyW(nr, work);
@@ -131,14 +134,14 @@ TEST_P(LanczosTester, Restart) {
     copyB.setZero();
     copyB.topLeftCorner(mid,mid) = subB;
     copyV.col(mid) = init.F / init.F.norm();
-    irlba::run_lanczos_bidiagonalization(init, copyW, copyV, copyB, eng, mid, opt); //restarting from start = mid.
+    irlba::run_lanczos_bidiagonalization(init, copyW, copyV, copyB, eng, mid, inv_eps); //restarting from start = mid.
 
     // Numerically equivalent to a full compuation... except for B, where the
     // restart loses one of the superdiagonal elements (which is normally 
     // filled in by the residual error in the IRLBA loop, see Equation 3.6).
     std::mt19937_64 eng2(50);
     irlba::LanczosWorkspace<Eigen::VectorXd, decltype(wrapper)> init2(wrapper);
-    irlba::run_lanczos_bidiagonalization(init2, W, V, B, eng, 0, opt);
+    irlba::run_lanczos_bidiagonalization(init2, W, V, B, eng, 0, inv_eps);
 
     for (Eigen::Index i = 0; i < copyW.cols(); ++i) {
         for (Eigen::Index j = 0; j < copyW.rows(); ++j) {

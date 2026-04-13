@@ -8,7 +8,6 @@
 
 #include "utils.hpp"
 #include "Matrix/interface.hpp"
-#include "Options.hpp"
 
 #include "Eigen/Dense"
 
@@ -62,12 +61,10 @@ int run_lanczos_bidiagonalization(
     EigenMatrix_& V, 
     EigenMatrix_& B, 
     Engine_& eng, 
-    Eigen::Index start, 
-    const Options<EigenVector_>& options
+    const Eigen::Index start, 
+    const typename EigenMatrix_::Scalar eps
 ) {
     typedef typename EigenMatrix_::Scalar Float;
-    const Float raw_eps = options.invariant_subspace_tolerance;
-    const Float eps = (raw_eps < 0 ? std::pow(std::numeric_limits<Float>::epsilon(), 0.8) : raw_eps);
 
     const Eigen::Index work = W.cols();
     auto& F = inter.F;
@@ -109,7 +106,6 @@ int run_lanczos_bidiagonalization(
         }
 
         Float R_F = F.norm();
-
         if (R_F < eps) {
             fill_with_random_normals(F, eng);
             orthogonalize_vector(V, F, j + 1);

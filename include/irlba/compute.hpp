@@ -9,6 +9,7 @@
 
 #include "utils.hpp"
 #include "lanczos.hpp"
+#include "Options.hpp"
 #include "Matrix/simple.hpp"
 
 #include "sanisizer/sanisizer.hpp"
@@ -51,7 +52,7 @@ inline Eigen::Index choose_extra_work(const Eigen::Index requested, const std::o
     }
 }
 
-// Basically (requested * 2 >= smaller), but avoiding overflow from the product.
+// Basically (requested >= smaller / 2), but avoiding a cast to double.
 inline bool requested_greater_than_or_equal_to_half_smaller(const Eigen::Index requested, const Eigen::Index smaller) {
     const Eigen::Index half_smaller = smaller / 2;
     if (requested == half_smaller) {
@@ -248,15 +249,15 @@ Metrics compute(
     EigenVector_ F(matrix.cols());
 
     EigenVector_ prevS(work);
-    typename EigenMatrix_::Scalar svtol = options.singular_value_ratio_tolerance;
-    typename EigenMatrix_::Scalar tol = options.convergence_tolerance;
-    typename EigenMatrix_::Scalar svtol_actual = (svtol >= 0 ? svtol : tol);
+    const typename EigenMatrix_::Scalar tol = options.convergence_tolerance;
+    const typename EigenMatrix_::Scalar svtol_actual = choose_singular_value_tolerance(options);
+    const auto inv_eps = choose_invariant_tolerance<typename EigenMatrix_::Scalar>(options);
 
     for (; iter < options.max_iterations; ++iter) {
         // Technically, this is only a 'true' Lanczos bidiagonalization
         // when k = 0. All other times, we're just recycling the machinery,
         // see the text below Equation 3.11 in Baglama and Reichel.
-        mult += run_lanczos_bidiagonalization(lpwork, W, V, B, eng, k, options);
+        mult += run_lanczos_bidiagonalization(lpwork, W, V, B, eng, k, inv_eps);
 
 //            if (iter < 2) {
 //                std::cout << "B is currently:\n" << B << std::endl;

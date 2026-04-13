@@ -44,6 +44,7 @@ add_executable(
     src/utils.cpp
     src/lanczos.cpp
     src/invariant.cpp
+    src/Options.cpp
     src/compute.cpp
     src/pca.cpp
     src/Matrix/scaled.cpp
