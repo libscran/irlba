@@ -110,8 +110,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a019f546a47e990071416a11687c14d71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b8e78abc2333d8b7a9ee9a0635e3f02" id="r_a9b8e78abc2333d8b7a9ee9a0635e3f02"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b8e78abc2333d8b7a9ee9a0635e3f02">singular_value_ratio_tolerance</a> = -1</td></tr>
 <tr class="separator:a9b8e78abc2333d8b7a9ee9a0635e3f02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a179a747996c1a3d4fbf89215d97334d1" id="r_a179a747996c1a3d4fbf89215d97334d1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a179a747996c1a3d4fbf89215d97334d1">extra_work</a> = 7</td></tr>
-<tr class="separator:a179a747996c1a3d4fbf89215d97334d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb124956e2c0b46c1ccafde8f2c66da3" id="r_aeb124956e2c0b46c1ccafde8f2c66da3"><td class="memItemLeft" align="right" valign="top">std::optional&lt; Eigen::Index &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeb124956e2c0b46c1ccafde8f2c66da3">extra_work</a></td></tr>
+<tr class="separator:aeb124956e2c0b46c1ccafde8f2c66da3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f53aad8e0d9b6d1a1a9647413f638fa" id="r_a5f53aad8e0d9b6d1a1a9647413f638fa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f53aad8e0d9b6d1a1a9647413f638fa">max_iterations</a> = 1000</td></tr>
 <tr class="separator:a5f53aad8e0d9b6d1a1a9647413f638fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85195d98803d717976c17b267708af4f" id="r_a85195d98803d717976c17b267708af4f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a85195d98803d717976c17b267708af4f">exact_for_small_matrix</a> = true</td></tr>
@@ -203,8 +203,8 @@ template&lt;class EigenVector_  = Eigen::VectorXd&gt; </div>
 
 </div>
 </div>
-<a id="a179a747996c1a3d4fbf89215d97334d1" name="a179a747996c1a3d4fbf89215d97334d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a179a747996c1a3d4fbf89215d97334d1">&#9670;&#160;</a></span>extra_work</h2>
+<a id="aeb124956e2c0b46c1ccafde8f2c66da3" name="aeb124956e2c0b46c1ccafde8f2c66da3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb124956e2c0b46c1ccafde8f2c66da3">&#9670;&#160;</a></span>extra_work</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -212,11 +212,11 @@ template&lt;class EigenVector_  = Eigen::VectorXd&gt; </div>
 template&lt;class EigenVector_  = Eigen::VectorXd&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="structirlba_1_1Options.html">irlba::Options</a>&lt; EigenVector_ &gt;::extra_work = 7</td>
+          <td class="memname">std::optional&lt;Eigen::Index&gt; <a class="el" href="structirlba_1_1Options.html">irlba::Options</a>&lt; EigenVector_ &gt;::extra_work</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Number of extra dimensions to define the working subspace. Larger values can speed up convergence at the cost of increased memory usage. </p>
+<p>Number of extra dimensions to define the working subspace. Larger values can speed up convergence at the cost of increased memory usage. If unset, it defaults to the larger of 7 (the original default from the R package) and the requested number of singular triplets (for <code><a class="el" href="compute_8hpp.html#a3ef50b4731ec01ea6a1a035e4863390b">compute()</a></code>) or principal components (for <code><a class="el" href="pca_8hpp.html#a3587747a936e2b15dd4fc0db69d21508">pca()</a></code>). </p>
 
 </div>
 </div>

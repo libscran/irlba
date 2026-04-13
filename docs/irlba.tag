@@ -278,10 +278,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>int</type>
+      <type>std::optional&lt; Eigen::Index &gt;</type>
       <name>extra_work</name>
       <anchorfile>structirlba_1_1Options.html</anchorfile>
-      <anchor>a179a747996c1a3d4fbf89215d97334d1</anchor>
+      <anchor>aeb124956e2c0b46c1ccafde8f2c66da3</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
