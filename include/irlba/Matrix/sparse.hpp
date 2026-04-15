@@ -258,12 +258,26 @@ public:
 private:
     template<typename Scalar_, class EigenVector_>
     Scalar_ column_dot_product(Eigen::Index p, const EigenVector_& rhs) const {
-        PointerType primary_start = my_ptrs[p], primary_end = my_ptrs[p + 1];
-        Scalar_ dot = 0;
-        for (PointerType s = primary_start; s < primary_end; ++s) {
-            dot += my_values[s] * rhs.coeff(my_indices[s]);
+        const PointerType primary_start = my_ptrs[p], primary_end = my_ptrs[p + 1];
+        if (primary_start == primary_end) {
+            return 0;
         }
-        return dot;
+
+        // Copying Eigen's use of two accumulators; effectively unrolls the loop a little for speed.
+        Scalar_ dot1 = 0, dot2 = 0;
+
+        PointerType s = primary_start;
+        const PointerType primary_end_m1 = primary_end - 1;
+        for (; s < primary_end_m1; s += 2) {
+            dot1 += my_values[s] * rhs.coeff(my_indices[s]);
+            dot2 += my_values[s + 1] * rhs.coeff(my_indices[s + 1]);
+        }
+
+        if (s < primary_end) {
+            dot1 += my_values[s] * rhs.coeff(my_indices[s]);
+        }
+
+        return dot1 + dot2;
     }
 };
 /**
