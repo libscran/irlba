@@ -417,20 +417,6 @@
       <arglist>() const</arglist>
     </member>
     <member kind="function">
-      <type>const std::vector&lt; Eigen::Index &gt; &amp;</type>
-      <name>get_secondary_boundaries</name>
-      <anchorfile>classirlba_1_1ParallelSparseMatrix.html</anchorfile>
-      <anchor>af0ae59f466ead930a77a3f771a9aae8e</anchor>
-      <arglist>() const</arglist>
-    </member>
-    <member kind="function">
-      <type>const std::vector&lt; std::vector&lt; PointerType &gt; &gt; &amp;</type>
-      <name>get_secondary_nonzero_boundaries</name>
-      <anchorfile>classirlba_1_1ParallelSparseMatrix.html</anchorfile>
-      <anchor>ac48259f75c9588d8d9698edf0b804904</anchor>
-      <arglist>() const</arglist>
-    </member>
-    <member kind="function">
       <type>std::unique_ptr&lt; Workspace&lt; EigenVector_ &gt; &gt;</type>
       <name>new_workspace</name>
       <anchorfile>classirlba_1_1ParallelSparseMatrix.html</anchorfile>
