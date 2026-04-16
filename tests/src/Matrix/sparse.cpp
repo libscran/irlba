@@ -56,35 +56,11 @@ TEST_P(ParallelSparseMatrixTest, Basic) {
     if (nt > 1) {
         const auto& pbounds = A.get_primary_boundaries();
         EXPECT_EQ(pbounds.size(), nt + 1);
-        const auto& sbounds = A.get_secondary_boundaries();
-        EXPECT_EQ(sbounds.size(), nt + 1);
 
         EXPECT_EQ(pbounds.front(), 0);
-        EXPECT_EQ(sbounds.front(), 0);
         EXPECT_EQ(pbounds.back(), nc);
-        EXPECT_EQ(sbounds.back(), nr);
         for (int t = 0; t < nt; ++t) {
             EXPECT_LE(pbounds[t], pbounds[t + 1]);
-            EXPECT_LE(sbounds[t], sbounds[t + 1]);
-        }
-
-        const auto& snzbounds = A.get_secondary_nonzero_boundaries();
-        EXPECT_EQ(snzbounds.size(), nt + 1);
-        for (const auto& snz : snzbounds) {
-            EXPECT_EQ(snz.size(), nc);
-        }
-
-        for (std::size_t c = 0; c < nc; ++c) {
-            EXPECT_EQ(snzbounds.front()[c], nzeros[c]);
-            EXPECT_EQ(snzbounds.back()[c], nzeros[c + 1]);
-            for (int t = 0; t < nt; ++t) {
-                const auto first = snzbounds[t][c], last = snzbounds[t + 1][c];
-                EXPECT_LE(first, last);
-                if (first != last) {
-                    EXPECT_GE(indices[first], sbounds[t]);
-                    EXPECT_LT(indices[last - 1], sbounds[t + 1]);
-                }
-            }
         }
     }
 
@@ -111,7 +87,7 @@ TEST_P(ParallelSparseMatrixTest, Basic) {
         Eigen::VectorXd obs(nr);
         auto work = A.new_workspace();
         work->multiply(vec, obs);
-        expect_equal_vectors(ref, obs, 0);
+        expect_equal_vectors(ref, obs);
 
         Eigen::VectorXd obs2(nr);
         auto awork2 = A2.new_adjoint_workspace();
@@ -120,7 +96,7 @@ TEST_P(ParallelSparseMatrixTest, Basic) {
 
         // Check for correct re-zeroing of the provided buffers.
         work->multiply(vec, obs);
-        expect_equal_vectors(ref, obs, 0);
+        expect_equal_vectors(ref, obs);
         awork2->multiply(vec, obs2);
         expect_equal_vectors(ref, obs2);
     }

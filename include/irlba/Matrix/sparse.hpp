@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 #include <cstddef>
+#include <cassert>
 
 #include "../utils.hpp"
 #include "../parallel.hpp"
@@ -49,6 +50,7 @@ public:
         my_ptrs(std::move(p)),
         my_column_major(column_major)
     {
+        assert(num_threads > 0);
         if (num_threads > 1) {
             const auto total_nzeros = my_ptrs[my_primary_dim]; // last element - not using back() to avoid an extra requirement on PointerArray.
             const PointerType per_thread_floor = total_nzeros / my_num_threads;
@@ -59,57 +61,16 @@ public:
             const auto nthreads_p1 = sanisizer::sum<std::size_t>(my_num_threads, 1);
             
             // Splitting primary dimension elements across threads so each thread processes the same number of nonzero elements.
-            {
-                sanisizer::resize(my_primary_boundaries, nthreads_p1);
+            sanisizer::resize(my_primary_boundaries, nthreads_p1);
 
-                Eigen::Index primary_counter = 0;
-                PointerType sofar = 0;
-                for (int t = 0; t < my_num_threads; ++t) {
-                    sofar += per_thread_floor + (t < per_thread_extra); // first few threads might get an extra element to deal with the remainder.
-                    while (primary_counter < my_primary_dim && my_ptrs[primary_counter + 1] <= sofar) {
-                        ++primary_counter;
-                    }
-                    my_primary_boundaries[t + 1] = primary_counter;
+            Eigen::Index primary_counter = 0;
+            PointerType sofar = 0;
+            for (int t = 0; t < my_num_threads; ++t) {
+                sofar += per_thread_floor + (t < per_thread_extra); // first few threads might get an extra element to deal with the remainder.
+                while (primary_counter < my_primary_dim && my_ptrs[primary_counter + 1] <= sofar) {
+                    ++primary_counter;
                 }
-            }
-
-            // Splitting secondary dimension elements across threads so each thread processes the same number of nonzero elements.
-            {
-                auto secondary_nonzeros = sanisizer::create<std::vector<PointerType> >(my_secondary_dim);
-                for (PointerType i = 0; i < total_nzeros; ++i) { // don't using range for loop to avoid an extra requirement on IndexArray.
-                    ++(secondary_nonzeros[my_indices[i]]);
-                }
-
-                sanisizer::resize(my_secondary_boundaries, nthreads_p1);
-                Eigen::Index secondary_counter = 0;
-                PointerType sofar = 0;
-                PointerType cum_secondary = 0;
-                for (int t = 0; t < my_num_threads; ++t) {
-                    sofar += per_thread_floor + (t < per_thread_extra); // first few threads might get an extra element to deal with the remainder.
-                    while (secondary_counter < my_secondary_dim && cum_secondary <= sofar) {
-                        cum_secondary += secondary_nonzeros[secondary_counter];
-                        ++secondary_counter;
-                    }
-                    my_secondary_boundaries[t + 1] = secondary_counter;
-                }
-
-                sanisizer::resize(my_secondary_nonzero_boundaries, nthreads_p1);
-                for (auto& starts : my_secondary_nonzero_boundaries) {
-                    sanisizer::resize(starts, my_primary_dim);
-                }
-
-                for (Eigen::Index c = 0; c < my_primary_dim; ++c) {
-                    const auto primary_start = my_ptrs[c], primary_end = my_ptrs[c + 1];
-                    my_secondary_nonzero_boundaries[0][c] = primary_start;
-                    auto s = primary_start;
-                    for (int thread = 0; thread < my_num_threads; ++thread) {
-                        const auto limit = my_secondary_boundaries[thread + 1];
-                        while (s < primary_end && static_cast<Eigen::Index>(my_indices[s]) < limit) { // cast is safe as my_indices[s] < my_secondary_dim.
-                            ++s; 
-                        }
-                        my_secondary_nonzero_boundaries[thread + 1][c] = s;
-                    }
-                }
+                my_primary_boundaries[t + 1] = primary_counter;
             }
         }
     }
@@ -124,13 +85,6 @@ private:
     bool my_column_major;
 
     std::vector<Eigen::Index> my_primary_boundaries;
-
-    // In theory, it is possible that the IndexArray type (i.e., IndexType) is not large enough to hold my_secondary_dim.
-    // So while it is safe to cast from the IndexType to Eigen::Index, it is not safe to go the other way;
-    // hence we use an Eigen::Index to hold the secondary boundaries as the last entry is equal to my_secondary_dim.
-    std::vector<Eigen::Index> my_secondary_boundaries;
-
-    std::vector<std::vector<PointerType> > my_secondary_nonzero_boundaries;
 
 public:
     Eigen::Index rows() const { 
@@ -173,23 +127,15 @@ public:
         return my_primary_boundaries;
     }
 
-    const std::vector<Eigen::Index>& get_secondary_boundaries() const {
-        return my_secondary_boundaries;
-    }
-
-    const std::vector<std::vector<PointerType> >& get_secondary_nonzero_boundaries() const {
-        return my_secondary_nonzero_boundaries;
-    }
-
 public:
     template<typename EigenVector_>
     void indirect_multiply(const EigenVector_& rhs, std::vector<std::vector<typename EigenVector_::Scalar> >& thread_buffers, EigenVector_& output) const {
         if (my_num_threads == 1) {
             output.setZero();
             for (Eigen::Index c = 0; c < my_primary_dim; ++c) {
-                auto start = my_ptrs[c];
-                auto end = my_ptrs[c + 1];
-                auto val = rhs.coeff(c);
+                const auto start = my_ptrs[c];
+                const auto end = my_ptrs[c + 1];
+                const auto val = rhs.coeff(c);
                 for (PointerType s = start; s < end; ++s) {
                     output.coeffRef(my_indices[s]) += my_values[s] * val;
                 }
@@ -198,40 +144,39 @@ public:
         }
 
         parallelize(my_num_threads, [&](int t) -> void {
-            const auto secondary_start = my_secondary_boundaries[t];
-            const auto secondary_end = my_secondary_boundaries[t + 1];
-            const auto secondary_len = secondary_end - secondary_start;
-
             // Using a separate buffer for the other threads to avoid false
             // sharing. On first use, each buffer is allocated within each
             // thread to give malloc a chance of using thread-specific arenas.
             typename EigenVector_::Scalar* optr;
             if (t != 0) {
                 auto& curbuffer = thread_buffers[t - 1];
-                sanisizer::resize(curbuffer, secondary_len);
+                sanisizer::resize(curbuffer, my_secondary_dim);
                 optr = curbuffer.data();
             } else {
-                optr = output.data() + secondary_start;
+                optr = output.data(); 
             }
-            std::fill_n(optr, secondary_len, static_cast<typename EigenVector_::Scalar>(0));
+            std::fill_n(optr, my_secondary_dim, static_cast<typename EigenVector_::Scalar>(0));
 
-            const auto& nz_starts = my_secondary_nonzero_boundaries[t];
-            const auto& nz_ends = my_secondary_nonzero_boundaries[t + 1];
-            for (Eigen::Index c = 0; c < my_primary_dim; ++c) {
-                const auto nz_start = nz_starts[c];
-                const auto nz_end = nz_ends[c];
-                const auto val = rhs.coeff(c);
-                for (PointerType s = nz_start; s < nz_end; ++s) {
-                    optr[my_indices[s] - secondary_start] += my_values[s] * val;
+            // Using a thread-dependent reduction strategy. This results in slightly
+            // different results depending on the number of threads, oh well.
+            const auto curstart = my_primary_boundaries[t];
+            const auto curend = my_primary_boundaries[t + 1];
+            for (Eigen::Index p = curstart; p < curend; ++p) {
+                const auto start = my_ptrs[p];
+                const auto end = my_ptrs[p + 1];
+                const auto val = rhs.coeff(p);
+                for (PointerType s = start; s < end; ++s) {
+                    optr[my_indices[s]] += my_values[s] * val;
                 }
-            }
-
-            if (t != 0) {
-                std::copy_n(optr, secondary_len, output.data() + secondary_start);
             }
         });
 
-        return;
+        assert(sanisizer::is_equal(thread_buffers.size(), my_num_threads - 1));
+        for (const auto& buffer : thread_buffers) {
+            for (Eigen::Index x = 0; x < my_secondary_dim; ++x) {
+                output.coeffRef(x) += buffer[x];
+            }
+        }
     }
 
 public:
@@ -251,8 +196,6 @@ public:
                 output.coeffRef(c) = column_dot_product<typename EigenVector_::Scalar>(c, rhs);
             }
         });
-
-        return;
     }
 
 private:
@@ -304,7 +247,7 @@ public:
         my_core(core)
     {
         if (my_core.get_num_threads() > 1 && my_core.get_column_major()) {
-            my_thread_buffers.resize(my_core.get_num_threads() - 1);
+            sanisizer::resize(my_thread_buffers, my_core.get_num_threads() - 1);
         }
     }
     /**
@@ -345,7 +288,7 @@ public:
         my_core(core)
     {
         if (my_core.get_num_threads() > 1 && !my_core.get_column_major()) {
-            my_thread_buffers.resize(my_core.get_num_threads() - 1);
+            sanisizer::resize(my_thread_buffers, my_core.get_num_threads() - 1);
         }
     }
     /**
@@ -439,6 +382,11 @@ public:
  * It should then loop over the number of threads and launch one job for each thread via the lambda.
  * Once all threads are complete, the function should return.
  *
+ * Note that the choice of the number of threads will have a slight (deterministic) effect on the matrix-vector product.
+ * Specifically, the order of summations is slightly different with an increasing number of threads. 
+ * This results in very small differences in the output values due to changes in the floating-point round-off error.
+ * For most applications, these differences are negligible and can be ignored.
+ *
  * @tparam EigenVector_ A floating-point `Eigen::Vector` to be used as input/output of multiplication operations.
  * @tparam EigenMatrix_ A dense floating-point `Eigen::Matrix` in which to store the realized matrix.
  * Typically of the same scalar type as `EigenVector_`.
@@ -476,6 +424,7 @@ public:
      * @param column_major Whether the matrix should be in compressed sparse column format.
      * If `false`, this is assumed to be in row-major format.
      * @param num_threads Number of threads to be used for multiplication.
+     * This shouhld be positive.
      *
      * `x`, `i` and `p` represent the typical components of a compressed sparse column/row matrix.
      * Thus, entries in `i` should be sorted within each column/row, where the boundaries between columns/rows are defined by `p`.
@@ -539,30 +488,6 @@ public:
      */
     const std::vector<Eigen::Index>& get_primary_boundaries() const {
         return my_core.get_primary_boundaries();
-    }
-
-    /**
-     * This should only be called if `num_threads > 1` in the constructor, otherwise it will not be initialized.
-     *
-     * @return Vector of length equal to the number of threads plus one.
-     * The `t`-th and `t + 1`-th entries specifies the first and one-past-the-last elements along the secondary dimension
-     * (e.g., row for `column_major = true`) that each thread operates on.
-     */
-    const std::vector<Eigen::Index>& get_secondary_boundaries() const {
-        return my_core.get_secondary_boundaries();
-    }
-
-    /**
-     * This should only be called if `num_threads > 1` in the constructor, otherwise it will not be initialized.
-     *
-     * @return Vector of length equal to the number of threads plus one.
-     * Each inner vector is of length equal to the extent of the primary dimension (e.g., number of columns for `column_major = true`).
-     * For thread `t`, `secondary_nonzero_boundaries[t][i]` is the first non-zero element to be processed by this thread in the primary dimension element `i`,
-     * while `boundaries[t + 1][i]` is one-past-the-last non-zero element to be processed. 
-     * This is guaranteed to contain all and only non-zero elements with indices `i` where `secondary_boundaries[t] <= i < secondary_boundaries[t + 1]`.
-     */
-    const std::vector<std::vector<PointerType> >& get_secondary_nonzero_boundaries() const {
-        return my_core.get_secondary_nonzero_boundaries();
     }
 
 public:
