@@ -135,7 +135,7 @@ public:
     }
 };
 /**
- * @cond
+ * @endcond
  */
 
 /**

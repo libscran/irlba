@@ -223,26 +223,10 @@ private:
         return dot1 + dot2;
     }
 };
-/**
- * @endcond
- */
 
-/**
- * @brief Workspace for multiplication of a `ParallelSparseMatrix`.
- *
- * @tparam EigenVector_ A floating-point `Eigen::Vector` to be used as input/output of the multiplication.
- * @tparam ValueArray_ Array class containing the non-zero values, see `ParallelSparseMatrix`.
- * @tparam IndexArray_ Array class containing indices of non-zero elements, see `ParallelSparseMatrix`.
- * @tparam PointerArray_ Array class containing the pointers to the row/column boundaries, see `ParallelSparseMatrix`.
- *
- * Typically constructed by `ParallelSparseMatrix::new_known_workspace()`.
- */
 template<class EigenVector_, class ValueArray_, class IndexArray_, class PointerArray_ >
 class ParallelSparseWorkspace final : public Workspace<EigenVector_> {
 public:
-    /**
-     * @cond
-     */
     ParallelSparseWorkspace(const ParallelSparseMatrixCore<ValueArray_, IndexArray_, PointerArray_>& core) :
         my_core(core)
     {
@@ -250,9 +234,6 @@ public:
             sanisizer::resize(my_thread_buffers, my_core.get_num_threads() - 1);
         }
     }
-    /**
-     * @endcond
-     */
 
 private:
     const ParallelSparseMatrixCore<ValueArray_, IndexArray_, PointerArray_>& my_core;
@@ -268,22 +249,9 @@ public:
     }
 };
 
-/**
- * @brief Workspace for multiplication of a transposed `ParallelSparseMatrix`.
- *
- * @tparam EigenVector_ A floating-point `Eigen::Vector` to be used as input/output of the multiplication.
- * @tparam ValueArray_ Array class containing the non-zero values, see `ParallelSparseMatrix`.
- * @tparam IndexArray_ Array class containing indices of non-zero elements, see `ParallelSparseMatrix`.
- * @tparam PointerArray_ Array class containing the pointers to the row/column boundaries, see `ParallelSparseMatrix`.
- *
- * Typically constructed by `ParallelSparseMatrix::new_known_adjoint_workspace()`.
- */
 template<class EigenVector_, class ValueArray_, class IndexArray_, class PointerArray_ >
 class ParallelSparseAdjointWorkspace final : public AdjointWorkspace<EigenVector_> {
 public:
-    /**
-     * @cond
-     */
     ParallelSparseAdjointWorkspace(const ParallelSparseMatrixCore<ValueArray_, IndexArray_, PointerArray_>& core) :
         my_core(core)
     {
@@ -291,9 +259,6 @@ public:
             sanisizer::resize(my_thread_buffers, my_core.get_num_threads() - 1);
         }
     }
-    /**
-     * @endcond
-     */
 
 private:
     const ParallelSparseMatrixCore<ValueArray_, IndexArray_, PointerArray_>& my_core;
@@ -309,28 +274,12 @@ public:
     }
 };
 
-/**
- * @brief Workspace for realizing a `ParallelSparseMatrix`.
- *
- * @tparam EigenMatrix_ A dense floating-point `Eigen::Matrix` in which to store the realized matrix.
- * @tparam ValueArray_ Array class containing the non-zero values, see `ParallelSparseMatrix`.
- * @tparam IndexArray_ Array class containing indices of non-zero elements, see `ParallelSparseMatrix`.
- * @tparam PointerArray_ Array class containing the pointers to the row/column boundaries, see `ParallelSparseMatrix`.
- *
- * Typically constructed by `ParallelSparseMatrix::new_known_realize_workspace()`.
- */
 template<class EigenMatrix_, class ValueArray_, class IndexArray_, class PointerArray_ >
 class ParallelSparseRealizeWorkspace final : public RealizeWorkspace<EigenMatrix_> {
 public:
-    /**
-     * @cond
-     */
     ParallelSparseRealizeWorkspace(const ParallelSparseMatrixCore<ValueArray_, IndexArray_, PointerArray_>& core) :
         my_core(core)
     {}
-    /**
-     * @endcond
-     */
 
 private:
     const ParallelSparseMatrixCore<ValueArray_, IndexArray_, PointerArray_>& my_core;
@@ -365,6 +314,9 @@ public:
         return buffer;
     }
 };
+/**
+ * @endcond
+ */
 
 /**
  * @brief Sparse matrix with customizable parallelization.
