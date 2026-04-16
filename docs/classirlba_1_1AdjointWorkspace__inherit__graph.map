@@ -1,5 +1,0 @@
-<map id="irlba::AdjointWorkspace&lt; EigenVector_ &gt;" name="irlba::AdjointWorkspace&lt; EigenVector_ &gt;">
-<area shape="rect" id="Node000001" title="Workspace class for multiplying a transposed Matrix." alt="" coords="5,20,162,61"/>
-<area shape="rect" id="Node000002" href="$classirlba_1_1ParallelSparseAdjointWorkspace.html" title="Workspace for multiplication of a transposed ParallelSparseMatrix." alt="" coords="210,5,388,76"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="177,38,209,38,209,43,177,43"/>
-</map>

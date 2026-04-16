@@ -1,10 +1,11 @@
 <map id="irlba/Options.hpp" name="irlba/Options.hpp">
-<area shape="rect" id="Node000001" title="Options for IRLBA." alt="" coords="8,5,126,31"/>
+<area shape="rect" id="Node000001" title="Options for IRLBA." alt="" coords="57,5,176,31"/>
 <area shape="rect" id="Node000002" href="$compute_8hpp.html" title="Compute an approximate SVD with IRLBA." alt="" coords="5,79,129,105"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="70,46,70,79,64,79,64,46"/>
-<area shape="rect" id="Node000003" href="$irlba_8hpp_source.html" title=" " alt="" coords="18,226,116,252"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="60,120,54,148,54,178,65,225,60,226,48,179,49,147,55,119"/>
-<area shape="rect" id="Node000004" href="$pca_8hpp.html" title="Perform PCA with IRLBA." alt="" coords="62,153,157,178"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="84,116,105,151,100,154,80,119"/>
-<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="97,193,76,227,72,224,93,190"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,45,78,80,73,77,97,42"/>
+<area shape="rect" id="Node000003" href="$irlba_8hpp.html" title="Implements IRLBA." alt="" coords="33,226,130,252"/>
+<area shape="poly" id="edge5_Node000001_Node000003" title=" " alt="" coords="132,44,143,78,152,129,151,152,143,179,124,208,101,228,97,224,120,204,138,177,146,151,147,130,138,80,127,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="45,117,27,146,23,162,25,177,43,204,66,224,62,228,39,208,21,179,18,162,22,144,41,114"/>
+<area shape="rect" id="Node000004" href="$pca_8hpp.html" title="Perform PCA with IRLBA." alt="" coords="34,153,129,178"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="75,119,82,152,77,153,70,120"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="84,194,84,226,79,226,79,194"/>
 </map>

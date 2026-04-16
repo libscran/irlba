@@ -8,6 +8,22 @@
     <includes id="simple_8hpp" name="simple.hpp" local="yes" import="no" module="no" objc="no">Matrix/simple.hpp</includes>
     <class kind="struct">irlba::Metrics</class>
     <class kind="struct">irlba::Results</class>
+    <namespace>irlba</namespace>
+  </compound>
+  <compound kind="file">
+    <name>irlba.hpp</name>
+    <path>irlba/</path>
+    <filename>irlba_8hpp.html</filename>
+    <includes id="compute_8hpp" name="compute.hpp" local="yes" import="no" module="no" objc="no">compute.hpp</includes>
+    <includes id="pca_8hpp" name="pca.hpp" local="yes" import="no" module="no" objc="no">pca.hpp</includes>
+    <includes id="parallel_8hpp" name="parallel.hpp" local="yes" import="no" module="no" objc="no">parallel.hpp</includes>
+    <includes id="Options_8hpp" name="Options.hpp" local="yes" import="no" module="no" objc="no">Options.hpp</includes>
+    <includes id="interface_8hpp" name="interface.hpp" local="yes" import="no" module="no" objc="no">Matrix/interface.hpp</includes>
+    <includes id="simple_8hpp" name="simple.hpp" local="yes" import="no" module="no" objc="no">Matrix/simple.hpp</includes>
+    <includes id="centered_8hpp" name="centered.hpp" local="yes" import="no" module="no" objc="no">Matrix/centered.hpp</includes>
+    <includes id="scaled_8hpp" name="scaled.hpp" local="yes" import="no" module="no" objc="no">Matrix/scaled.hpp</includes>
+    <includes id="sparse_8hpp" name="sparse.hpp" local="yes" import="no" module="no" objc="no">Matrix/sparse.hpp</includes>
+    <namespace>irlba</namespace>
   </compound>
   <compound kind="file">
     <name>centered.hpp</name>
@@ -15,6 +31,7 @@
     <filename>centered_8hpp.html</filename>
     <includes id="interface_8hpp" name="interface.hpp" local="yes" import="no" module="no" objc="no">interface.hpp</includes>
     <class kind="class">irlba::CenteredMatrix</class>
+    <namespace>irlba</namespace>
   </compound>
   <compound kind="file">
     <name>interface.hpp</name>
@@ -24,12 +41,15 @@
     <class kind="class">irlba::AdjointWorkspace</class>
     <class kind="class">irlba::RealizeWorkspace</class>
     <class kind="class">irlba::Matrix</class>
+    <namespace>irlba</namespace>
   </compound>
   <compound kind="file">
     <name>scaled.hpp</name>
     <path>irlba/Matrix/</path>
     <filename>scaled_8hpp.html</filename>
     <includes id="interface_8hpp" name="interface.hpp" local="yes" import="no" module="no" objc="no">interface.hpp</includes>
+    <class kind="class">irlba::ScaledMatrix</class>
+    <namespace>irlba</namespace>
   </compound>
   <compound kind="file">
     <name>simple.hpp</name>
@@ -37,6 +57,7 @@
     <filename>simple_8hpp.html</filename>
     <includes id="interface_8hpp" name="interface.hpp" local="yes" import="no" module="no" objc="no">interface.hpp</includes>
     <class kind="class">irlba::SimpleMatrix</class>
+    <namespace>irlba</namespace>
   </compound>
   <compound kind="file">
     <name>sparse.hpp</name>
@@ -44,22 +65,22 @@
     <filename>sparse_8hpp.html</filename>
     <includes id="parallel_8hpp" name="parallel.hpp" local="yes" import="no" module="no" objc="no">../parallel.hpp</includes>
     <includes id="interface_8hpp" name="interface.hpp" local="yes" import="no" module="no" objc="no">interface.hpp</includes>
-    <class kind="class">irlba::ParallelSparseWorkspace</class>
-    <class kind="class">irlba::ParallelSparseAdjointWorkspace</class>
-    <class kind="class">irlba::ParallelSparseRealizeWorkspace</class>
     <class kind="class">irlba::ParallelSparseMatrix</class>
+    <namespace>irlba</namespace>
   </compound>
   <compound kind="file">
     <name>Options.hpp</name>
     <path>irlba/</path>
     <filename>Options_8hpp.html</filename>
     <class kind="struct">irlba::Options</class>
+    <namespace>irlba</namespace>
   </compound>
   <compound kind="file">
     <name>parallel.hpp</name>
     <path>irlba/</path>
     <filename>parallel_8hpp.html</filename>
     <class kind="class">irlba::EigenThreadScope</class>
+    <namespace>irlba</namespace>
   </compound>
   <compound kind="file">
     <name>pca.hpp</name>
@@ -70,6 +91,7 @@
     <includes id="centered_8hpp" name="centered.hpp" local="yes" import="no" module="no" objc="no">Matrix/centered.hpp</includes>
     <includes id="scaled_8hpp" name="scaled.hpp" local="yes" import="no" module="no" objc="no">Matrix/scaled.hpp</includes>
     <class kind="struct">irlba::PcaResults</class>
+    <namespace>irlba</namespace>
   </compound>
   <compound kind="class">
     <name>irlba::AdjointWorkspace</name>
@@ -329,22 +351,6 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>irlba::ParallelSparseAdjointWorkspace</name>
-    <filename>classirlba_1_1ParallelSparseAdjointWorkspace.html</filename>
-    <templarg>class EigenVector_</templarg>
-    <templarg>class ValueArray_</templarg>
-    <templarg>class IndexArray_</templarg>
-    <templarg>class PointerArray_</templarg>
-    <base>irlba::AdjointWorkspace&lt; EigenVector_ &gt;</base>
-    <member kind="function">
-      <type>void</type>
-      <name>multiply</name>
-      <anchorfile>classirlba_1_1ParallelSparseAdjointWorkspace.html</anchorfile>
-      <anchor>a6e8b220c427cbbc75d2d3bc00f804d88</anchor>
-      <arglist>(const EigenVector_ &amp;right, EigenVector_ &amp;output)</arglist>
-    </member>
-  </compound>
-  <compound kind="class">
     <name>irlba::ParallelSparseMatrix</name>
     <filename>classirlba_1_1ParallelSparseMatrix.html</filename>
     <templarg>class EigenVector_</templarg>
@@ -459,38 +465,6 @@
       <arglist>() const</arglist>
     </member>
   </compound>
-  <compound kind="class">
-    <name>irlba::ParallelSparseRealizeWorkspace</name>
-    <filename>classirlba_1_1ParallelSparseRealizeWorkspace.html</filename>
-    <templarg>class EigenMatrix_</templarg>
-    <templarg>class ValueArray_</templarg>
-    <templarg>class IndexArray_</templarg>
-    <templarg>class PointerArray_</templarg>
-    <base>irlba::RealizeWorkspace&lt; EigenMatrix_ &gt;</base>
-    <member kind="function">
-      <type>const EigenMatrix_ &amp;</type>
-      <name>realize</name>
-      <anchorfile>classirlba_1_1ParallelSparseRealizeWorkspace.html</anchorfile>
-      <anchor>a7f1d0da3da9d067a53cd08006a7affb6</anchor>
-      <arglist>(EigenMatrix_ &amp;buffer)</arglist>
-    </member>
-  </compound>
-  <compound kind="class">
-    <name>irlba::ParallelSparseWorkspace</name>
-    <filename>classirlba_1_1ParallelSparseWorkspace.html</filename>
-    <templarg>class EigenVector_</templarg>
-    <templarg>class ValueArray_</templarg>
-    <templarg>class IndexArray_</templarg>
-    <templarg>class PointerArray_</templarg>
-    <base>irlba::Workspace&lt; EigenVector_ &gt;</base>
-    <member kind="function">
-      <type>void</type>
-      <name>multiply</name>
-      <anchorfile>classirlba_1_1ParallelSparseWorkspace.html</anchorfile>
-      <anchor>ad3fc5f626b0bb46c158b5815be9d8482</anchor>
-      <arglist>(const EigenVector_ &amp;right, EigenVector_ &amp;output)</arglist>
-    </member>
-  </compound>
   <compound kind="struct">
     <name>irlba::PcaResults</name>
     <filename>structirlba_1_1PcaResults.html</filename>
@@ -579,6 +553,78 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>irlba::ScaledMatrix</name>
+    <filename>classirlba_1_1ScaledMatrix.html</filename>
+    <templarg>class EigenVector_</templarg>
+    <templarg>class EigenMatrix_</templarg>
+    <templarg>class MatrixPointer_</templarg>
+    <templarg>class ScalePointer_</templarg>
+    <base>irlba::Matrix&lt; EigenVector_, EigenMatrix_ &gt;</base>
+    <member kind="function">
+      <type></type>
+      <name>ScaledMatrix</name>
+      <anchorfile>classirlba_1_1ScaledMatrix.html</anchorfile>
+      <anchor>a866e5f0b08ae01a026b63fbcbeb8e041</anchor>
+      <arglist>(MatrixPointer_ matrix, ScalePointer_ scale, bool column, bool divide)</arglist>
+    </member>
+    <member kind="function">
+      <type>Eigen::Index</type>
+      <name>rows</name>
+      <anchorfile>classirlba_1_1ScaledMatrix.html</anchorfile>
+      <anchor>aee91777f1fc6065af5d62da64014317c</anchor>
+      <arglist>() const</arglist>
+    </member>
+    <member kind="function">
+      <type>Eigen::Index</type>
+      <name>cols</name>
+      <anchorfile>classirlba_1_1ScaledMatrix.html</anchorfile>
+      <anchor>a7b7503144b1b012eb434e40bbc7290cc</anchor>
+      <arglist>() const</arglist>
+    </member>
+    <member kind="function">
+      <type>std::unique_ptr&lt; Workspace&lt; EigenVector_ &gt; &gt;</type>
+      <name>new_workspace</name>
+      <anchorfile>classirlba_1_1ScaledMatrix.html</anchorfile>
+      <anchor>af3f177b829d11e61dc7637d26395657d</anchor>
+      <arglist>() const</arglist>
+    </member>
+    <member kind="function">
+      <type>std::unique_ptr&lt; AdjointWorkspace&lt; EigenVector_ &gt; &gt;</type>
+      <name>new_adjoint_workspace</name>
+      <anchorfile>classirlba_1_1ScaledMatrix.html</anchorfile>
+      <anchor>abcd60a1d5a7875157155be1ab7b7f2ee</anchor>
+      <arglist>() const</arglist>
+    </member>
+    <member kind="function">
+      <type>std::unique_ptr&lt; RealizeWorkspace&lt; EigenMatrix_ &gt; &gt;</type>
+      <name>new_realize_workspace</name>
+      <anchorfile>classirlba_1_1ScaledMatrix.html</anchorfile>
+      <anchor>a6e352efaf051c6158a02919e45c35257</anchor>
+      <arglist>() const</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>new_known_workspace</name>
+      <anchorfile>classirlba_1_1ScaledMatrix.html</anchorfile>
+      <anchor>a08b10a9071f77daf98a16a7a987026c1</anchor>
+      <arglist>() const</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>new_known_adjoint_workspace</name>
+      <anchorfile>classirlba_1_1ScaledMatrix.html</anchorfile>
+      <anchor>abaebdd5fe3aaaf806dd0509fe0b48f52</anchor>
+      <arglist>() const</arglist>
+    </member>
+    <member kind="function">
+      <type>auto</type>
+      <name>new_known_realize_workspace</name>
+      <anchorfile>classirlba_1_1ScaledMatrix.html</anchorfile>
+      <anchor>a72bbf1fd4c17f6ba07893a6e7d536f27</anchor>
+      <arglist>() const</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
     <name>irlba::SimpleMatrix</name>
     <filename>classirlba_1_1SimpleMatrix.html</filename>
     <templarg>class EigenVector_</templarg>
@@ -659,6 +705,72 @@
       <anchorfile>classirlba_1_1Workspace.html</anchorfile>
       <anchor>aace68ce16da70c397d4a790f3667ae35</anchor>
       <arglist>(const EigenVector_ &amp;right, EigenVector_ &amp;output)=0</arglist>
+    </member>
+  </compound>
+  <compound kind="namespace">
+    <name>irlba</name>
+    <filename>namespaceirlba.html</filename>
+    <class kind="class">irlba::AdjointWorkspace</class>
+    <class kind="class">irlba::CenteredMatrix</class>
+    <class kind="class">irlba::EigenThreadScope</class>
+    <class kind="class">irlba::Matrix</class>
+    <class kind="struct">irlba::Metrics</class>
+    <class kind="struct">irlba::Options</class>
+    <class kind="class">irlba::ParallelSparseMatrix</class>
+    <class kind="struct">irlba::PcaResults</class>
+    <class kind="class">irlba::RealizeWorkspace</class>
+    <class kind="struct">irlba::Results</class>
+    <class kind="class">irlba::ScaledMatrix</class>
+    <class kind="class">irlba::SimpleMatrix</class>
+    <class kind="class">irlba::Workspace</class>
+    <member kind="function">
+      <type>Metrics</type>
+      <name>compute</name>
+      <anchorfile>namespaceirlba.html</anchorfile>
+      <anchor>a3ef50b4731ec01ea6a1a035e4863390b</anchor>
+      <arglist>(const Matrix_ &amp;matrix, const Eigen::Index number, EigenMatrix_ &amp;outU, EigenMatrix_ &amp;outV, EigenVector_ &amp;outD, const Options&lt; EigenVector_ &gt; &amp;options)</arglist>
+    </member>
+    <member kind="function">
+      <type>Metrics</type>
+      <name>compute_simple</name>
+      <anchorfile>namespaceirlba.html</anchorfile>
+      <anchor>ae891070dfa5e782a66d905be3143d28d</anchor>
+      <arglist>(const InputEigenMatrix_ &amp;matrix, Eigen::Index number, OutputEigenMatrix_ &amp;outU, OutputEigenMatrix_ &amp;outV, EigenVector_ &amp;outD, const Options&lt; EigenVector_ &gt; &amp;options)</arglist>
+    </member>
+    <member kind="function">
+      <type>Results&lt; EigenMatrix_, EigenVector_ &gt;</type>
+      <name>compute</name>
+      <anchorfile>namespaceirlba.html</anchorfile>
+      <anchor>aee162d595de9fdfdcf5d379de54365d3</anchor>
+      <arglist>(const Matrix_ &amp;matrix, Eigen::Index number, const Options&lt; EigenVector_ &gt; &amp;options)</arglist>
+    </member>
+    <member kind="function">
+      <type>Results&lt; OutputEigenMatrix_, EigenVector_ &gt;</type>
+      <name>compute_simple</name>
+      <anchorfile>namespaceirlba.html</anchorfile>
+      <anchor>a22b51a9ba8a634d25fc16008d4bdfba8</anchor>
+      <arglist>(const InputEigenMatrix_ &amp;matrix, Eigen::Index number, const Options&lt; EigenVector_ &gt; &amp;options)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>parallelize</name>
+      <anchorfile>namespaceirlba.html</anchorfile>
+      <anchor>a7ddcae16077f8210cfab2f59ee3effed</anchor>
+      <arglist>(Task_ num_tasks, Run_ run_task)</arglist>
+    </member>
+    <member kind="function">
+      <type>Metrics</type>
+      <name>pca</name>
+      <anchorfile>namespaceirlba.html</anchorfile>
+      <anchor>a3587747a936e2b15dd4fc0db69d21508</anchor>
+      <arglist>(const InputEigenMatrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, OutputEigenMatrix_ &amp;scores, OutputEigenMatrix_ &amp;rotation, EigenVector_ &amp;variances, const Options&lt; EigenVector_ &gt; &amp;options)</arglist>
+    </member>
+    <member kind="function">
+      <type>PcaResults&lt; OutputEigenMatrix_, EigenVector_ &gt;</type>
+      <name>pca</name>
+      <anchorfile>namespaceirlba.html</anchorfile>
+      <anchor>a36261b9ee1f9f74d841685e568f7c1ce</anchor>
+      <arglist>(const InputEigenMatrix_ &amp;matrix, bool center, bool scale, Eigen::Index number, const Options&lt; EigenVector_ &gt; &amp;options)</arglist>
     </member>
   </compound>
   <compound kind="page">

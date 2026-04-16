@@ -103,7 +103,7 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;Eigen/Dense&quot;</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">namespace </span>irlba {</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceirlba.html">irlba</a> {</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> EigenVector_, <span class="keyword">class</span> Matrix_, <span class="keyword">class</span> Scale_&gt;</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">class </span>ScaledWorkspace final : <span class="keyword">public</span> Workspace&lt;EigenVector_&gt; {</div>
@@ -227,14 +227,17 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    <span class="keyword">class </span>MatrixPointer_ = <span class="keyword">const</span> Matrix&lt;EigenVector_, EigenMatrix_&gt;*,</div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    <span class="keyword">class </span>ScalePointer_ = <span class="keyword">const</span> EigenVector_*</div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>&gt;</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="keyword">class </span>ScaledMatrix final : <span class="keyword">public</span> Matrix&lt;EigenVector_, EigenMatrix_&gt; {</div>
+<div class="foldopen" id="foldopen00162" data-start="{" data-end="};">
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno"><a class="line" href="classirlba_1_1ScaledMatrix.html">  162</a></span><span class="keyword">class </span><a class="code hl_class" href="classirlba_1_1ScaledMatrix.html">ScaledMatrix</a> final : <span class="keyword">public</span> <a class="code hl_class" href="classirlba_1_1Matrix.html">Matrix</a>&lt;EigenVector_, EigenMatrix_&gt; {</div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    ScaledMatrix(MatrixPointer_ matrix, ScalePointer_ scale, <span class="keywordtype">bool</span> column, <span class="keywordtype">bool</span> divide) : </div>
+<div class="foldopen" id="foldopen00173" data-start="{" data-end="}">
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno"><a class="line" href="classirlba_1_1ScaledMatrix.html#a866e5f0b08ae01a026b63fbcbeb8e041">  173</a></span>    <a class="code hl_function" href="classirlba_1_1ScaledMatrix.html#a866e5f0b08ae01a026b63fbcbeb8e041">ScaledMatrix</a>(MatrixPointer_ matrix, ScalePointer_ scale, <span class="keywordtype">bool</span> column, <span class="keywordtype">bool</span> divide) : </div>
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>        my_matrix(std::move(matrix)),</div>
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        my_scale(std::move(scale)),</div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        my_column(column),</div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        my_divide(divide)</div>
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    {}</div>
+</div>
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
 <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    MatrixPointer_ my_matrix;</div>
@@ -243,45 +246,74 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    <span class="keywordtype">bool</span> my_divide;</div>
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span> </div>
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    Eigen::Index rows()<span class="keyword"> const </span>{</div>
+<div class="foldopen" id="foldopen00187" data-start="{" data-end="}">
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno"><a class="line" href="classirlba_1_1ScaledMatrix.html#aee91777f1fc6065af5d62da64014317c">  187</a></span>    Eigen::Index <a class="code hl_function" href="classirlba_1_1ScaledMatrix.html#aee91777f1fc6065af5d62da64014317c">rows</a>()<span class="keyword"> const </span>{</div>
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>        <span class="keywordflow">return</span> my_matrix-&gt;rows();</div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    }</div>
+</div>
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    Eigen::Index cols()<span class="keyword"> const </span>{</div>
+<div class="foldopen" id="foldopen00191" data-start="{" data-end="}">
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno"><a class="line" href="classirlba_1_1ScaledMatrix.html#a7b7503144b1b012eb434e40bbc7290cc">  191</a></span>    Eigen::Index <a class="code hl_function" href="classirlba_1_1ScaledMatrix.html#a7b7503144b1b012eb434e40bbc7290cc">cols</a>()<span class="keyword"> const </span>{</div>
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>        <span class="keywordflow">return</span> my_matrix-&gt;cols();</div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    }</div>
+</div>
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
 <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    std::unique_ptr&lt;Workspace&lt;EigenVector_&gt; &gt; new_workspace()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>        <span class="keywordflow">return</span> new_known_workspace();</div>
+<div class="foldopen" id="foldopen00196" data-start="{" data-end="}">
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno"><a class="line" href="classirlba_1_1ScaledMatrix.html#af3f177b829d11e61dc7637d26395657d">  196</a></span>    std::unique_ptr&lt;Workspace&lt;EigenVector_&gt; &gt; <a class="code hl_function" href="classirlba_1_1ScaledMatrix.html#af3f177b829d11e61dc7637d26395657d">new_workspace</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="classirlba_1_1ScaledMatrix.html#a08b10a9071f77daf98a16a7a987026c1">new_known_workspace</a>();</div>
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    }</div>
+</div>
 <div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    std::unique_ptr&lt;AdjointWorkspace&lt;EigenVector_&gt; &gt; new_adjoint_workspace()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>        <span class="keywordflow">return</span> new_known_adjoint_workspace();</div>
+<div class="foldopen" id="foldopen00200" data-start="{" data-end="}">
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno"><a class="line" href="classirlba_1_1ScaledMatrix.html#abcd60a1d5a7875157155be1ab7b7f2ee">  200</a></span>    std::unique_ptr&lt;AdjointWorkspace&lt;EigenVector_&gt; &gt; <a class="code hl_function" href="classirlba_1_1ScaledMatrix.html#abcd60a1d5a7875157155be1ab7b7f2ee">new_adjoint_workspace</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="classirlba_1_1ScaledMatrix.html#abaebdd5fe3aaaf806dd0509fe0b48f52">new_known_adjoint_workspace</a>();</div>
 <div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    }</div>
+</div>
 <div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span> </div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    std::unique_ptr&lt;RealizeWorkspace&lt;EigenMatrix_&gt; &gt; new_realize_workspace()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>        <span class="keywordflow">return</span> new_known_realize_workspace();</div>
+<div class="foldopen" id="foldopen00204" data-start="{" data-end="}">
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno"><a class="line" href="classirlba_1_1ScaledMatrix.html#a6e352efaf051c6158a02919e45c35257">  204</a></span>    std::unique_ptr&lt;RealizeWorkspace&lt;EigenMatrix_&gt; &gt; <a class="code hl_function" href="classirlba_1_1ScaledMatrix.html#a6e352efaf051c6158a02919e45c35257">new_realize_workspace</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="classirlba_1_1ScaledMatrix.html#a72bbf1fd4c17f6ba07893a6e7d536f27">new_known_realize_workspace</a>();</div>
 <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    }</div>
+</div>
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span> </div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    <span class="keyword">auto</span> new_known_workspace()<span class="keyword"> const </span>{</div>
+<div class="foldopen" id="foldopen00212" data-start="{" data-end="}">
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno"><a class="line" href="classirlba_1_1ScaledMatrix.html#a08b10a9071f77daf98a16a7a987026c1">  212</a></span>    <span class="keyword">auto</span> <a class="code hl_function" href="classirlba_1_1ScaledMatrix.html#a08b10a9071f77daf98a16a7a987026c1">new_known_workspace</a>()<span class="keyword"> const </span>{</div>
 <div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>        <span class="keywordflow">return</span> std::make_unique&lt;ScaledWorkspace&lt;EigenVector_, I&lt;<span class="keyword">decltype</span>(*my_matrix)&gt;, I&lt;<span class="keyword">decltype</span>(*my_scale)&gt; &gt; &gt;(*my_matrix, *my_scale, my_column, my_divide);</div>
 <div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>    }</div>
+</div>
 <div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> </div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    <span class="keyword">auto</span> new_known_adjoint_workspace()<span class="keyword"> const </span>{</div>
+<div class="foldopen" id="foldopen00219" data-start="{" data-end="}">
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno"><a class="line" href="classirlba_1_1ScaledMatrix.html#abaebdd5fe3aaaf806dd0509fe0b48f52">  219</a></span>    <span class="keyword">auto</span> <a class="code hl_function" href="classirlba_1_1ScaledMatrix.html#abaebdd5fe3aaaf806dd0509fe0b48f52">new_known_adjoint_workspace</a>()<span class="keyword"> const </span>{</div>
 <div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>        <span class="keywordflow">return</span> std::make_unique&lt;ScaledAdjointWorkspace&lt;EigenVector_, I&lt;<span class="keyword">decltype</span>(*my_matrix)&gt;, I&lt;<span class="keyword">decltype</span>(*my_scale)&gt; &gt; &gt;(*my_matrix, *my_scale, my_column, my_divide);</div>
 <div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>    }</div>
+</div>
 <div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span> </div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>    <span class="keyword">auto</span> new_known_realize_workspace()<span class="keyword"> const </span>{</div>
+<div class="foldopen" id="foldopen00226" data-start="{" data-end="}">
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno"><a class="line" href="classirlba_1_1ScaledMatrix.html#a72bbf1fd4c17f6ba07893a6e7d536f27">  226</a></span>    <span class="keyword">auto</span> <a class="code hl_function" href="classirlba_1_1ScaledMatrix.html#a72bbf1fd4c17f6ba07893a6e7d536f27">new_known_realize_workspace</a>()<span class="keyword"> const </span>{</div>
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>        <span class="keywordflow">return</span> std::make_unique&lt;ScaledRealizeWorkspace&lt;EigenMatrix_, I&lt;<span class="keyword">decltype</span>(*my_matrix)&gt;, I&lt;<span class="keyword">decltype</span>(*my_scale)&gt; &gt; &gt;(*my_matrix, *my_scale, my_column, my_divide);</div>
 <div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>    }</div>
+</div>
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>};</div>
+</div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>}</div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span> </div>
 <div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclassirlba_1_1Matrix_html"><div class="ttname"><a href="classirlba_1_1Matrix.html">irlba::Matrix</a></div><div class="ttdoc">Interface for a matrix to use in compute().</div><div class="ttdef"><b>Definition</b> interface.hpp:142</div></div>
+<div class="ttc" id="aclassirlba_1_1ScaledMatrix_html"><div class="ttname"><a href="classirlba_1_1ScaledMatrix.html">irlba::ScaledMatrix</a></div><div class="ttdoc">Deferred scaling of a matrix.</div><div class="ttdef"><b>Definition</b> scaled.hpp:162</div></div>
+<div class="ttc" id="aclassirlba_1_1ScaledMatrix_html_a08b10a9071f77daf98a16a7a987026c1"><div class="ttname"><a href="classirlba_1_1ScaledMatrix.html#a08b10a9071f77daf98a16a7a987026c1">irlba::ScaledMatrix::new_known_workspace</a></div><div class="ttdeci">auto new_known_workspace() const</div><div class="ttdef"><b>Definition</b> scaled.hpp:212</div></div>
+<div class="ttc" id="aclassirlba_1_1ScaledMatrix_html_a6e352efaf051c6158a02919e45c35257"><div class="ttname"><a href="classirlba_1_1ScaledMatrix.html#a6e352efaf051c6158a02919e45c35257">irlba::ScaledMatrix::new_realize_workspace</a></div><div class="ttdeci">std::unique_ptr&lt; RealizeWorkspace&lt; EigenMatrix_ &gt; &gt; new_realize_workspace() const</div><div class="ttdef"><b>Definition</b> scaled.hpp:204</div></div>
+<div class="ttc" id="aclassirlba_1_1ScaledMatrix_html_a72bbf1fd4c17f6ba07893a6e7d536f27"><div class="ttname"><a href="classirlba_1_1ScaledMatrix.html#a72bbf1fd4c17f6ba07893a6e7d536f27">irlba::ScaledMatrix::new_known_realize_workspace</a></div><div class="ttdeci">auto new_known_realize_workspace() const</div><div class="ttdef"><b>Definition</b> scaled.hpp:226</div></div>
+<div class="ttc" id="aclassirlba_1_1ScaledMatrix_html_a7b7503144b1b012eb434e40bbc7290cc"><div class="ttname"><a href="classirlba_1_1ScaledMatrix.html#a7b7503144b1b012eb434e40bbc7290cc">irlba::ScaledMatrix::cols</a></div><div class="ttdeci">Eigen::Index cols() const</div><div class="ttdef"><b>Definition</b> scaled.hpp:191</div></div>
+<div class="ttc" id="aclassirlba_1_1ScaledMatrix_html_a866e5f0b08ae01a026b63fbcbeb8e041"><div class="ttname"><a href="classirlba_1_1ScaledMatrix.html#a866e5f0b08ae01a026b63fbcbeb8e041">irlba::ScaledMatrix::ScaledMatrix</a></div><div class="ttdeci">ScaledMatrix(MatrixPointer_ matrix, ScalePointer_ scale, bool column, bool divide)</div><div class="ttdef"><b>Definition</b> scaled.hpp:173</div></div>
+<div class="ttc" id="aclassirlba_1_1ScaledMatrix_html_abaebdd5fe3aaaf806dd0509fe0b48f52"><div class="ttname"><a href="classirlba_1_1ScaledMatrix.html#abaebdd5fe3aaaf806dd0509fe0b48f52">irlba::ScaledMatrix::new_known_adjoint_workspace</a></div><div class="ttdeci">auto new_known_adjoint_workspace() const</div><div class="ttdef"><b>Definition</b> scaled.hpp:219</div></div>
+<div class="ttc" id="aclassirlba_1_1ScaledMatrix_html_abcd60a1d5a7875157155be1ab7b7f2ee"><div class="ttname"><a href="classirlba_1_1ScaledMatrix.html#abcd60a1d5a7875157155be1ab7b7f2ee">irlba::ScaledMatrix::new_adjoint_workspace</a></div><div class="ttdeci">std::unique_ptr&lt; AdjointWorkspace&lt; EigenVector_ &gt; &gt; new_adjoint_workspace() const</div><div class="ttdef"><b>Definition</b> scaled.hpp:200</div></div>
+<div class="ttc" id="aclassirlba_1_1ScaledMatrix_html_aee91777f1fc6065af5d62da64014317c"><div class="ttname"><a href="classirlba_1_1ScaledMatrix.html#aee91777f1fc6065af5d62da64014317c">irlba::ScaledMatrix::rows</a></div><div class="ttdeci">Eigen::Index rows() const</div><div class="ttdef"><b>Definition</b> scaled.hpp:187</div></div>
+<div class="ttc" id="aclassirlba_1_1ScaledMatrix_html_af3f177b829d11e61dc7637d26395657d"><div class="ttname"><a href="classirlba_1_1ScaledMatrix.html#af3f177b829d11e61dc7637d26395657d">irlba::ScaledMatrix::new_workspace</a></div><div class="ttdeci">std::unique_ptr&lt; Workspace&lt; EigenVector_ &gt; &gt; new_workspace() const</div><div class="ttdef"><b>Definition</b> scaled.hpp:196</div></div>
 <div class="ttc" id="ainterface_8hpp_html"><div class="ttname"><a href="interface_8hpp.html">interface.hpp</a></div><div class="ttdoc">Interfaces for matrix inputs.</div></div>
+<div class="ttc" id="anamespaceirlba_html"><div class="ttname"><a href="namespaceirlba.html">irlba</a></div><div class="ttdoc">Implements IRLBA for approximate SVD.</div><div class="ttdef"><b>Definition</b> compute.hpp:23</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
