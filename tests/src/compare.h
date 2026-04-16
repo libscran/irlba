@@ -15,16 +15,16 @@ void expect_equal_column_vectors(const Eigen::MatrixXd& left, const Eigen::Matri
 
     for (Eigen::Index i = 0; i < left.cols(); ++i) {
         for (Eigen::Index j = 0; j < left.rows(); ++j) {
-            EXPECT_TRUE(same_same(std::abs(left(j, i)), std::abs(right(j, i)), tol)) << "(" << left(j, i) << " vs " << right(j, i) << ")" << std::endl;
+            EXPECT_TRUE(same_same(std::abs(left(j, i)), std::abs(right(j, i)), tol)) << "(" << left(j, i) << " vs " << right(j, i) << ")";
         }
 
         double left_sum = std::abs(left.col(i).sum());
         double right_sum = std::abs(right.col(i).sum());
         if constexpr(centered) {
-            EXPECT_TRUE(left_sum < tol);
-            EXPECT_TRUE(right_sum < tol);
+            EXPECT_LT(left_sum, tol);
+            EXPECT_LT(right_sum, tol);
         } else {
-            EXPECT_TRUE(same_same(left_sum, std::abs(right_sum), tol));
+            EXPECT_TRUE(same_same(left_sum, right_sum, tol)) << "(" << left_sum << " vs " << right_sum << ")"; 
         }
     }
     return;
@@ -35,7 +35,7 @@ inline void expect_equal_matrix(const Eigen::MatrixXd& left, const Eigen::Matrix
     ASSERT_EQ(left.rows(), right.rows());
     for (Eigen::Index i = 0; i < left.cols(); ++i) {
         for (Eigen::Index j = 0; j < left.rows(); ++j) {
-            EXPECT_TRUE(same_same(left(j, i), right(j, i), tol));
+            EXPECT_TRUE(same_same(left(j, i), right(j, i), tol)) << "(" << left(j, i) << " vs " << right(j, i) << ")";
         }
     }
 }
@@ -43,7 +43,7 @@ inline void expect_equal_matrix(const Eigen::MatrixXd& left, const Eigen::Matrix
 inline void expect_equal_vectors(const Eigen::VectorXd& left, const Eigen::VectorXd& right, double tol=1e-8) {
     ASSERT_EQ(left.size(), right.size());
     for (Eigen::Index i = 0; i < left.size(); ++i) {
-        EXPECT_TRUE(same_same(left[i], right[i], tol));
+        EXPECT_TRUE(same_same(left[i], right[i], tol)) << "(" << left[i] << " vs " << right[i] << ")"; 
     }
     return;
 }
