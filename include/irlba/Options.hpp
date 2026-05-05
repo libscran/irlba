@@ -30,16 +30,16 @@ struct Options {
     std::optional<double> invariant_subspace_tolerance;
 
     /**
-     * Tolerance on the approximation error of the singular triplets.
-     * Lower values improve the accuracy of the decomposition.
+     * Tolerance for algorithm convergence, based on the approximation error of each singular triplet.
      * (See Equation 2.13 of Baglama and Reichel.)
+     * Lower values improve the accuracy of the decomposition.
      *
      * Any user-provided value should be non-negative.
      */
     double convergence_tolerance = 1e-5; 
 
     /**
-     * Tolerance on the relative differences between singular values across iterations.
+     * Tolerance for algorithm convergence, based on the relative differences between singular values across iterations.
      * Lower values improve the accuracy of the decomposition.
      *
      * Any user-provided value should be non-negative.
