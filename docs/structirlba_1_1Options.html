@@ -165,7 +165,7 @@ template&lt;class EigenVector_  = Eigen::VectorXd&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Tolerance on the approximation error of the singular triplets. Lower values improve the accuracy of the decomposition. (See Equation 2.13 of Baglama and Reichel.)</p>
+<p>Tolerance for algorithm convergence, based on the approximation error of each singular triplet. (See Equation 2.13 of Baglama and Reichel.) Lower values improve the accuracy of the decomposition.</p>
 <p>Any user-provided value should be non-negative. </p>
 
 </div>
@@ -303,7 +303,7 @@ template&lt;class EigenVector_  = Eigen::VectorXd&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Tolerance on the relative differences between singular values across iterations. Lower values improve the accuracy of the decomposition.</p>
+<p>Tolerance for algorithm convergence, based on the relative differences between singular values across iterations. Lower values improve the accuracy of the decomposition.</p>
 <p>Any user-provided value should be non-negative. If unset, the value in <code><a class="el" href="#a019f546a47e990071416a11687c14d71">Options::convergence_tolerance</a></code> is used. </p>
 
 </div>
