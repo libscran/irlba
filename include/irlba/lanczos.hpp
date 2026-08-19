@@ -20,8 +20,9 @@ void orthogonalize_vector(const EigenMatrix_& mat, EigenVector_& vec, Eigen::Ind
     // Possibly because it allows us to modify 'vec' for each of mat's progressive column vectors, 
     // rather than requiring a temporary space to store the projections from the original 'vec'.
     for (Eigen::Index c = 0; c < ncols; ++c) {
-        // No need to divide by the norm of mat.col(c), as this is always 1.
-        vec -= mat.col(c) * vec.dot(mat.col(c)); 
+        // All columns of 'mat' are already orthonormal, so no need to divide by the L2 norm of mat.col(c). 
+        const auto dot = vec.dot(mat.col(c)); 
+        vec -= mat.col(c) * dot;
     }
 }
 
